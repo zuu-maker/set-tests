@@ -1,7 +1,64 @@
+import React, { useState } from "react";
 import Link from "next/link";
-import React from "react";
+import { auth, db } from "@/firebase";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/slices/userSlice";
 
 function Login() {
+  const [email, setEmail] = useState("jon@mail.com");
+  const [password, setPassword] = useState("123456");
+  const [loading, setLoading] = useState(false);
+
+  let dispatch = useDispatch();
+  let router = useRouter();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    console.table(email, password);
+
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in
+        console.log(userCredential);
+        let user = userCredential.user;
+        db.collection("Users")
+          .where("email", "==", user.email)
+          .get()
+          .then((snap) => {
+            if (snap.docs[0].exists) {
+              // console.log(res.docs[0].data().role);  s
+              console.log(snap.docs[0].data());
+              dispatch(
+                setUser({
+                  _id: snap.docs[0].data()._id,
+                  email: snap.docs[0].data().email,
+                  name: snap.docs[0].data().name,
+                  role: snap.docs[0].data().role,
+                  verified: user.emailVerified,
+                })
+              );
+              router.push("/admin");
+              setLoading(false);
+            }
+            setLoading(false);
+          })
+          .catch((error) => {
+            setLoading(false);
+            console.log("failed to get" + error);
+            alert("failed to get");
+          });
+        // ...
+      })
+      .catch((error) => {
+        let errorMessage = error.message;
+        alert(errorMessage);
+        setLoading(false);
+      });
+  };
+
   return (
     <div>
       {" "}
@@ -32,6 +89,8 @@ function Login() {
                   name="email"
                   type="email"
                   autoComplete="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -47,12 +106,12 @@ function Login() {
                   Password
                 </label>
                 <div className="text-sm">
-                  <a
-                    href="#"
+                  <Link
+                    href="/forgot"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="mt-2">
@@ -60,6 +119,8 @@ function Login() {
                   id="password"
                   name="password"
                   type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
                   autoComplete="current-password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -68,12 +129,13 @@ function Login() {
             </div>
 
             <div>
-              <Link
-                href="/admin"
-                className="flex w-full justify-center rounded-md bg-cyan-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              <button
+                onClick={handleLogin}
+                disabled={!email || !password}
+                className="flex w-full justify-center disabled:opacity-60 rounded-md bg-cyan-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
-              </Link>
+                {loading ? "processing.." : "Sign In"}
+              </button>
             </div>
           </form>
 

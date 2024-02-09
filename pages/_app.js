@@ -1,10 +1,16 @@
 import "../styles/globals.css";
+import React from "react";
+import { Provider } from "react-redux";
+import { store } from "@/store";
+import AuthCheck from "@/components/auth/AuthCheck";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <div className="min-w-screen min-h-screen">
-      <Component {...pageProps} />
-    </div>
+    <Provider store={store}>
+      <AuthCheck>
+        <Component {...pageProps} />
+      </AuthCheck>
+    </Provider>
   );
 }
 

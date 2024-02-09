@@ -1,0 +1,60 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/slices/userSlice";
+import { db, auth } from "@/firebase";
+
+const AuthCheck = ({ children }) => {
+  const dispatch = useDispatch();
+
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((_user) => {
+      if (_user) {
+        db.collection("Users")
+          .where("email", "==", _user.email)
+          .get()
+          .then((snap) => {
+            if (!snap.empty) {
+              let doc = snap.docs[0].data();
+              console.log(doc);
+              dispatch(
+                setUser({
+                  _id: doc._id,
+                  email: _user.email,
+                  verified: _user.emailVerified,
+                  name: doc.name,
+                  role: doc.role,
+                })
+              );
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log("error loading");
+          })
+          .finally(() => {
+            setLoader(false);
+          });
+      }
+      setLoader(false);
+    });
+
+    return () => unsubscribe();
+    // eslint-disable-next-line
+  }, []);
+
+  return (
+    <React.Fragment>
+      {loader ? (
+        <div className="h-screen w-screen flex items-center justify-center">
+          Loading..
+        </div>
+      ) : (
+        children
+      )}
+    </React.Fragment>
+  );
+};
+
+export default AuthCheck;

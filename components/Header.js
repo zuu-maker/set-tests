@@ -3,6 +3,9 @@ import { Dialog } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "@/firebase";
+import { logOutUser } from "@/slices/userSlice";
 
 const navigation = [
   { name: "About", href: "/#about" },
@@ -15,6 +18,20 @@ const navigationPhone = [{ name: "Enrol", href: "/browse" }];
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  let user = useSelector((state) => state.user);
+  let dispatch = useDispatch();
+
+  const handleLogout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        dispatch(logOutUser());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <React.Fragment>
@@ -39,23 +56,47 @@ const Header = () => {
         </div>
         <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-center lg:gap-x-12">
           {navigation.map((item) => (
-            <a
+            <Link
               key={item.name}
               href={item.href}
               className="font-semibold text-gray-900 hover:text-gray-900"
             >
               {item.name}
-            </a>
+            </Link>
           ))}
+          {user && user.role === "admin" ? (
+            <Link
+              href="/admin"
+              className="font-semibold text-gray-900 hover:text-gray-900"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              href="/learn"
+              className="font-semibold text-gray-900 hover:text-gray-900"
+            >
+              Learn
+            </Link>
+          )}
         </div>
 
         <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
-          <Link
-            href="/login"
-            className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20"
-          >
-            Log in
-          </Link>
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+            >
+              Log out
+            </button>
+          ) : (
+            <Link
+              href="/login"
+              className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+            >
+              Log in
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -95,12 +136,12 @@ const Header = () => {
                 ))}
               </div>
               <div className="py-6">
-                <a
+                <Link
                   href="/login"
                   className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
                 >
                   Log in
-                </a>
+                </Link>
               </div>
             </div>
           </div>

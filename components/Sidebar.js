@@ -117,14 +117,14 @@ function Sidebar() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="2.5"
+              strokeWidth="2.5"
               stroke="currentColor"
               aria-hidden="true"
-              class="h-5 w-5 text-white"
+              className="h-5 w-5 text-white"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M6 18L18 6M6 6l12 12"
               ></path>
             </svg>
@@ -134,7 +134,7 @@ function Sidebar() {
       <div className="m-4">
         <ul className="mb-4 flex flex-col gap-1">
           {navigation.map((item) => (
-            <li>
+            <li key={item.title}>
               <Link href={item.link}>
                 <button
                   className="middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"

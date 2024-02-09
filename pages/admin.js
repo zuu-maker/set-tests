@@ -2,17 +2,20 @@ import AdminNav from "@/components/AdminNav";
 import AdminStats from "@/components/AdminStats";
 import AdminTable from "@/components/AdminTable";
 import Sidebar from "@/components/Sidebar";
+import AdminAuth from "@/components/auth/AdminPage";
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 function Admin() {
+  const user = useSelector((state) => state.user);
+
   return (
-    <div className="min-h-screen bg-gray-50/50">
+    <AdminAuth className="min-h-screen bg-gray-50/50">
       <Sidebar />
       <div className="p-4 xl:ml-80">
         <AdminNav />
         <div className="mt-12">
           <AdminStats />
-
           <div className="relative overflow-x-auto">
             <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
               Transcations
@@ -62,7 +65,7 @@ function Admin() {
           </div>
         </div>
       </div>
-    </div>
+    </AdminAuth>
   );
 }
 
