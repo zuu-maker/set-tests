@@ -1,30 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
-import ListItemCategory from "@/components/ListItemCategory";
-
-const types = [
-  {
-    id: "123",
-    name: "Level 1",
-  },
-  {
-    id: "124",
-    name: "Level 2",
-  },
-  {
-    id: "125",
-    name: "Level 2",
-  },
-];
+import { db } from "@/firebase";
+import firebase from "firebase";
+import ListItemType from "@/components/ListItemType";
 
 function TestType() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [types, setTypes] = useState([]);
 
-  const handleSubmit = () => {};
+  useEffect(() => {
+    let unsubscribe = db.collection("Type").onSnapshot((querySnapshot) => {
+      let _types = [];
+      querySnapshot.forEach((doc) => {
+        _types.push(doc.data());
+      });
+      setTypes(_types);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+    // eslint-disable-next-line no-use-before-define
+  }, []);
 
-  const handleRemove = () => {};
+  const handleSubmit = () => {
+    setLoading(true);
+    db.collection("Type")
+      .add({
+        _id: "",
+        name: name,
+        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then((docRef) => {
+        db.collection("Type")
+          .doc(docRef.id)
+          .update({ id: docRef.id })
+          .then(() => {
+            setName("");
+            setLoading(false);
+            console.log("Document written with ID: ", docRef.id);
+          });
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Error adding document: ", error);
+      });
+  };
+
+  const handleRemove = (id) => {
+    db.collection("Type")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50/50">
@@ -58,7 +91,7 @@ function TestType() {
 
               <ul className="w-3/5 text-sm font-medium text-gray-900 bg-white rounded-sm border border-gray-200">
                 {types.map((item, i) => (
-                  <ListItemCategory
+                  <ListItemType
                     key={i}
                     item={item}
                     handleRemove={handleRemove}

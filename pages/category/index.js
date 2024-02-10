@@ -1,30 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
 import ListItemCategory from "@/components/ListItemCategory";
-
-const categories = [
-  {
-    id: "123",
-    name: "Math",
-  },
-  {
-    id: "124",
-    name: "English",
-  },
-  {
-    id: "125",
-    name: "Specials",
-  },
-];
+import { db } from "@/firebase";
+import firebase from "firebase";
 
 function Category() {
   const [name, setName] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
-  const handleSubmit = () => {};
+  useEffect(() => {
+    let unsubscribe = db.collection("Category").onSnapshot((querySnapshot) => {
+      let _categories = [];
+      querySnapshot.forEach((doc) => {
+        _categories.push(doc.data());
+      });
+      setCategories(_categories);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+    // eslint-disable-next-line no-use-before-define
+  }, []);
 
-  const handleRemove = () => {};
+  const handleSubmit = () => {
+    setLoading(true);
+    db.collection("Category")
+      .add({
+        _id: "",
+        name: name,
+        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then((docRef) => {
+        db.collection("Category")
+          .doc(docRef.id)
+          .update({ id: docRef.id })
+          .then(() => {
+            setLoading(false);
+            setName("");
+            console.log("Document written with ID: ", docRef.id);
+          });
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Error adding document: ", error);
+      });
+  };
+
+  const handleRemove = (id) => {
+    db.collection("Category")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50/50">
@@ -39,18 +72,18 @@ function Category() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 type="text"
-                className="bg-gray-50 border max-w-xs border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5"
+                className="bg-gray-50 border max-w-xs border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-cyan-500 focus:border-emerald-500 block w-full p-2.5"
                 placeholder="Name"
                 required
               />
 
               <button
-                disabled={!name}
+                disabled={!name || loading}
                 onClick={handleSubmit}
                 type="button"
                 className="text-white bg-gradient-to-r disabled:opacity-60 from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-2 mr-2 mb-2"
               >
-                Add Category
+                {loading ? "Processing" : "Add Category"}
               </button>
             </div>
             <div>
