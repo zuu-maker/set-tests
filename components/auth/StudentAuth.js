@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-function AdminAuth({ children }) {
+function StudentAuth({ children }) {
   const [hidden, setHidden] = useState(true);
   const [loader, setLoader] = useState(true);
   const user = useSelector((state) => state.user);
@@ -12,7 +12,8 @@ function AdminAuth({ children }) {
 
   useEffect(() => {
     if (user && user._id) {
-      if (user.role === "admin") {
+      if (user.role === "student") {
+        setLoader(false);
         setHidden(false);
       } else {
         setLoader(false);
@@ -46,4 +47,4 @@ function AdminAuth({ children }) {
   return <div>{children}</div>;
 }
 
-export default AdminAuth;
+export default StudentAuth;

@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import Header from "../../../components/Header";
 import Head from "next/head";
 import Link from "next/link";
+import AdminAuth from "@/components/auth/AdminPage";
 
 function Test() {
   const [date, setDate] = useState(null);
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className="min-h-screen">
+    <AdminAuth className="min-h-screen">
       <Head>
         <title>Browse Course</title>
         <link rel="icon" href="/favicon.ico" />
@@ -137,7 +138,7 @@ function Test() {
           </div>
         )}
       </div>
-    </div>
+    </AdminAuth>
   );
 }
 

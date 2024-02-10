@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
 import { db, auth } from "@/firebase";
+import { ClipLoader } from "react-spinners";
 
 const AuthCheck = ({ children }) => {
   const dispatch = useDispatch();
@@ -47,8 +48,9 @@ const AuthCheck = ({ children }) => {
   return (
     <React.Fragment>
       {loader ? (
-        <div className="h-screen w-screen flex items-center justify-center">
-          Loading..
+        <div className="flex text-xl items-center justify-center h-screen w-screen">
+          _ L<ClipLoader className="text-xs" />
+          ading Sirus Educational Trust _
         </div>
       ) : (
         children

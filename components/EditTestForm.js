@@ -1,6 +1,6 @@
 import React from "react";
 
-function CreateTestForm({
+function EditTestForm({
   values,
   handleSubmit,
   handleChange,
@@ -121,7 +121,7 @@ function CreateTestForm({
             type="button"
             className="text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-2 mr-2 mb-2"
           >
-            {isLoading ? "Processig..." : "Create Test"}
+            {isLoading ? "Processig..." : "Edit Test"}
           </button>
         </div>
       </div>
@@ -129,4 +129,4 @@ function CreateTestForm({
   );
 }
 
-export default CreateTestForm;
+export default EditTestForm;

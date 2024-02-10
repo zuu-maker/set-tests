@@ -40,7 +40,11 @@ function Login() {
                   verified: user.emailVerified,
                 })
               );
-              router.push("/admin");
+              if (snap.docs[0].data().role === "admin") {
+                router.push("/admin");
+              } else {
+                router.push("/learn");
+              }
               setLoading(false);
             }
             setLoading(false);
@@ -75,7 +79,7 @@ function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6">
             <div>
               <label
                 htmlFor="email"

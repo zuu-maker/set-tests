@@ -6,6 +6,7 @@ import firebase from "firebase";
 import validator from "email-validator";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
+import firebase from "firebase";
 
 function Register() {
   const [name, setName] = useState("Mkhuzo Zulu");
@@ -56,6 +57,8 @@ function Register() {
                       email,
                       role: "subscriber",
                       verified: false,
+                      timeStamp:
+                        firebase.firestore.FieldValue.serverTimestamp(),
                     })
                   );
                   // make if statement for pushing
