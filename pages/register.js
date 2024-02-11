@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import firebase from "firebase";
 import validator from "email-validator";
 import { useDispatch } from "react-redux";
-import { setUser } from "@/slices/userSlice";
-import firebase from "firebase";
+import { setUser } from "@/slices/userSlice";s
 
 function Register() {
   const [name, setName] = useState("Mkhuzo Zulu");
