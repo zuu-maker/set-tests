@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import firebase from "firebase";
 import validator from "email-validator";
 import { useDispatch } from "react-redux";
-import { setUser } from "@/slices/userSlice";s
+import { setUser } from "@/slices/userSlice";
 
 function Register() {
-  const [name, setName] = useState("Mkhuzo Zulu");
-  const [email, setEmail] = useState("zulumkhuzo@gmail.com");
-  const [password, setPassword] = useState("123456");
-  const [city, setCity] = useState("Ndola");
-  const [phone, setPhone] = useState("0977886655");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [city, setCity] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
   let router = useRouter();
