@@ -15,7 +15,7 @@ function ListTests() {
 
   useEffect(() => {
     let unsubscribe = db
-      .collection("Test")
+      .collection("Tests")
       .orderBy("timeStamp", "desc")
       .onSnapshot((querySnapshot) => {
         let _tests = [];
@@ -37,7 +37,7 @@ function ListTests() {
         "The test will be permanently deleted. Are you sure you want to delete?"
       )
     )
-      db.collection("Test").doc(_id).delete();
+      db.collection("Tests").doc(_id).delete();
   };
 
   const TableRow = (item) => (

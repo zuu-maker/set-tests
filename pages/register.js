@@ -16,6 +16,7 @@ function Register() {
   const [loading, setLoading] = useState(false);
 
   let router = useRouter();
+  let dispatch = useDispatch();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -26,8 +27,6 @@ function Register() {
       return;
     }
 
-    let dispathc = useDispatch();
-
     auth
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
@@ -37,7 +36,10 @@ function Register() {
             email,
             city,
             phone,
-            role: "subscriber",
+            role: "student",
+            tests: [],
+            verified: false,
+            activeSubscription: false,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           })
           .then((docRef) => {
@@ -48,16 +50,14 @@ function Register() {
               })
               .then(() => {
                 auth.currentUser.sendEmailVerification().then(() => {
-                  router.push("/admin");
-                  dispathc(
+                  router.push("/learn");
+                  dispatch(
                     setUser({
                       _id: docRef.id,
                       name,
                       email,
-                      role: "subscriber",
-                      verified: false,
-                      timeStamp:
-                        firebase.firestore.FieldValue.serverTimestamp(),
+                      role: "student",
+                      phone,
                     })
                   );
                   // make if statement for pushing

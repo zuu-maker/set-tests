@@ -115,6 +115,7 @@ function CreateTestForm({
               !values.description ||
               !values.price ||
               !values.NumberOfQuestions ||
+              !image ||
               isLoading
             }
             onClick={handleSubmit}

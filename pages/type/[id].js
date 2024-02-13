@@ -16,7 +16,7 @@ function TypeItem() {
   let router = useRouter();
 
   useEffect(() => {
-    db.collection("Type")
+    db.collection("Types")
       .doc(params.id)
       .get()
       .then((doc) => {
@@ -32,7 +32,7 @@ function TypeItem() {
 
   const handleSubmit = (e) => {
     setLoading(true);
-    db.collection("Type")
+    db.collection("Types")
       .doc(params.id)
       .update({
         name: name,

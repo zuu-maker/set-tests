@@ -8,7 +8,7 @@ import firebase from "firebase";
 import { useRouter } from "next/router";
 import { FadeLoader } from "react-spinners";
 
-function Payment() {
+function RenewPage() {
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -64,16 +64,12 @@ function Payment() {
       });
   }, []);
 
-  const handleOnChange = (e) => {
-    setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
   const handleOnClick = () => {
     // if (!firstName || !lastName || !email || !mobileNumber){
     //   return;
     // }
 
-    let { image, timeStamp, title, price } = data.test;
+    let { image, timeStamp, title } = data.test;
     let testId = data.test.id;
     let date = new Date();
     console.log(date.toISOString());
@@ -85,8 +81,8 @@ function Payment() {
       id: testId,
       title,
       image,
+      price: info.amount,
       timeStamp,
-      price,
       renewDate: future.getTime(),
       paidOn: date.getTime(),
       subscribed: true,
@@ -108,12 +104,14 @@ function Payment() {
               .doc(data.user._id)
               .get()
               .then((doc) => {
-                let tests = doc.data().tests;
-                tests.push(test);
+                let tests = doc.data().tests.slice();
+                let filteredTests = tests.filter((item) => item.id !== test.id);
+                console.log(filteredTests);
+                filteredTests.push(test);
                 db.collection("Users")
                   .doc(doc.id)
                   .update({
-                    tests,
+                    tests: filteredTests,
                   })
                   .then(() => {
                     db.collection("Sessions")
@@ -138,6 +136,10 @@ function Payment() {
         console.log(err);
         alert("failed to add");
       });
+  };
+
+  const handleOnChange = (e) => {
+    setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   if (loading) {
@@ -354,4 +356,4 @@ function Payment() {
   );
 }
 
-export default Payment;
+export default RenewPage;

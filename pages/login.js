@@ -38,6 +38,7 @@ function Login() {
                   name: snap.docs[0].data().name,
                   role: snap.docs[0].data().role,
                   verified: user.emailVerified,
+                  phone: snap.docs[0].data().phone,
                 })
               );
               if (snap.docs[0].data().role === "admin") {

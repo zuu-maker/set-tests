@@ -8,12 +8,12 @@ import "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBFFBaDSI42FOjXuU06s1NgHWztpUv8gLQ",
-  authDomain: "set-edu-83e30.firebaseapp.com",
-  projectId: "set-edu-83e30",
-  storageBucket: "set-edu-83e30.appspot.com",
-  messagingSenderId: "154282519195",
-  appId: "1:154282519195:web:ff9057b6cacaa93c29b43e",
+  apiKey: "AIzaSyCMZf_3L0Tmr8xQdeWMZNmM_B72W6opPsQ",
+  authDomain: "village-bank-ed839.firebaseapp.com",
+  projectId: "village-bank-ed839",
+  storageBucket: "village-bank-ed839.appspot.com",
+  messagingSenderId: "951388586973",
+  appId: "1:951388586973:web:c04f08d7e3dd1a57a82c34",
 };
 
 if (!firebase.apps.length) {

@@ -14,7 +14,7 @@ function TestType() {
   const [types, setTypes] = useState([]);
 
   useEffect(() => {
-    let unsubscribe = db.collection("Type").onSnapshot((querySnapshot) => {
+    let unsubscribe = db.collection("Types").onSnapshot((querySnapshot) => {
       let _types = [];
       querySnapshot.forEach((doc) => {
         _types.push(doc.data());
@@ -28,14 +28,14 @@ function TestType() {
 
   const handleSubmit = () => {
     setLoading(true);
-    db.collection("Type")
+    db.collection("Types")
       .add({
         _id: "",
         name: name,
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((docRef) => {
-        db.collection("Type")
+        db.collection("Types")
           .doc(docRef.id)
           .update({ id: docRef.id })
           .then(() => {
@@ -51,7 +51,7 @@ function TestType() {
   };
 
   const handleRemove = (id) => {
-    db.collection("Type")
+    db.collection("Types")
       .doc(id)
       .delete()
       .then(() => {

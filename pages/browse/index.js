@@ -1,58 +1,31 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Header from "../components/Header";
+import Header from "@/components/Header";
 import Head from "next/head";
-
-const data = [
-  {
-    _id: "123",
-    slug: "test-1",
-    image: {
-      location:
-        "https://firebasestorage.googleapis.com/v0/b/set-tests.appspot.com/o/psychometric-test-sample-questions.jpg?alt=media&token=2dfebe76-c803-4eb7-b899-c2f423065731",
-      alt: "set",
-    },
-    name: "Test 1",
-    price: 100,
-  },
-  {
-    _id: "124",
-    slug: "test-2",
-    image: {
-      location:
-        "https://firebasestorage.googleapis.com/v0/b/set-tests.appspot.com/o/psychometric-testing-2.png?alt=media&token=497abd5a-75dd-4dcd-9849-fc5afaa2a6c7",
-      alt: "set",
-    },
-    name: "Test 2",
-    price: 100,
-  },
-  {
-    _id: "125",
-    slug: "test-3",
-    image: {
-      location:
-        "https://firebasestorage.googleapis.com/v0/b/set-tests.appspot.com/o/psychometric_iamge.png?alt=media&token=6a1f64e4-02cb-4f1c-b451-a6589096e647",
-      alt: "set",
-    },
-    name: "Test 3",
-    price: 100,
-  },
-  {
-    _id: "126",
-    slug: "test-4",
-    image: {
-      location:
-        "https://firebasestorage.googleapis.com/v0/b/set-tests.appspot.com/o/psychometric-testing-pros-and-cons.webp?alt=media&token=714be1bd-2877-4032-9ce8-8ae43fa40492",
-      alt: "set",
-    },
-    name: "Test 4",
-    price: 100,
-  },
-];
+import { db } from "@/firebase";
+import { FadeLoader } from "react-spinners";
 
 function Browse() {
-  const [tests, setTests] = useState(data);
-  const [loading, setLoading] = useState(false);
+  const [tests, setTests] = useState([]);
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    let unsubscribe = db
+      .collection("Tests")
+      .orderBy("timeStamp", "desc")
+      .onSnapshot((querySnapshot) => {
+        let _tests = [];
+        querySnapshot.forEach((doc) => {
+          _tests.push(doc.data());
+        });
+        console.log(_tests);
+        setTests(_tests);
+        setLoader(false);
+      });
+
+    () => unsubscribe();
+    // eslint-disable-next-line no-use-before-define
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -61,8 +34,10 @@ function Browse() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {loading ? (
-        <div className="p-8">loading..</div>
+      {loader ? (
+        <div className="h-screen w-full flex items-center justify-center">
+          <FadeLoader color="#00FFFF" />
+        </div>
       ) : (
         <div className="container mx-auto">
           <div className="h-8 w-full "></div>
@@ -72,17 +47,16 @@ function Browse() {
               <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                 All Tests
               </h2>
-
               <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                 {tests &&
                   tests.length > 0 &&
                   tests.map((item) => (
-                    <Link key={item._id} href={`/learn/test/${item.slug}`}>
+                    <Link key={item.id} href={`/browse/${item.id}`}>
                       <div className="group relative">
                         <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
                           <img
-                            src={item.image.location}
-                            alt={item.imageAlt}
+                            src={item.image.url}
+                            alt={item.image.ref}
                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                           />
                         </div>
@@ -93,7 +67,7 @@ function Browse() {
                                 aria-hidden="true"
                                 className="absolute inset-0"
                               />
-                              {item.name}
+                              {item.title}
                             </h3>
                           </div>
                           <p className="text-sm font-medium text-gray-900">

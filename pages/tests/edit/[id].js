@@ -35,7 +35,7 @@ function EditTest() {
   let router = useRouter();
 
   useEffect(() => {
-    db.collection("Test")
+    db.collection("Tests")
       .doc(id)
       .get()
       .then((doc) => {
@@ -51,19 +51,21 @@ function EditTest() {
   }, [id]);
 
   useEffect(() => {
-    let unsubscribe = db.collection("Category").onSnapshot((querySnapshot) => {
-      let _categories = [];
-      querySnapshot.forEach((doc) => {
-        _categories.push(doc.data());
+    let unsubscribe = db
+      .collection("Categories")
+      .onSnapshot((querySnapshot) => {
+        let _categories = [];
+        querySnapshot.forEach((doc) => {
+          _categories.push(doc.data());
+        });
+        setCategories(_categories);
       });
-      setCategories(_categories);
-    });
     () => unsubscribe();
     // eslint-disable-next-line no-use-before-define
   }, []);
 
   useEffect(() => {
-    let unsubscribe = db.collection("Type").onSnapshot((querySnapshot) => {
+    let unsubscribe = db.collection("Types").onSnapshot((querySnapshot) => {
       let _types = [];
       querySnapshot.forEach((doc) => {
         _types.push(doc.data());
@@ -133,7 +135,7 @@ function EditTest() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    db.collection("Test")
+    db.collection("Tests")
       .doc(id)
       .update({
         ...values,

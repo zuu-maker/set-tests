@@ -3,11 +3,30 @@ import AdminStats from "@/components/AdminStats";
 import AdminTable from "@/components/AdminTable";
 import Sidebar from "@/components/Sidebar";
 import AdminAuth from "@/components/auth/AdminPage";
-import React from "react";
+import { db } from "@/firebase";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 function Admin() {
   const user = useSelector((state) => state.user);
+  const [transactions, setTransactions] = useState([]);
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    let unsubscribe = db
+      .collection("Transactions")
+      .orderBy("createdAt", "desc")
+      .onSnapshot((querySnapshot) => {
+        let _transactions = [];
+        querySnapshot.forEach((doc) => {
+          _transactions.push(doc.data());
+        });
+        setTransactions(_transactions);
+        setLoader(false);
+      });
+    return () => unsubscribe();
+    // eslint-disable-next-line no-use-before-define
+  }, []);
 
   return (
     <AdminAuth className="min-h-screen bg-gray-50/50">
@@ -24,42 +43,39 @@ function Admin() {
               <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Product name
+                    Product
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Color
+                    Customer
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Category
+                    Email
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Price
+                    Date
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Amount
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    Apple MacBook Pro 17"
-                  </th>
-                  <td className="px-6 py-4">Silver</td>
-                  <td className="px-6 py-4">Laptop</td>
-                  <td className="px-6 py-4">$2999</td>
-                </tr>
-                <tr className="bg-white border">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
-                  >
-                    Microsoft Surface Pro
-                  </th>
-                  <td className="px-6 py-4">White</td>
-                  <td className="px-6 py-4">Laptop PC</td>
-                  <td className="px-6 py-4">$1999</td>
-                </tr>
+                {transactions.map((item) => (
+                  <tr className="bg-white border-b">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    >
+                      {item.test.title}
+                    </th>
+                    <td className="px-6 py-4">{item.user.name}</td>
+                    <td className="px-6 py-4">{item.user.email}</td>
+                    <td className="px-6 py-4">
+                      {item.createdAt.toDate().toISOString().split("T")[0]}
+                    </td>
+                    <td className="px-6 py-4">${item.test.amount}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

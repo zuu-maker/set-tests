@@ -17,7 +17,7 @@ function StudentAuth({ children }) {
         setHidden(false);
       } else {
         setLoader(false);
-        router.push("/learn");
+        router.push("/");
       }
     } else {
       setLoader(false);

@@ -30,19 +30,21 @@ function CreateTest() {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    let unsubscribe = db.collection("Category").onSnapshot((querySnapshot) => {
-      let _categories = [];
-      querySnapshot.forEach((doc) => {
-        _categories.push(doc.data());
+    let unsubscribe = db
+      .collection("Categories")
+      .onSnapshot((querySnapshot) => {
+        let _categories = [];
+        querySnapshot.forEach((doc) => {
+          _categories.push(doc.data());
+        });
+        setCategories(_categories);
       });
-      setCategories(_categories);
-    });
     () => unsubscribe();
     // eslint-disable-next-line no-use-before-define
   }, []);
 
   useEffect(() => {
-    let unsubscribe = db.collection("Type").onSnapshot((querySnapshot) => {
+    let unsubscribe = db.collection("Types").onSnapshot((querySnapshot) => {
       let _types = [];
       querySnapshot.forEach((doc) => {
         _types.push(doc.data());
@@ -66,7 +68,7 @@ function CreateTest() {
 
     e.preventDefault();
     setIsLoading(true);
-    db.collection("Test")
+    db.collection("Tests")
       .add({
         id: "",
         ...values,
@@ -75,7 +77,7 @@ function CreateTest() {
         publish: false,
       })
       .then((docRef) => {
-        db.collection("Test")
+        db.collection("Tests")
           .doc(docRef.id)
           .update({ id: docRef.id })
           .then(() => {
@@ -117,6 +119,7 @@ function CreateTest() {
         },
         async () => {
           const url = await storageRef.getDownloadURL();
+          alert("Upload complete");
           setImage({
             public_id: file.name.split(".")[0],
             ref: file.name,

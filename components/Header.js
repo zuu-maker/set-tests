@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
+import { useRouter } from "next/router";
 
 const navigation = [
   { name: "About", href: "/#about" },
@@ -21,12 +22,14 @@ const Header = () => {
 
   let user = useSelector((state) => state.user);
   let dispatch = useDispatch();
+  let router = useRouter();
 
   const handleLogout = () => {
     auth
       .signOut()
       .then(() => {
         dispatch(logOutUser());
+        router.push("/login");
       })
       .catch((error) => {
         console.log(error);
@@ -64,14 +67,15 @@ const Header = () => {
               {item.name}
             </Link>
           ))}
-          {user && user.role === "admin" ? (
+          {user && user.role === "admin" && (
             <Link
               href="/admin"
               className="font-semibold text-gray-900 hover:text-gray-900"
             >
               Dashboard
             </Link>
-          ) : (
+          )}
+          {user && user.role === "student" && (
             <Link
               href="/learn"
               className="font-semibold text-gray-900 hover:text-gray-900"

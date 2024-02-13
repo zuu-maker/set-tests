@@ -18,6 +18,11 @@ const AuthCheck = ({ children }) => {
           .then((snap) => {
             if (!snap.empty) {
               let doc = snap.docs[0].data();
+              if (_user.emailVerified && !doc.verified) {
+                db.collection("Users").doc(doc._id).update({
+                  verified: true,
+                });
+              }
               console.log(doc);
               dispatch(
                 setUser({
@@ -26,6 +31,7 @@ const AuthCheck = ({ children }) => {
                   verified: _user.emailVerified,
                   name: doc.name,
                   role: doc.role,
+                  phone: doc.phone,
                 })
               );
             }

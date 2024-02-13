@@ -14,28 +14,30 @@ function Category() {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    let unsubscribe = db.collection("Category").onSnapshot((querySnapshot) => {
-      let _categories = [];
-      querySnapshot.forEach((doc) => {
-        _categories.push(doc.data());
+    let unsubscribe = db
+      .collection("Categories")
+      .onSnapshot((querySnapshot) => {
+        let _categories = [];
+        querySnapshot.forEach((doc) => {
+          _categories.push(doc.data());
+        });
+        setCategories(_categories);
+        setLoader(false);
       });
-      setCategories(_categories);
-      setLoader(false);
-    });
     return () => unsubscribe();
     // eslint-disable-next-line no-use-before-define
   }, []);
 
   const handleSubmit = () => {
     setLoading(true);
-    db.collection("Category")
+    db.collection("Categories")
       .add({
         _id: "",
         name: name,
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((docRef) => {
-        db.collection("Category")
+        db.collection("Categories")
           .doc(docRef.id)
           .update({ id: docRef.id })
           .then(() => {
@@ -51,7 +53,7 @@ function Category() {
   };
 
   const handleRemove = (id) => {
-    db.collection("Category")
+    db.collection("Categories")
       .doc(id)
       .delete()
       .then(() => {
