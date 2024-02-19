@@ -94,12 +94,14 @@ function Payment() {
 
     db.collection("Transactions")
       .add({
+        id: "",
         user: data.user,
         test: info,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((docRef) => {
-        docRef
+        db.collection("Transactions")
+          .doc(docRef.id)
           .update({
             id: docRef.id,
           })
@@ -110,8 +112,11 @@ function Payment() {
               .then((doc) => {
                 let tests = doc.data().tests;
                 tests.push(test);
+                return tests;
+              })
+              .then((tests) => {
                 db.collection("Users")
-                  .doc(doc.id)
+                  .doc(data.user._id)
                   .update({
                     tests,
                   })
