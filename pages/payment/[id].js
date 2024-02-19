@@ -111,8 +111,14 @@ function Payment() {
               .get()
               .then((doc) => {
                 let tests = doc.data().tests;
-                tests.push(test);
-                return tests;
+                let filteredTests = tests.filter((item) => item.id === test.id);
+                console.log(filteredTests);
+                if (filteredTests.length === 0) {
+                  tests.push(test);
+                  return tests;
+                }
+
+                Promise.reject(new Error("Whoops!"));
               })
               .then((tests) => {
                 db.collection("Users")
