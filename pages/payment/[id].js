@@ -73,7 +73,7 @@ function Payment() {
     //   return;
     // }
 
-    let { image, timeStamp, title, price } = data.test;
+    let { image, timeStamp, title } = data.test;
     let testId = data.test.id;
     let date = new Date();
     console.log(date.toISOString());
@@ -86,7 +86,7 @@ function Payment() {
       title,
       image,
       timeStamp,
-      price,
+      price: info.amount,
       renewDate: future.getTime(),
       paidOn: date.getTime(),
       subscribed: true,

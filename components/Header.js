@@ -4,7 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "@/firebase";
+import { auth, db } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
 import { useRouter } from "next/router";
 
@@ -34,6 +34,61 @@ const Header = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const isUnsubcribed = (currentValue) => currentValue.subscribed === false;
+
+  const compareTwoArrayOfObjects = (
+    first_array_of_objects,
+    second_array_of_objects
+  ) => {
+    return (
+      first_array_of_objects.length === second_array_of_objects.length &&
+      first_array_of_objects.every((element_1) =>
+        second_array_of_objects.some(
+          (element_2) => element_1.subscribed === element_2.subscribed
+        )
+      )
+    );
+  };
+
+  const test = async () => {
+    let today = new Date();
+    today.setDate(today.getDate() + 20);
+
+    const users = await db
+      .collection("Users")
+      .where("activeSubscription", "==", true)
+      .get();
+
+    console.log(users.docs.length);
+
+    users.docs.forEach((doc) => {
+      console.log(doc.data().name);
+      let tests = doc.data().tests;
+      console.log(tests);
+      tests.forEach((test) => {
+        console.log(test);
+        if (test.renewDate < today.getTime()) {
+          console.log("IN here");
+
+          test.subscribed = false;
+        }
+      });
+
+      if (!compareTwoArrayOfObjects(tests, doc.data().tests)) {
+        db.collection("Users").doc(doc.data()._id).update({
+          tests,
+        });
+      }
+
+      if (tests.every(isUnsubcribed)) {
+        console.log("has nothing");
+        db.collection("Users").doc(doc.data()._id).update({
+          activeSubscription: false,
+        });
+      }
+    });
   };
 
   return (
@@ -88,7 +143,7 @@ const Header = () => {
         <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
           {user ? (
             <button
-              onClick={handleLogout}
+              onClick={test}
               className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20"
             >
               Log out
