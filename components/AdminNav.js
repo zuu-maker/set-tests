@@ -1,3 +1,4 @@
+import { auth } from "@/firebase";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -7,6 +8,19 @@ function AdminNav() {
   let user = useSelector((state) => state.user);
 
   let router = useRouter();
+
+  const handleLogout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        router.push("/");
+        dispatch(logOutUser());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <nav className="block w-full max-w-full bg-transparent text-white shadow-none rounded-xl transition-all px-0 py-1">
       <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
@@ -34,7 +48,7 @@ function AdminNav() {
             {router.pathname.split("/")[1]}
           </h6>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center justify-between xl:justify-normal">
           <button
             className="middle none font-sans font-bold center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 hidden items-center gap-1 px-4 xl:flex"
             type="button"
@@ -55,7 +69,7 @@ function AdminNav() {
             {user !== null && user.name}
           </button>
           <button
-            className="relative middle none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 grid xl:hidden"
+            className="relative middle none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30  xl:hidden"
             type="button"
           >
             <span className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
@@ -64,7 +78,7 @@ function AdminNav() {
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 aria-hidden="true"
-                className="h-5 w-5 text-blue-gray-500"
+                className="h-5 w-5"
               >
                 <path
                   fillRule="evenodd"
@@ -74,6 +88,43 @@ function AdminNav() {
               </svg>
             </span>
           </button>
+
+          <div className="xl:hidden flex items-center space-x-2 pr-2">
+            <Link
+              href="/"
+              className=" middle none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none  rounded-lg text-xs text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 xl:hidden"
+              type="button"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-5 h-5"
+              >
+                <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+                <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+              </svg>
+            </Link>
+            <button
+              className="relative middle none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none  rounded-lg text-xs text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30  xl:hidden"
+              type="button"
+              onClick={handleLogout}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+                className="w-5 h-5 text-inherit"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M7.5 3.75A1.5 1.5 0 006 5.25v13.5a1.5 1.5 0 001.5 1.5h6a1.5 1.5 0 001.5-1.5V15a.75.75 0 011.5 0v3.75a3 3 0 01-3 3h-6a3 3 0 01-3-3V5.25a3 3 0 013-3h6a3 3 0 013 3V9A.75.75 0 0115 9V5.25a1.5 1.5 0 00-1.5-1.5h-6zm10.72 4.72a.75.75 0 011.06 0l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 11-1.06-1.06l1.72-1.72H9a.75.75 0 010-1.5h10.94l-1.72-1.72a.75.75 0 010-1.06z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </nav>

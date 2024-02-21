@@ -44,12 +44,12 @@ function Login() {
               );
               if (snap.docs[0].data().role === "admin") {
                 router.push("/admin");
+                setLoading(false);
               } else {
                 router.push("/learn");
+                setLoading(false);
               }
-              setLoading(false);
             }
-            setLoading(false);
           })
           .catch((error) => {
             setLoading(false);
@@ -140,7 +140,7 @@ function Login() {
                 disabled={!email || !password}
                 className="flex w-full justify-center disabled:opacity-60 rounded-md bg-cyan-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                {loading ? "processing.." : "Sign In"}
+                {loading ? "processing..." : "Sign In"}
               </button>
             </div>
           </form>

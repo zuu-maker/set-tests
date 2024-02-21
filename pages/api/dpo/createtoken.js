@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   //set redirect url for success page
   //we are sending the reftoken to query transsasctions
   let uri = "https://set-tests.vercel.app/payment/success/" + refToken;
-  console.log(process.env.NEXT_PUBLIC_API_KEY);
+  // console.log(process.env.NEXT_PUBLIC_API_KEY);
   //xml body request send to DPO
   let xmlBody =
     '<?xml version="1.0" encoding="utf-8"?>' +
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     //the content is then convert to text and send client side
     const data = await response.text();
     console.log(data);
-    res.status(200).json({
+    res.json({
       data,
     });
   } catch (error) {
@@ -80,12 +80,4 @@ export default async function handler(req, res) {
       error,
     });
   }
-
-  res.status(200).json({
-    amount,
-    email,
-    phone,
-    date,
-    refToken,
-  });
 }

@@ -323,7 +323,7 @@ function Payment() {
               </label>
               <div>
                 <input
-                  name="mobileNumber"
+                  name="phone"
                   value={data.phone}
                   onChange={handleOnChange}
                   className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-cyan-500 transition-colors"
