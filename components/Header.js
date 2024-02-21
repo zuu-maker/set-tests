@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { auth, db } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 const navigation = [
   { name: "About", href: "/#about" },
@@ -35,60 +36,15 @@ const Header = () => {
         console.log(error);
       });
   };
-
-  const isUnsubcribed = (currentValue) => currentValue.subscribed === false;
-
-  const compareTwoArrayOfObjects = (
-    first_array_of_objects,
-    second_array_of_objects
-  ) => {
-    return (
-      first_array_of_objects.length === second_array_of_objects.length &&
-      first_array_of_objects.every((element_1) =>
-        second_array_of_objects.some(
-          (element_2) => element_1.subscribed === element_2.subscribed
-        )
-      )
-    );
-  };
-
-  const test = async () => {
-    let today = new Date();
-    today.setDate(today.getDate() + 20);
-
-    const users = await db
-      .collection("Users")
-      .where("activeSubscription", "==", true)
-      .get();
-
-    console.log(users.docs.length);
-
-    users.docs.forEach((doc) => {
-      console.log(doc.data().name);
-      let tests = doc.data().tests;
-      console.log(tests);
-      tests.forEach((test) => {
-        console.log(test);
-        if (test.renewDate < today.getTime()) {
-          console.log("IN here");
-
-          test.subscribed = false;
-        }
+  const test = () => {
+    axios
+      .get("/api/dpo/createtoken")
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-
-      if (!compareTwoArrayOfObjects(tests, doc.data().tests)) {
-        db.collection("Users").doc(doc.data()._id).update({
-          tests,
-        });
-      }
-
-      if (tests.every(isUnsubcribed)) {
-        console.log("has nothing");
-        db.collection("Users").doc(doc.data()._id).update({
-          activeSubscription: false,
-        });
-      }
-    });
   };
 
   return (

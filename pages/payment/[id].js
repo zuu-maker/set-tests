@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Header from "../../components/Header";
+import Header from "@/components/Header";
 import Head from "next/head";
 import { useState } from "react";
 import { useParams } from "next/navigation";
@@ -7,6 +7,7 @@ import { db } from "@/firebase";
 import firebase from "firebase";
 import { useRouter } from "next/router";
 import { FadeLoader } from "react-spinners";
+import axios from "axios";
 
 function Payment() {
   const [data, setData] = useState({
@@ -32,6 +33,7 @@ function Payment() {
       .doc(id)
       .get()
       .then((doc) => {
+        if (!doc.exists) router.replace("/browse");
         let data = doc.data();
         let lastName = "";
         if (data.user.name.split(" ").length > 0) {
@@ -64,90 +66,137 @@ function Payment() {
       });
   }, []);
 
+  console.log(token);
+
   const handleOnChange = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleOnClick = () => {
-    // if (!firstName || !lastName || !email || !mobileNumber){
-    //   return;
-    // }
+    console.table(data.firstName, data.lastName, data.email, data.phone);
+    if (!data.firstName || !data.lastName || !data.email || !data.phone) {
+      alert("Please fill in all information");
+      return;
+    }
+    setLoading(true);
+    console.log(info);
 
-    let { image, timeStamp, title } = data.test;
-    let testId = data.test.id;
+    // 1.setup ref-token - done
     let date = new Date();
-    console.log(date.toISOString());
-    let future = new Date(); // get today date
-    future.setDate(date.getDate() + 7);
-    console.log(future.toISOString());
 
-    let test = {
-      id: testId,
-      title,
-      image,
-      timeStamp,
-      price: info.amount,
-      renewDate: future.getTime(),
-      paidOn: date.getTime(),
-      subscribed: true,
-    };
+    let month = parseInt(date.getMonth() + 1);
 
-    db.collection("Transactions")
-      .add({
-        id: "",
-        user: data.user,
-        test: info,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    let _date =
+      date.getFullYear() + "/" + month.toString() + "/" + date.getDate();
+
+    let refTokenRight = date.getTime().toString();
+
+    //note this email comes from the previous page
+    let refToken = data.user._id + "-" + refTokenRight;
+    console.log(data.user);
+    let { _id, email, name, phone } = data.user;
+    // 2.create the token
+    let parser = new DOMParser();
+
+    axios
+      .post("/api/dpo/createtoken", {
+        //do not forget to upddate amount
+        // amount: info.amount,
+        amount: "1",
+        email: data.email,
+        phone: data.phone,
+        date: _date,
+        refToken,
       })
-      .then((docRef) => {
-        db.collection("Transactions")
-          .doc(docRef.id)
-          .update({
-            id: docRef.id,
-          })
-          .then(() => {
-            db.collection("Users")
-              .doc(data.user._id)
-              .get()
-              .then((doc) => {
-                let tests = doc.data().tests;
-                let filteredTests = tests.filter((item) => item.id === test.id);
-                console.log(filteredTests);
-                if (filteredTests.length === 0) {
-                  tests.push(test);
-                  return tests;
-                }
+      .then(({ data }) => {
+        console.log(data);
+        let doc = parser.parseFromString(data.data, "text/xml");
+        let result = doc
+          .getElementsByTagName("Result")[0]
+          .childNodes[0].nodeValue.toString();
 
-                Promise.reject(new Error("Whoops!"));
-              })
-              .then((tests) => {
-                db.collection("Users")
-                  .doc(data.user._id)
-                  .update({
-                    tests,
-                  })
-                  .then(() => {
-                    db.collection("Sessions")
-                      .doc(id)
-                      .delete()
-                      .then(() => {
-                        db.collection("Users")
-                          .doc(data.user._id)
-                          .update({
-                            activeSubscription: true,
-                          })
-                          .then(() => {
-                            router.replace("/learn");
-                            alert("item Added to your dashboard");
-                          });
-                      });
-                  });
-              });
-          });
+        if (result !== "000") {
+          let _error = doc
+            .getElementsByTagName("ResultExplanation")[0]
+            .childNodes[0].nodeValue.toString();
+          setError(_error);
+          console.log(_error);
+          setLoader(false);
+          return;
+        }
+
+        let transactionToken = doc
+          .getElementsByTagName("TransToken")[0]
+          .childNodes[0].nodeValue.toString();
+
+        if (
+          result === "000" &&
+          transactionToken &&
+          transactionToken.length > 0
+        ) {
+          console.log(transactionToken);
+          setToken(transactionToken);
+
+          db.collection("Transactions")
+            .add({
+              user: { _id, email, name, phone },
+              userId: _id,
+              status: "Pending",
+              transactionToken,
+              amount: info.amount,
+              tokenCreatedAt: date.getTime(),
+              test: { ...info, id: data.test.id },
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            })
+            .then((docRef) => {
+              db.collection("Transactions")
+                .doc(docRef.id)
+                .update({
+                  id: docRef.id,
+                })
+                .then(() => {
+                  db.collection("Sessions")
+                    .doc(id)
+                    .delete()
+                    .then(() => {
+                      // router.replace("/learn");
+                      alert("Please proceed to pay securely");
+                      //done loading
+                      setChecked(true);
+                    });
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+              alert("failed to add");
+            });
+        } else {
+          if (!error && !error.length === 0) {
+            setError("Too many requests try again later");
+          }
+        }
       })
-      .catch((err) => {
-        console.log(err);
-        alert("failed to add");
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    // 6. the allow user to pay and delete the session
+  };
+
+  const test = () => {
+    axios
+      .get("/dpo/createtoken")
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 

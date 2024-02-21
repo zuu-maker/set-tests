@@ -6,10 +6,14 @@ import WhyUs from "@/components/WhyUs";
 import Faq from "@/components/Faq";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    console.log(process.env.NEXT_PUBLIC_API_KEY);
+  }, []);
 
   return (
     <main>

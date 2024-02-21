@@ -7,7 +7,7 @@ import Sidebar from "@/components/Sidebar";
 import AdminAuth from "@/components/auth/AdminPage";
 import { FadeLoader } from "react-spinners";
 
-function CategoryItem() {
+function ProgrammeItem() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(true);
@@ -16,15 +16,16 @@ function CategoryItem() {
   let router = useRouter();
 
   useEffect(() => {
-    db.collection("Categories")
+    db.collection("Programmes")
       .doc(params.id)
       .get()
       .then((doc) => {
+        console.log(doc.data());
         setName(doc.data().name);
         setLoader(false);
       })
       .catch((error) => {
-        setLoading(false);
+        setLoader(false);
         console.log(error);
       });
     // eslint-disable-next-line no-use-before-define
@@ -32,14 +33,14 @@ function CategoryItem() {
 
   const handleSubmit = (e) => {
     setLoading(true);
-    db.collection("Categories")
+    db.collection("Programmes")
       .doc(params.id)
       .update({
         name: name,
       })
       .then(() => {
         setLoading(false);
-        router.push("/category");
+        router.push("/programme");
         setName("");
       })
       .catch((error) => {
@@ -60,7 +61,7 @@ function CategoryItem() {
             </div>
           ) : (
             <div className="h-screen pl-8">
-              <h2 className="text-2xl font-semibold mb-3">Edit Category</h2>
+              <h2 className="text-2xl font-semibold mb-3">Edit Programme</h2>
               <div className="mb-6">
                 <input
                   value={name}
@@ -76,7 +77,7 @@ function CategoryItem() {
                   type="button"
                   className="text-white bg-gradient-to-r disabled:opacity-60 from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emerald-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-2 mr-2 mb-2"
                 >
-                  Edit Category
+                  Edit Programme
                 </button>
               </div>
             </div>
@@ -87,4 +88,4 @@ function CategoryItem() {
   );
 }
 
-export default CategoryItem;
+export default ProgrammeItem;

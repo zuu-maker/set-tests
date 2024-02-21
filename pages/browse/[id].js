@@ -11,7 +11,7 @@ import { FadeLoader } from "react-spinners";
 
 function BrowseItem() {
   const [date, setDate] = useState(null);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const [test, setTest] = useState(null);
 
   let user = useSelector((state) => state.user);
@@ -28,10 +28,12 @@ function BrowseItem() {
         setTest(doc.data());
         setDate(doc.data().timeStamp.toDate().toISOString().split("T")[0]);
         console.log(typeof doc.data().timeStamp.toDate().toISOString());
+        setLoader(false);
       })
       .catch((error) => {
         console.log(error);
         alert("failed to get");
+        setLoader(false);
       });
   }, []);
 
