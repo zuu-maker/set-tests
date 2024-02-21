@@ -64,7 +64,7 @@ function Register() {
                   // make if statement for pushing
 
                   setLoading(false);
-                  toast.success("Email Sent");
+                  toast.success("Please verify your email.");
                   console.log("Document written with ID: ", docRef.id);
                 });
               });
@@ -106,7 +106,7 @@ function Register() {
                 htmlFor="name"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Name
+                Full Name
               </label>
               <div className="mt-2">
                 <input
@@ -175,7 +175,7 @@ function Register() {
                 <input
                   id="city"
                   name="city"
-                  type="city"
+                  type="text"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   required
@@ -194,7 +194,7 @@ function Register() {
                 <input
                   id="phone"
                   name="phone"
-                  type="phone"
+                  type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   autoComplete="email"

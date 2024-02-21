@@ -6,6 +6,7 @@ import AdminAuth from "@/components/auth/AdminPage";
 import { db } from "@/firebase";
 import { getTestInVerify } from "@/utils/test";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 function Admin() {
@@ -18,7 +19,7 @@ function Admin() {
   useEffect(() => {
     db.collection("Transactions")
       .orderBy("createdAt", "desc")
-      .limits(25)
+      .limit(25)
       .get()
       .then((querySnapshot) => {
         let _transactions = [];
@@ -31,46 +32,58 @@ function Admin() {
     // eslint-disable-next-line no-use-before-define
   }, []);
 
-  const verify = (testId, userId) => {
-    getTestInVerify(testId)
-      .then((test) => {
-        db.collection("Users")
-          .doc(userId)
-          .get()
-          .then((doc) => {
-            let tests = doc.data().tests;
-            console.log(tests);
-            if (tests.length > 0) {
-              let filteredTests = tests.filter((item) => item.id === test.id);
-              console.log(filteredTests);
-              if (filteredTests.length === 0) {
-                tests.push(test);
-                return tests;
-              }
-              Promise.reject(new Error("Whoops"));
-            } else {
-              tests.push(test);
-              return tests;
-            }
-          })
-          .then((tests) => {
-            if (tests.length > 0) {
-              db.collection("Users")
-                .doc(userId)
-                .update({
-                  tests,
-                  activeSubscription: true,
-                })
-                .then(() => {
-                  setIsVerified(true);
-                  setLoading(false);
-                });
-            }
-          });
+  const verify = (testId, userId, transId) => {
+    setLoading(true);
+    db.collection("Transactions")
+      .doc(transId)
+      .update({
+        status: "Paid",
       })
-      .catch((error) => {
-        alert("Failed");
-        console.log(error);
+      .then(() => {
+        getTestInVerify(testId)
+          .then((test) => {
+            db.collection("Users")
+              .doc(userId)
+              .get()
+              .then((doc) => {
+                let tests = doc.data().tests;
+                console.log(tests);
+                if (tests.length > 0) {
+                  let filteredTests = tests.filter(
+                    (item) => item.id === test.id
+                  );
+                  console.log(filteredTests);
+                  if (filteredTests.length === 0) {
+                    tests.push(test);
+                    return tests;
+                  }
+                  Promise.reject(new Error("Whoops"));
+                } else {
+                  tests.push(test);
+                  return tests;
+                }
+              })
+              .then((tests) => {
+                console.log(tests);
+                if (tests.length > 0) {
+                  db.collection("Users")
+                    .doc(userId)
+                    .update({
+                      tests,
+                      activeSubscription: true,
+                    })
+                    .then(() => {
+                      toast.success("Subscription activated");
+                      setLoading(false);
+                    });
+                }
+              });
+          })
+          .catch((error) => {
+            setLoading(false);
+            alert("Failed");
+            console.log(error);
+          });
       });
   };
 
@@ -177,7 +190,7 @@ function Admin() {
                       <div
                         className={`${
                           item.status === "Paid"
-                            ? "bg-grseen-200"
+                            ? "bg-green-200"
                             : "bg-yellow-200"
                         } px-6 py-0 w-fit`}
                       >
@@ -186,8 +199,10 @@ function Admin() {
                     </td>
                     <td className="px-6 py-4">
                       <button
-                        onClick={() => verify(item.test.id, item.user._id)}
-                        disabled={item.status === "Paid"}
+                        onClick={() =>
+                          verify(item.test.id, item.user._id, item.id)
+                        }
+                        disabled={loading}
                         className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
                       >
                         Verify

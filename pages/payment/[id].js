@@ -79,6 +79,7 @@ function Payment() {
       toast.error("Please fill in all information");
       return;
     }
+
     setLoading(true);
     console.log(info);
 
@@ -98,6 +99,8 @@ function Payment() {
     let { _id, email, name, phone } = data.user;
     // 2.create the token
     let parser = new DOMParser();
+
+    let testId = data.test.id;
 
     axios
       .post("/api/dpo/createtoken", {
@@ -146,7 +149,7 @@ function Payment() {
               transactionToken,
               amount: info.amount,
               tokenCreatedAt: date.getTime(),
-              test: { ...info, id: data.test.id },
+              test: { ...info, id: testId },
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             })
             .then((docRef) => {
@@ -164,15 +167,18 @@ function Payment() {
                       toast.success("Please proceed to pay securely");
                       //done loading
                       setChecked(true);
+                      setLoading(false);
                     });
                 })
                 .catch((err) => {
                   console.log(err);
+                  setLoading(false);
                 });
             })
             .catch((err) => {
               console.log(err);
               toast.error("failed to add");
+              setLoading(false);
             });
         } else {
           if (!error && !error.length === 0) {
@@ -182,8 +188,6 @@ function Payment() {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
         setLoading(false);
       });
 
@@ -200,10 +204,6 @@ function Payment() {
         console.log(error);
       });
   };
-
-  if (loading) {
-    return <div className=" p-8">Loading..</div>;
-  }
 
   if (hidden)
     return (
@@ -338,7 +338,7 @@ function Payment() {
                 <a
                   target="_blank"
                   href={`https://secure.3gdirectpay.com/pay.asp?ID=${token}`}
-                  className="flex items-center justify-center w-full max-w-xs mx-auto bg-emerald-500 hover:bg-emerald-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold disabled:opacity-50"
+                  className="flex items-center justify-center w-full max-w-xs mx-auto bg-emerald-500 hover:bg-emerald-600 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
                 >
                   <div className="flex items-center space-x-1">
                     <svg
@@ -363,15 +363,17 @@ function Payment() {
                 <button
                   disabled={loading}
                   onClick={handleOnClick}
-                  className="flex items-center justify-center w-full opacity-85 max-w-xs mx-auto bg-black hover:opacity-100 text-white rounded-lg px-3 py-3 font-semibold disabled:opacity-50"
+                  className="flex items-center justify-center w-full max-w-xs mx-auto bg-gray-900 hover:opacity-100 text-white rounded-lg px-3 py-3 font-semibold disabled:opacity-60"
                 >
                   <div className="flex items-center space-x-1">
-                    {loader ? (
+                    {loading ? (
                       <svg
-                        className="w-5 h-5 mr-2 text-gray-200 animate-spin fill-cyan-600"
+                        className="w-6 h-6 mr-2 text-gray-200 stroke-2 animate-spin fill-cyan-600"
                         viewBox="0 0 100 101"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        strokeWidth={15}
+                        width={10}
                       >
                         <path
                           d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -383,22 +385,24 @@ function Payment() {
                         />
                       </svg>
                     ) : (
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
+                      <>
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                          />
+                        </svg>
+                        <span>PAY NOW</span>
+                      </>
                     )}
-                    <span>PAY NOW</span>
                   </div>
                 </button>
               )}

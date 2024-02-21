@@ -21,6 +21,7 @@ function SubsctiptionsPage() {
       .get()
       .then((doc) => {
         setUser(doc.data());
+        console.log(doc.data());
         setTests(doc.data().tests);
       })
       .catch((error) => {
