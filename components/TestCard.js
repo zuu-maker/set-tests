@@ -25,7 +25,7 @@ function TestCard({ item, handleRenew }) {
               href="/quiz"
               className="text-white w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 rounded-md shadow-sm focus:outline-none focus:ring-green-300 font-medium text-sm px-2 py-2.5 text-center mr-2 mb-2"
             >
-              Enter Course
+              Open Test
             </Link>
           ) : (
             <button
