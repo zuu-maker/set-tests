@@ -37,10 +37,10 @@ export default async function handler(req, res) {
     "<customerEmail>" +
     email +
     "</customerEmail>" +
-    "<RedirectURL> " +
+    "<RedirectURL>" +
     uri +
     "</RedirectURL>" +
-    "<BackURL>http://www.domain.com/backurl.php </BackURL>" +
+    "<BackURL>http://www.domain.com/backurl.php</BackURL>" +
     "<CompanyRefUnique>" +
     process.env.COMPANY_REF_UNIQUE +
     "</CompanyRefUnique>" +
