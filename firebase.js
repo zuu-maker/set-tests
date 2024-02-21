@@ -8,12 +8,12 @@ import "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCMZf_3L0Tmr8xQdeWMZNmM_B72W6opPsQ",
-  authDomain: "village-bank-ed839.firebaseapp.com",
-  projectId: "village-bank-ed839",
-  storageBucket: "village-bank-ed839.appspot.com",
-  messagingSenderId: "951388586973",
-  appId: "1:951388586973:web:c04f08d7e3dd1a57a82c34",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGE_SENDER,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
 if (!firebase.apps.length) {
