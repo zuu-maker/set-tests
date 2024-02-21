@@ -4,6 +4,7 @@ import { auth, db } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
+import toast from "react-hot-toast";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -53,13 +54,13 @@ function Login() {
           .catch((error) => {
             setLoading(false);
             console.log("failed to get" + error);
-            alert("failed to get");
+            toast.error("failed to get");
           });
         // ...
       })
       .catch((error) => {
         let errorMessage = error.message;
-        alert(errorMessage);
+        toast.error(errorMessage);
         setLoading(false);
       });
   };

@@ -5,27 +5,32 @@ import AdminAuth from "@/components/auth/AdminPage";
 import { db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
 import Link from "next/link";
+import Paginate from "@/components/Paginate";
 
 function ListUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loader, setLoader] = useState(true);
+  const [page, setPage] = useState(1);
+  const [last, setLast] = useState(null);
 
   useEffect(() => {
-    let unsubscribe = db
-      .collection("Users")
+    db.collection("Users")
       .orderBy("createdAt", "desc")
-      .onSnapshot((querySnapshot) => {
+      .limit(25)
+      .get()
+      .then((querySnapshot) => {
         let _users = [];
         querySnapshot.forEach((doc) => {
           _users.push(doc.data());
         });
+        var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setLast(lastVisible);
         console.log("usrs->", _users);
         setUsers(_users);
         setLoader(false);
       });
 
-    () => unsubscribe();
     // eslint-disable-next-line no-use-before-define
   }, []);
 
@@ -66,6 +71,53 @@ function ListUsers() {
       </td>
     </tr>
   );
+
+  const next = () => {
+    db.collection("Users")
+      .orderBy("createdAt", "desc")
+      .startAfter(last)
+      .limit(25)
+      .get()
+      .then((querySnapshot) => {
+        let _users = [];
+        querySnapshot.forEach((doc) => {
+          _users.push(doc.data());
+        });
+        if (_users.length > 0) {
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          console.log("usrs->", _users);
+          setUsers(_users);
+          setPage((prev) => prev + 1);
+          setLoader(false);
+        }
+      });
+  };
+
+  const prev = () => {
+    if (page > 1) {
+      db.collection("Users")
+        .orderBy("createdAt", "desc")
+        .endBefore(last)
+        .limit(25)
+        .get()
+        .then((querySnapshot) => {
+          let _users = [];
+          querySnapshot.forEach((doc) => {
+            _users.push(doc.data());
+          });
+          console.log(_users);
+          if (_users.length > 0) {
+            var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+            setLast(lastVisible);
+            console.log("usrs->", _users);
+            setUsers(_users);
+            setPage((prev) => prev - 1);
+            setLoader(false);
+          }
+        });
+    }
+  };
 
   return (
     <AdminAuth className="min-h-screen bg-gray-50/50">
@@ -109,6 +161,7 @@ function ListUsers() {
               </table>
             </div>
           )}
+          <Paginate page={page} prev={prev} next={next} />
         </div>
       </div>
     </AdminAuth>

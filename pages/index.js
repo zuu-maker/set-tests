@@ -9,19 +9,13 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [show, setShow] = useState(true);
-
-  useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_API_KEY);
-  }, []);
-
   return (
     <main>
       <Head>
         <title>Sirius Educational Trust</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Banner show={show} setShow={setShow} />
+      <Banner show={true} />
 
       <div className="container mx-auto">
         <Hero />

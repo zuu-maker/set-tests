@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import AdminAuth from "@/components/auth/AdminPage";
 
 import { FadeLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 function EditTest() {
   const initialValues = {
@@ -99,7 +100,7 @@ function EditTest() {
         },
         (err) => {
           console.log(err);
-          alert("upload Error");
+          toast.error("upload Error");
         },
         async () => {
           const url = await storageRef.getDownloadURL();
@@ -146,7 +147,7 @@ function EditTest() {
         setButtonText("Upload Image");
         setPreview("");
         setValues(initialValues);
-        alert("Test Edited");
+        toast.success("Test Edited");
         router.push("/tests");
         setIsLoading(false);
       })

@@ -8,6 +8,8 @@ import { db } from "@/firebase";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { FadeLoader } from "react-spinners";
+import toast from "react-hot-toast";
+import Banner from "@/components/Banner";
 
 function BrowseItem() {
   const [date, setDate] = useState(null);
@@ -32,7 +34,7 @@ function BrowseItem() {
       })
       .catch((error) => {
         console.log(error);
-        alert("failed to get");
+        toast.error("failed to get");
         setLoader(false);
       });
   }, []);
@@ -68,6 +70,8 @@ function BrowseItem() {
         <title>Browse Course</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Banner show={true} />
 
       <div className="container mx-auto">
         <div className="h-8"></div>

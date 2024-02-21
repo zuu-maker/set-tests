@@ -7,6 +7,7 @@ import firebase from "firebase";
 import Resizer from "react-image-file-resizer";
 import AdminAuth from "@/components/auth/AdminPage";
 import { FadeLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const initialValues = {
   title: "",
@@ -62,7 +63,7 @@ function CreateTest() {
 
   const handleSubmit = (e) => {
     if (!image) {
-      alert("please uplaod an image!!");
+      toast.error("please uplaod an image!!");
       return;
     }
 
@@ -85,7 +86,7 @@ function CreateTest() {
             setButtonText("Upload Image");
             setPreview("");
             setValues(initialValues);
-            alert("Test Created");
+            toast.success("Test Created");
             setIsLoading(false);
           });
       })
@@ -115,11 +116,11 @@ function CreateTest() {
         },
         (err) => {
           console.log(err);
-          alert("upload Error");
+          toast.error("upload Error");
         },
         async () => {
           const url = await storageRef.getDownloadURL();
-          alert("Upload complete");
+          toast.success("Upload complete");
           setImage({
             public_id: file.name.split(".")[0],
             ref: file.name,

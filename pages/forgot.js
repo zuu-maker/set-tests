@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { auth } from "@/firebase";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("zulumkhuzo@gmail.com");
@@ -15,13 +16,13 @@ function ForgotPassword() {
     auth
       .sendPasswordResetEmail(email)
       .then(() => {
-        alert("Email has been sent");
+        toast.success("Email has been sent");
         router.push("/login");
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        alert(errorMessage);
+        toast.error(errorMessage);
         // ..
       });
   };

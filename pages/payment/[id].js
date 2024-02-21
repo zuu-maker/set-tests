@@ -8,6 +8,7 @@ import firebase from "firebase";
 import { useRouter } from "next/router";
 import { FadeLoader } from "react-spinners";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function Payment() {
   const [data, setData] = useState({
@@ -75,7 +76,7 @@ function Payment() {
   const handleOnClick = () => {
     console.table(data.firstName, data.lastName, data.email, data.phone);
     if (!data.firstName || !data.lastName || !data.email || !data.phone) {
-      alert("Please fill in all information");
+      toast.error("Please fill in all information");
       return;
     }
     setLoading(true);
@@ -160,7 +161,7 @@ function Payment() {
                     .delete()
                     .then(() => {
                       // router.replace("/learn");
-                      alert("Please proceed to pay securely");
+                      toast.success("Please proceed to pay securely");
                       //done loading
                       setChecked(true);
                     });
@@ -171,7 +172,7 @@ function Payment() {
             })
             .catch((err) => {
               console.log(err);
-              alert("failed to add");
+              toast.error("failed to add");
             });
         } else {
           if (!error && !error.length === 0) {

@@ -1,6 +1,6 @@
 import { db } from "@/firebase";
 
-export function getTestInVerify(testId, amount) {
+export function getTestInVerify(testId) {
   return db
     .collection("Tests")
     .doc(testId)

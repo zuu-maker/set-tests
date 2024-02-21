@@ -7,6 +7,7 @@ import { db } from "@/firebase";
 import firebase from "firebase";
 import { useRouter } from "next/router";
 import { FadeLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 function RenewPage() {
   const [data, setData] = useState({
@@ -125,7 +126,7 @@ function RenewPage() {
                           })
                           .then(() => {
                             router.replace("/learn");
-                            alert("item Added to your dashboard");
+                            toast.success("item Added to your dashboard");
                           });
                       });
                   });
@@ -134,7 +135,7 @@ function RenewPage() {
       })
       .catch((err) => {
         console.log(err);
-        alert("failed to add");
+        toast.error("failed to add");
       });
   };
 

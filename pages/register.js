@@ -6,6 +6,7 @@ import firebase from "firebase";
 import validator from "email-validator";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
+import toast from "react-hot-toast";
 
 function Register() {
   const [name, setName] = useState("");
@@ -23,7 +24,7 @@ function Register() {
     setLoading(true);
 
     if (!validator.validate(email)) {
-      alert("invalid email");
+      toast.error("invalid email");
       return;
     }
 
@@ -63,7 +64,7 @@ function Register() {
                   // make if statement for pushing
 
                   setLoading(false);
-                  alert("Email Sent");
+                  toast.success("Email Sent");
                   console.log("Document written with ID: ", docRef.id);
                 });
               });
@@ -77,7 +78,7 @@ function Register() {
         setLoading(false);
         var errorCode = error.code;
         var errorMessage = error.message;
-        alert(errorMessage);
+        toast.error(errorMessage);
         console.log(error);
         // ..
       });

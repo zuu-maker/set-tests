@@ -8,6 +8,7 @@ import { auth, db } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Banner from "./Banner";
 
 const navigation = [
   { name: "About", href: "/#about" },

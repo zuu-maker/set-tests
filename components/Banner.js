@@ -2,7 +2,7 @@ import React from "react";
 import { MegaphoneIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
-const Banner = ({ show, setShow }) => {
+const Banner = ({ show }) => {
   return (
     <React.Fragment>
       {show && (
@@ -23,24 +23,11 @@ const Banner = ({ show, setShow }) => {
               </div>
               <div className="order-3 mt-2 w-full flex-shrink-0 sm:order-2 sm:mt-0 sm:w-auto">
                 <Link
-                  href="#learn-more"
+                  href="/demo"
                   className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-cyan-600 shadow-sm hover:bg-indigo-50"
                 >
-                  Learn more
+                  Demo
                 </Link>
-              </div>
-              <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
-                <button
-                  type="button"
-                  className="-mr-1 flex rounded-md p-2 hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
-                >
-                  <span className="sr-only">Dismiss</span>
-                  <XMarkIcon
-                    onClick={() => setShow(false)}
-                    className="h-6 w-6 text-white"
-                    aria-hidden="true"
-                  />
-                </button>
               </div>
             </div>
           </div>

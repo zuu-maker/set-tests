@@ -5,6 +5,7 @@ import AdminAuth from "@/components/auth/AdminPage";
 import { db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
 import { useParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 function SubsctiptionsPage() {
   const [user, setUser] = useState([]);
@@ -52,12 +53,12 @@ function SubsctiptionsPage() {
           .get()
           .then((doc) => {
             setTests(doc.data().tests);
-            alert("Updated");
+            toast.success("Updated");
           });
       })
       .catch((error) => {
         console.log(error);
-        alert("failed to update");
+        toast.error("failed to update");
       })
       .finally(() => {});
 
@@ -86,12 +87,12 @@ function SubsctiptionsPage() {
           .get()
           .then((doc) => {
             setTests(doc.data().tests);
-            alert("Updated");
+            toast.success("Updated");
           });
       })
       .catch((error) => {
         console.log(error);
-        alert("failed to update");
+        toast.error("failed to update");
       })
       .finally(() => {});
 

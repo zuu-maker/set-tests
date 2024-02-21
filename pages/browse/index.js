@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Head from "next/head";
 import { db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
+import Banner from "@/components/Banner";
 
 function Browse() {
   const [tests, setTests] = useState([]);
@@ -33,6 +34,8 @@ function Browse() {
         <title>Browse Tests </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Banner show={true} />
 
       {loader ? (
         <div className="h-screen w-full flex items-center justify-center">

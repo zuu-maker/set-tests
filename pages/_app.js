@@ -3,10 +3,12 @@ import React from "react";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import AuthCheck from "@/components/auth/AuthCheck";
+import { Toaster } from "react-hot-toast";
 
 function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
+      <Toaster />
       <AuthCheck>
         <Component {...pageProps} />
       </AuthCheck>
