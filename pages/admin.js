@@ -202,7 +202,7 @@ function Admin() {
                         onClick={() =>
                           verify(item.test.id, item.user._id, item.id)
                         }
-                        disabled={loading}
+                        disabled={item.status === "Paid" || loading}
                         className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
                       >
                         Verify

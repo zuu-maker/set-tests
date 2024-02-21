@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   //set redirect url for success page
   //we are sending the reftoken to query transsasctions
-  let uri = "http://localhost:3000//payment-success/" + refToken;
+  let uri = "https://set-tests.vercel.app/payment/success/" + refToken;
   console.log(process.env.NEXT_PUBLIC_API_KEY);
   //xml body request send to DPO
   let xmlBody =
@@ -37,7 +37,9 @@ export default async function handler(req, res) {
     "<customerEmail>" +
     email +
     "</customerEmail>" +
-    "<RedirectURL>http://www.domain.com/backurl.php</RedirectURL>" +
+    "<RedirectURL> " +
+    uri +
+    "</RedirectURL>" +
     "<BackURL>http://www.domain.com/backurl.php </BackURL>" +
     "<CompanyRefUnique>" +
     process.env.COMPANY_REF_UNIQUE +
