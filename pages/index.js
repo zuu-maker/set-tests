@@ -6,7 +6,6 @@ import WhyUs from "@/components/WhyUs";
 import Faq from "@/components/Faq";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   return (

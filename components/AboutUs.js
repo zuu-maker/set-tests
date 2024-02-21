@@ -11,7 +11,7 @@ const AboutUs = () => {
       <div className="flex-1 flex justify-center items-center">
         <div className="w-2/3 text-center">
           <h4 className="text-4xl text-cyan-700 font-semibold tracking-tight sm:text-center ">
-            ABOUT US
+            ABOUT
           </h4>
           <p className="text-gray-500">
             Our mission is to assist applicants prepare and succeed in job

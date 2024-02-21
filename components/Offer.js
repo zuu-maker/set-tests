@@ -9,7 +9,7 @@ const Offer = () => {
       <div className="flex-1 flex justify-center items-center">
         <div className="w-2/3 text-center">
           <h4 className="text-4xl text-cyan-700 font-semibold tracking-tight sm:text-center">
-            What We Offer
+            Our Value to Society
           </h4>
           <p className="text-gray-500">
             We offer comprehensive tests that provide essential practice

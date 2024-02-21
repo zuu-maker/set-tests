@@ -5,7 +5,6 @@ import axios from "axios";
 import { useState } from "react";
 import Verified from "@/components/Verified";
 import NotVerified from "@/components/NotVerified";
-import Loader from "@/components/Loader";
 import Head from "next/head";
 
 const SuccessIndex = () => {
