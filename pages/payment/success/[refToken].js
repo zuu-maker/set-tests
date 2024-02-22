@@ -109,6 +109,11 @@ const VerifyToken = () => {
                                   .then(() => {
                                     setIsVerified(true);
                                     setLoading(false);
+                                    toast.error("Test added ");
+                                  })
+                                  .catch((error) => {
+                                    console.log(error);
+                                    toast.error("Error aading course");
                                   });
                               }
                             });
