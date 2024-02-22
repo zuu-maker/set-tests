@@ -185,7 +185,7 @@ function Admin() {
                     <td className="px-6 py-4">
                       {item.createdAt.toDate().toISOString().split("T")[0]}
                     </td>
-                    <td className="px-6 py-4">${item.test.amount}</td>
+                    <td className="px-6 py-4">ZK{item.test.amount}</td>
                     <td className="px-6 py-4">
                       <div
                         className={`${

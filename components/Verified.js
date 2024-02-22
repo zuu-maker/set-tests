@@ -22,25 +22,25 @@ const Verified = () => {
                 .pauseFor(2500)
                 .deleteAll()
                 .changeDelay(70)
-                .typeString("Login to Start Learning.")
+                .typeString("Start Learning.")
                 .start();
             }}
           />
         </h3>
         <p className="text-gray-600 mb-2 mt-5">
           Thank you for completing your secure online payment. Your Payment has
-          been verified and your course has been added to your courses Tab.
+          been verified and your test has been added to your learn Tab.
         </p>
         <p>
           {" "}
           <span className="font-semibold">
-            Please{" "}
+            Please proceed to{" "}
             <a
               target="_blank"
               className="inline-flex items-center font-medium text-blue-600 hover:underline "
-              href="https://dashboard.set.edu.zm/login"
+              href="/learn"
             >
-              login
+              learn
             </a>{" "}
             to get started 👩‍🎓.
           </span>{" "}

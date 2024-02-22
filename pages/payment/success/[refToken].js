@@ -9,6 +9,7 @@ import { FadeLoader } from "react-spinners";
 import { useParams } from "next/navigation";
 import { getTestInVerify } from "@/utils/test";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const VerifyToken = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -114,11 +115,10 @@ const VerifyToken = () => {
                         })
                         .catch((error) => {
                           alert("Failed");
+                          setLoading(false);
+
                           console.log(error);
                         });
-                    })
-                    .finally(() => {
-                      setLoading(false);
                     });
 
                   return;
@@ -134,12 +134,12 @@ const VerifyToken = () => {
 
                   return;
                 } else if (result === "903") {
-                  alert("your sessson has expiered");
+                  toast.error("your sessson has expiered");
                   setLoading(true);
 
                   return;
                 } else {
-                  alert("Transaction not comppleted");
+                  toast.error("Transaction not comppleted");
                   setLoading(true);
 
                   return;
