@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     '<?xml version="1.0" encoding="utf-8"?>' +
     "<API3G>" +
     "<CompanyToken>" +
-    process.env.COMPANY_TOKEN +
+    process.env.LIVE_COMPANY_TOKEN +
     "</CompanyToken>" +
     "<Request>verifyToken</Request>" +
     "<TransactionToken>" +

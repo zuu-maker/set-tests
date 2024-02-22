@@ -116,7 +116,6 @@ const VerifyToken = () => {
                         .catch((error) => {
                           alert("Failed");
                           setLoading(false);
-
                           console.log(error);
                         });
                     });
@@ -130,18 +129,15 @@ const VerifyToken = () => {
                 }
 
                 if (result === "904" || result === "901") {
-                  setLoading(true);
-
+                  setLoading(false);
                   return;
                 } else if (result === "903") {
                   toast.error("your sessson has expiered");
-                  setLoading(true);
-
+                  setLoading(false);
                   return;
                 } else {
                   toast.error("Transaction not comppleted");
-                  setLoading(true);
-
+                  setLoading(false);
                   return;
                 }
               });
