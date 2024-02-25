@@ -30,7 +30,7 @@ const Footer = () => {
           </Link>
         </div>
         <span className="text-sm text-gray-500 sm:text-center ">
-          © {date}Sirius Educational Trust . All Rights Reserved.
+          © {date + " "}Sirius Educational Trust . All Rights Reserved.
         </span>
       </div>
 

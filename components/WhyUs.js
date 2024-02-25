@@ -12,7 +12,7 @@ const WhyUs = () => {
         <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-1 lg:grid-cols-2 xl:mt-12 xl:gap-12">
           <div className="w-full space-y-6 shadow-md border border-gray-100 p-8 flex flex-col justify-center items-center bg-white">
             <ol className="font-medium list-disc text-gray-500">
-              <li>1000+ up to date questions</li>
+              <li>1000+ questions</li>
               <li>Full solutions and explanations </li>
               <li>24/7 online access </li>
               <li>Intelligent learning platform </li>

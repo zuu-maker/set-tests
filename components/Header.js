@@ -17,10 +17,7 @@ const navigation = [
   { name: "Enrol", href: "/browse" },
 ];
 
-const navigationPhone = [
-  { name: "Enrol", href: "/browse" },
-  { name: "Learn", href: "/learn" },
-];
+const navigationPhone = [{ name: "Enrol", href: "/browse" }];
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -153,6 +150,12 @@ const Header = () => {
                     {item.name}
                   </Link>
                 ))}
+                <Link
+                  href="/learn"
+                  className="-mx-3 block rounded-lg px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10"
+                >
+                  My Courses
+                </Link>
               </div>
               <div className="py-6">
                 {user ? (

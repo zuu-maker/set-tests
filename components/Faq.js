@@ -4,7 +4,7 @@ import FaqListItem from "./FaqListItem";
 const faqs = [
   {
     q: "What is a psychometric test?",
-    a: "Psychometric tests, also know as an aptitude test, are now becoming the norm in the job interview process.  It is used as a means to filter out large applications at the early stage of the screening process.",
+    a: "Psychometric tests, also know as an aptitude test, are now an integral part of the job interview process.  It is used as a means to filter out large applications at the early stage of the screening process.",
   },
   {
     q: "Why do employers use psychometric tests?",
@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: "How are psychometric tests administered?",
-    a: "They are normally administered online and candidates are required to submits answers within the time limits. Without online practice, many applicants struggle to get past this stage.",
+    a: "They are normally administered online and candidates are required to submit answers within the time limits. Without online practice, many applicants struggle to get past this stage.",
   },
 ];
 
