@@ -45,7 +45,7 @@ export default function Hero() {
                   <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
                     GAIN THE CONFIDENCE.
                   </h1>
-                  <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
+                  <p className="mt-2 md:mt-6 text-lg leading-8 text-gray-600 sm:text-center">
                     Don't let a psychometric test stand between you and your
                     dream job
                   </p>
@@ -54,7 +54,7 @@ export default function Hero() {
                       href="/browse"
                       className=" animate-bounce inline-block rounded-lg bg-cyan-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-cyan-600 hover:bg-cyan-700 hover:ring-cyan-700"
                     >
-                      Start learning today{" "}
+                      Start practising today{" "}
                       <span className="text-indigo-200" aria-hidden="true">
                         &rarr;
                       </span>
