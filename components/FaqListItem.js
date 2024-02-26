@@ -5,8 +5,9 @@ const FaqListItem = ({ q, a }) => {
   return (
     <div className="mt-12 space-y-8">
       <div className="rounded-lg border-2 border-gray-200 ">
-        <button className="flex w-full items-center justify-between p-8">
-          <h1 className="font-semibold text-gray-700 ">{q}</h1>
+        <button className="flex w-full items-center justify-between p-4 md:p-8">
+          <h1 className="font-semibold text-gray-700">{q}</h1>
+
           {show ? (
             <span
               onClick={() => setShow(!show)}

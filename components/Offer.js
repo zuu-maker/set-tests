@@ -1,10 +1,12 @@
 import React from "react";
+import Congratulations from "./Congratulations";
 
 const Offer = () => {
   return (
-    <div id="offers" className="flex flex-col-reverse sm:flex-row h-1/2">
+    <div id="offers" className="flex py-2 flex-col-reverse sm:flex-row h-1/2">
       <div className="flex-1">
-        <img className="h-72 sm:h-84 sm:ml-16" src="/offer 1.svg" alt="" />
+        <Congratulations />
+        {/* <img className="h-72 sm:h-84 sm:ml-16" src="/offer 1.svg" alt="" /> */}
       </div>
       <div className="flex-1 flex justify-center items-center">
         <div className="w-2/3 text-center">

@@ -1,4 +1,5 @@
 import React from "react";
+import Study from "./Study";
 
 const AboutUs = () => {
   return (
@@ -20,11 +21,12 @@ const AboutUs = () => {
         </div>
       </div>
       <div className="flex-1">
-        <img
+        {/* <img
           className="h-72 sm:h-84 bg-transparent sm:ml-16"
           src="/about.svg"
           alt=""
-        />
+        /> */}
+        <Study />
       </div>
     </div>
   );
