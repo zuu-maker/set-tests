@@ -44,10 +44,8 @@ function Login() {
               );
               if (snap.docs[0].data().role === "admin") {
                 router.push("/admin");
-                setLoading(false);
               } else {
                 router.push("/learn");
-                setLoading(false);
               }
             }
           })

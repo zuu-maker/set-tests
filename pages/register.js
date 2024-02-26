@@ -63,7 +63,6 @@ function Register() {
                   );
                   // make if statement for pushing
 
-                  setLoading(false);
                   toast.success("Please verify your email.", {
                     duration: 5000,
                   });
