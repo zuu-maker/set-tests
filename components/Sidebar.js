@@ -206,7 +206,7 @@ function Sidebar() {
                   </svg>
 
                   <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
-                    Learn
+                    My Courses
                   </p>
                 </button>
               </Link>

@@ -40,7 +40,7 @@ const Verified = () => {
               className="inline-flex items-center font-medium text-blue-600 hover:underline "
               href="/learn"
             >
-              learn
+              your courses
             </a>{" "}
             to get started 👩‍🎓.
           </span>{" "}

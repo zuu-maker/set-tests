@@ -39,13 +39,17 @@ function AdminNav() {
               </li>
               <li className="flex items-center text-blue-900 antialiased font-sans text-sm font-normal leading-normal cursor-pointer transition-colors duration-300 hover:text-blue-500">
                 <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
-                  {router.pathname.split("/")[1]}
+                  {router.pathname.split("/")[1] === "learn"
+                    ? "My Courses"
+                    : router.pathname.split("/")[1]}
                 </p>
               </li>
             </ol>
           </nav>
           <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-gray-900">
-            {router.pathname.split("/")[1]}
+            {router.pathname.split("/")[1] === "learn"
+              ? "My Courses"
+              : router.pathname.split("/")[1]}
           </h6>
         </div>
         <div className="flex items-center justify-between xl:justify-normal">
