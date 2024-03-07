@@ -1,14 +1,17 @@
+import EditTestForm from "@/components/EditTestForm";
 import React, { useState, useEffect } from "react";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
-import CreateTestForm from "@/components/CreateTestForm";
 import { db, storageBucket } from "@/firebase";
-import firebase from "firebase";
 import Resizer from "react-image-file-resizer";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
+import LessonListUpdate from "../../../components/LessonListUpdate";
+import UpdateModal from "../../../components/UpdateModal";
 import AdminAuth from "@/components/auth/AdminPage";
+
 import { FadeLoader } from "react-spinners";
 import toast from "react-hot-toast";
-
 const initialValues = {
   title: "",
   description: "",
@@ -18,9 +21,12 @@ const initialValues = {
   price: "",
 };
 
-function CreateTest() {
+function EditCourse() {
   const [values, setValues] = useState(initialValues);
   const [image, setImage] = useState("");
+  const [tests, setTests] = useState([]);
+  const [current, setCurrent] = useState(null);
+  const [visible, setVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
@@ -29,6 +35,37 @@ function CreateTest() {
   const [preview, setPreview] = useState("");
   const [buttonText, setButtonText] = useState("Upload Image");
   const [loader, setLoader] = useState(true);
+
+  let { id } = useParams();
+  let router = useRouter();
+
+  useEffect(() => {
+    console.log(id);
+    db.collection("Courses")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        db.collection("Courses")
+          .doc(id)
+          .collection("Tests")
+          .onSnapshot((querySnapshot) => {
+            let _tests = [];
+            querySnapshot.forEach((snap) => {
+              _tests.push(snap.data());
+            });
+            console.log(_tests);
+            setValues(doc.data());
+            setPreview(doc.data().image.url);
+            setButtonText(doc.data().image.ref);
+            setImage(doc.data().image);
+            setLoader(false);
+            setTests(_tests);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
   useEffect(() => {
     let unsubscribe = db
@@ -51,7 +88,6 @@ function CreateTest() {
         _types.push(doc.data());
       });
       setTypes(_types);
-      setLoader(false);
     });
     () => unsubscribe();
     // eslint-disable-next-line no-use-before-define
@@ -59,42 +95,6 @@ function CreateTest() {
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    if (!image) {
-      toast.error("please uplaod an image!!");
-      return;
-    }
-
-    e.preventDefault();
-    setIsLoading(true);
-    db.collection("Tests")
-      .add({
-        id: "",
-        ...values,
-        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-        image,
-        publish: false,
-      })
-      .then((docRef) => {
-        db.collection("Tests")
-          .doc(docRef.id)
-          .update({ id: docRef.id })
-          .then(() => {
-            setImage("");
-            setButtonText("Upload Image");
-            setPreview("");
-            setValues(initialValues);
-            toast.success("Test Created");
-            setIsLoading(false);
-          });
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-        toast.error("Failed to create job");
-        setIsLoading(false);
-      });
   };
 
   const handleImage = (e) => {
@@ -120,7 +120,6 @@ function CreateTest() {
         },
         async () => {
           const url = await storageRef.getDownloadURL();
-          toast.success("Upload complete");
           setImage({
             public_id: file.name.split(".")[0],
             ref: file.name,
@@ -150,6 +149,35 @@ function CreateTest() {
       });
   };
 
+  const handleSubmit = (e) => {
+    let toastId = toast.loading("loading...");
+    e.preventDefault();
+    setIsLoading(true);
+    db.collection("Courses")
+      .doc(id)
+      .update({
+        ...values,
+        image,
+      })
+      .then(() => {
+        setImage("");
+        setButtonText("Upload Image");
+        setPreview("");
+        setIsLoading(false);
+        toast.dismiss(toastId);
+        toast.success("Course editted successfully");
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+        toast.dismiss(toastId);
+        toast.error("Failed to create job");
+        setIsLoading(false);
+      });
+  };
+
+  // TODO: remove test
+  const removeTest = () => {};
+
   return (
     <AdminAuth className="min-h-screen bg-gray-50/50">
       <Sidebar />
@@ -162,10 +190,10 @@ function CreateTest() {
             </div>
           ) : (
             <div className="pl-8">
-              <h2 className="text-2xl font-semibold mb-3">Create Test</h2>
+              <h2 className="text-2xl font-semibold mb-3">Edit Course</h2>
 
               <div>
-                <CreateTestForm
+                <EditTestForm
                   handleChange={handleChange}
                   handleSubmit={handleSubmit}
                   values={values}
@@ -180,6 +208,44 @@ function CreateTest() {
                   uploading={uploading}
                 />
               </div>
+              <hr className="mt-8" />
+              <div>
+                <h4 className="text-xl mb-2 mt-2 font-semibold text-cyan-400">
+                  {tests.length > 0 ? tests.length + " Test(s)" : 0 + " Tests"}
+                </h4>
+                <ul
+                  className="w-full text-sm font-medium text-gray-900 bg-white rounded-lg"
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  {tests.map((item, i) => (
+                    <LessonListUpdate
+                      key={i}
+                      setCurrent={setCurrent}
+                      setVisible={setVisible}
+                      removeTest={removeTest}
+                      lesson={item}
+                      index={i}
+                      id={id}
+                    />
+                  ))}
+                </ul>
+                {/* <button
+                  onClick={saveRearrangement}
+                  disabled={!isRearranged}
+                  className="text-white w-36 disabled:opacity-70  bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-2 mr-2 mb-2"
+                >
+                  Save
+                </button> */}
+                <UpdateModal
+                  values={values}
+                  current={current}
+                  visible={visible}
+                  setVisible={setVisible}
+                  setCurrent={setCurrent}
+                  id={id}
+                  setValues={setValues}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -188,4 +254,4 @@ function CreateTest() {
   );
 }
 
-export default CreateTest;
+export default EditCourse;

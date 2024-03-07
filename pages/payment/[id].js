@@ -40,17 +40,15 @@ function Payment() {
         if (data.user.name.split(" ").length > 0) {
           lastName = data.user.name.split(" ")[1];
         }
-
         setData({
           firstName: data.user.name.split(" ")[0],
           lastName: lastName,
           email: data.user.email,
           phone: data.user.phone,
-          test: {
-            id: data.test.id,
-            image: data.test.image,
-            timeStamp: data.test.timeStamp,
-            title: data.test.title,
+          course: {
+            id: data.course.id,
+            image: data.course.image,
+            title: data.course.title,
           },
           user: data.user,
         });
@@ -75,7 +73,9 @@ function Payment() {
 
   const handleOnClick = () => {
     console.table(data.firstName, data.lastName, data.email, data.phone);
+    let toastId = toast.loading("loading...");
     if (!data.firstName || !data.lastName || !data.email || !data.phone) {
+      toast.dismiss(toastId);
       toast.error("Please fill in all information");
       return;
     }
@@ -164,6 +164,8 @@ function Payment() {
                     .delete()
                     .then(() => {
                       // router.replace("/learn");
+                      toast.dismiss(toastId);
+
                       toast.success("Please proceed to pay securely");
                       //done loading
                       setChecked(true);
@@ -172,11 +174,15 @@ function Payment() {
                 })
                 .catch((err) => {
                   console.log(err);
+                  toast.dismiss(toastId);
+                  toast.error("failed to add");
                   setLoading(false);
                 });
             })
             .catch((err) => {
               console.log(err);
+              toast.dismiss(toastId);
+
               toast.error("failed to add");
               setLoading(false);
             });
@@ -188,6 +194,9 @@ function Payment() {
       })
       .catch((error) => {
         console.log(error);
+        toast.dismiss(toastId);
+
+        toast.error("failed to add");
         setLoading(false);
       });
 

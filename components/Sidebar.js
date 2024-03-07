@@ -71,8 +71,8 @@ const navigation = [
     ),
   },
   {
-    title: "Create Test",
-    link: "/tests/create",
+    title: "Create Course",
+    link: "/course/create",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -89,8 +89,8 @@ const navigation = [
     ),
   },
   {
-    title: "Manage Tests",
-    link: "/tests",
+    title: "Manage Courses",
+    link: "/courses",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

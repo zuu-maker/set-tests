@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 
 function LearnPage() {
   const [tests, setTests] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loader, setLoader] = useState(true);
   let router = useRouter();
@@ -25,7 +26,19 @@ function LearnPage() {
         .doc(user._id)
         .get()
         .then((doc) => {
-          setTests(doc.data().tests);
+          let _courses = [];
+          doc.data().tests.forEach((course) => {
+            console.log(course);
+            db.collection("Courses")
+              .doc(course.id)
+              .get()
+              .then((snap) => {
+                _courses.push({ ...course, ...snap.data() });
+              })
+              .then(() => {
+                setCourses(_courses);
+              });
+          });
           setLoader(false);
         });
     }
@@ -71,9 +84,9 @@ function LearnPage() {
             </div>
           ) : (
             <div>
-              {tests.length > 0 ? (
+              {courses.length > 0 ? (
                 <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                  {tests.map((item) => (
+                  {courses.map((item) => (
                     <TestCard
                       key={item.id}
                       item={item}

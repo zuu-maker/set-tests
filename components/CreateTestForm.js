@@ -12,6 +12,7 @@ function CreateTestForm({
   buttonText,
   image,
   handleRemove,
+  programmes,
   uploading,
 }) {
   return (
@@ -42,8 +43,24 @@ function CreateTestForm({
               name="category"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
-              <option defaultValue="No">Select Test Category</option>
+              <option defaultValue="No">Select Course Category</option>
               {categories.map((c) => (
+                <option key={c.id} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <select
+              value={values.programme}
+              onChange={handleChange}
+              name="programme"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            >
+              <option defaultValue="No">Select Course Programme</option>
+              {programmes.map((c) => (
                 <option key={c.id} value={c.name}>
                   {c.name}
                 </option>
@@ -58,7 +75,7 @@ function CreateTestForm({
               name="type"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
-              <option defaultValue="No">Select Test Tyoe</option>
+              <option defaultValue="No">Select Course Tyoe</option>
               {types.map((t) => (
                 <option key={t.id} value={t.name}>
                   {t.name}
@@ -122,7 +139,7 @@ function CreateTestForm({
             type="button"
             className="text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-2 mr-2 mb-2"
           >
-            {isLoading ? "Processing..." : "Create Test"}
+            {isLoading ? "Processing..." : "Create Course"}
           </button>
         </div>
       </div>

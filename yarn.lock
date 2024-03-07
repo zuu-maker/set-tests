@@ -7,6 +7,13 @@
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
+"@babel/runtime@^7.10.1", "@babel/runtime@^7.18.3":
+  version "7.24.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.0.tgz#584c450063ffda59697021430cb47101b085951e"
+  integrity sha512-Chk32uHMg6TnQdvw2e9IlqPpFX/6NLuK0Ys2PqLb7/gL5uFn9mXvK715FGLlOLQrcO4qIkNHkvPGktzzXexsFw==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@babel/runtime@^7.23.8":
   version "7.23.9"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.9.tgz#47791a15e4603bb5f905bc0753801cf21d6345f7"
@@ -661,6 +668,11 @@ chokidar@^3.5.3:
     readdirp "~3.6.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+classnames@^2.2.6:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
+  integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
 
 client-only@0.0.1, client-only@^0.0.1:
   version "0.0.1"
@@ -1353,6 +1365,23 @@ raf@^3.4.1:
   dependencies:
     performance-now "^2.1.0"
 
+rc-progress@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/rc-progress/-/rc-progress-3.5.1.tgz#a3cdfd2fe04eb5c3d43fa1c69e7dd70c73b102ae"
+  integrity sha512-V6Amx6SbLRwPin/oD+k1vbPrO8+9Qf8zW1T8A7o83HdNafEVvAxPV5YsgtKFP+Ud5HghLj33zKOcEHrcrUGkfw==
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.6"
+    rc-util "^5.16.1"
+
+rc-util@^5.16.1:
+  version "5.39.0"
+  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.39.0.tgz#910eda7fb4d6080215aac1c65a442ae5f672993d"
+  integrity sha512-fEVbkOApBUK/lg+NTkfC3fw336EhgRy531ly2QvZj8G+21OjPEzb9TtH/zfKDL2BuQqbGh8J5zXeFyfcELXOlQ==
+  dependencies:
+    "@babel/runtime" "^7.18.3"
+    react-is "^18.2.0"
+
 react-dom@18.2.0, react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
@@ -1377,6 +1406,11 @@ react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-is@^18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
+  integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
 react-quiz-component@^0.8.0:
   version "0.8.0"

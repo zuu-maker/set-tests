@@ -81,35 +81,35 @@ const VerifyToken = () => {
                             .doc(userId)
                             .get()
                             .then((doc) => {
-                              let tests = doc.data().tests;
-                              console.log(tests);
-                              if (tests.length > 0) {
-                                let filteredTests = tests.filter(
+                              let courses = doc.data().courses;
+                              console.log(courses);
+                              if (courses.length > 0) {
+                                let filteredCourses = courses.filter(
                                   (item) => item.id === test.id
                                 );
-                                console.log(filteredTests);
-                                if (filteredTests.length === 0) {
-                                  tests.push(test);
-                                  return tests;
+                                console.log(filteredCourses);
+                                if (filteredCourses.length === 0) {
+                                  courses.push(test);
+                                  return tecoursessts;
                                 }
                                 Promise.reject(new Error("Whoops"));
                               } else {
-                                tests.push(test);
-                                return tests;
+                                courses.push(test);
+                                return courses;
                               }
                             })
-                            .then((tests) => {
-                              if (tests.length > 0) {
+                            .then((courses) => {
+                              if (courses.length > 0) {
                                 db.collection("Users")
                                   .doc(userId)
                                   .update({
-                                    tests,
+                                    courses,
                                     activeSubscription: true,
                                   })
                                   .then(() => {
                                     setIsVerified(true);
                                     setLoading(false);
-                                    toast.error("Test added ");
+                                    toast.error("Course added ");
                                   })
                                   .catch((error) => {
                                     console.log(error);

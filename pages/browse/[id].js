@@ -10,11 +10,13 @@ import { useRouter } from "next/router";
 import { FadeLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import Banner from "@/components/Banner";
+import LessonList from "@/components/LessonList";
 
 function BrowseItem() {
   const [date, setDate] = useState(null);
   const [loader, setLoader] = useState(true);
-  const [test, setTest] = useState(null);
+  const [course, setCourse] = useState(null);
+  const [tests, setTests] = useState([]);
 
   let user = useSelector((state) => state.user);
   let { id } = useParams();
@@ -22,15 +24,24 @@ function BrowseItem() {
   let router = useRouter();
 
   useEffect(() => {
-    db.collection("Tests")
+    db.collection("Courses")
       .doc(id)
       .get()
       .then((doc) => {
-        console.log(doc.data());
-        setTest(doc.data());
-        setDate(doc.data().timeStamp.toDate().toISOString().split("T")[0]);
-        console.log(typeof doc.data().timeStamp.toDate().toISOString());
-        setLoader(false);
+        db.collection("Courses")
+          .doc(id)
+          .collection("Tests")
+          .onSnapshot((snaps) => {
+            let _tests = [];
+            snaps.docs.forEach((doc) => {
+              _tests.push(doc.data());
+            });
+            setTests(_tests);
+            console.log(doc.data());
+            setCourse(doc.data());
+            setDate(doc.data().timeStamp.toDate().toISOString().split("T")[0]);
+            setLoader(false);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -40,14 +51,14 @@ function BrowseItem() {
   }, []);
 
   const handleSubscribe = () => {
-    if (!test.id || !user._id) return;
+    if (!course.id || !user._id) return;
 
     db.collection("Sessions")
       .add({
-        title: test.title,
-        amount: test.price,
+        title: course.title,
+        amount: course.price,
         user: user,
-        test,
+        course,
       })
       .then((docRef) => {
         db.collection("Sessions")
@@ -95,7 +106,7 @@ function BrowseItem() {
                         href="/all"
                         className="mr-2 text-sm font-medium text-gray-900"
                       >
-                        Tests
+                        Courses
                       </Link>
                       <svg
                         width={16}
@@ -116,28 +127,32 @@ function BrowseItem() {
                       aria-current="page"
                       className="font-medium text-gray-500 hover:text-gray-600"
                     >
-                      {test?.title}
+                      {course?.title}
                     </span>
                   </li>
                 </ol>
               </nav>
 
               {/* Product info */}
-              <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
+              <div className="mx-auto max-w-2xl px-4 pt-10 pb-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16">
                 <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                   <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                    {test?.title}
+                    {course?.title}
                   </h1>
                 </div>
 
                 {/* Options */}
                 <div className="sm:mt-4 lg:row-span-3 lg:mt-0">
-                  <p className="text-xl tracking-tight text-gray-900">{`ZK ${new Intl.NumberFormat().format(
-                    test?.price
+                  <p className="text-xl tracking-tight text-gray-900">{`Price: ZK ${new Intl.NumberFormat().format(
+                    course?.price
                   )}`}</p>
 
-                  <div className=" mt-5 sm:mt-10 ">
-                    <div className="mt-4">
+                  <div className=" mt-5 sm:mt-5 ">
+                    <p>
+                      If you wish to subscribe to the course now click here.
+                    </p>
+
+                    <div className="mt-1">
                       <button
                         disabled={user === null}
                         onClick={handleSubscribe}
@@ -151,14 +166,14 @@ function BrowseItem() {
                   </div>
                 </div>
 
-                <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8">
+                <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-4 lg:pr-8">
                   {/* Description and details */}
                   <div>
                     <h3 className="sr-only">Description</h3>
 
                     <div className="space-y-6">
                       <p className="text-base text-gray-900">
-                        {test?.description}
+                        {course?.description}
                       </p>
                     </div>
                   </div>
@@ -182,7 +197,7 @@ function BrowseItem() {
                         <li className="text-gray-400">
                           <span className="text-gray-600">
                             <span className="font-bold">Questions:</span>
-                            {"" + test?.NumberOfQuestions}
+                            {"" + course?.NumberOfQuestions}
                           </span>
                         </li>
                       </ul>
@@ -193,6 +208,19 @@ function BrowseItem() {
             </div>
           </div>
         )}
+        <hr />
+        <div>
+          <h4 className="text-2xl mb-2 mt-2 font-semibold text-cyan-400">
+            {tests.length > 0
+              ? "There are " + tests.length + " Tests(s) in this course"
+              : 0 + " Tests"}
+          </h4>
+          <ul className="w-full text-sm font-medium text-gray-900 bg-white ">
+            {tests.map((item, i) => (
+              <LessonList key={i} lesson={item} index={i} />
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

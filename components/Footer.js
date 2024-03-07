@@ -37,23 +37,17 @@ const Footer = () => {
 
       <ul className="flex md:mt-2 sm:mt-0 space-x-4 h-8 items-center ">
         <li>
-          <a href="#">
-            <SocialIcon url="https://facebook.com" />
-            {/* <img src="/facebook.svg" alt="" className="h-8 hover:scale-110" /> */}
-          </a>
+          <SocialIcon url="https://facebook.com" />
+          {/* <img src="/facebook.svg" alt="" className="h-8 hover:scale-110" /> */}
         </li>
         <li>
-          <a href="#" className="">
-            <SocialIcon url="https://instagram.com" />
-            {/* <img src="/insta.svg" alt="" className="h-8  hover:scale-110" /> */}
-          </a>
+          <SocialIcon url="https://instagram.com" />
+          {/* <img src="/insta.svg" alt="" className="h-8  hover:scale-110" /> */}
         </li>
         <li>
-          <a href="#" className="">
-            <SocialIcon url="https://youtube.com" />
+          <SocialIcon url="https://youtube.com" />
 
-            {/* <img src="/youtube.svg" alt="" className="h-10 hover:scale-110" /> */}
-          </a>
+          {/* <img src="/youtube.svg" alt="" className="h-10 hover:scale-110" /> */}
         </li>
       </ul>
     </footer>

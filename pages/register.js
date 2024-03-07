@@ -38,7 +38,7 @@ function Register() {
             city,
             phone,
             role: "student",
-            tests: [],
+            courses: [],
             verified: false,
             activeSubscription: false,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
