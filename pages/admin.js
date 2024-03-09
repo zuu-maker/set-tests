@@ -14,6 +14,7 @@ function Admin() {
   const [transactions, setTransactions] = useState([]);
   const [loader, setLoader] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [last, setLast] = useState({});
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -26,6 +27,8 @@ function Admin() {
         querySnapshot.forEach((doc) => {
           _transactions.push(doc.data());
         });
+        var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setLast(lastVisible);
         setTransactions(_transactions);
         setLoader(false);
       });
