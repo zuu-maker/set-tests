@@ -53,6 +53,7 @@ function BrowseItem() {
 
   const handleSubscribe = () => {
     setLoading(true);
+    let toastId = toast.loading("Processing...");
     if (!course.id || !user._id) return;
 
     db.collection("Sessions")
@@ -64,10 +65,14 @@ function BrowseItem() {
             id: docRef.id,
           })
           .then(() => {
+            toast.dismiss(toastId);
+            toast.success("Proceed to payment");
             router.push(`/payment/${docRef.id}`);
           });
       })
       .catch((error) => {
+        toast.dismiss(toastId);
+        toast.error("Can not process");
         console.log(error);
       });
   };
