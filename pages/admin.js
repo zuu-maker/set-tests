@@ -32,6 +32,7 @@ function Admin() {
     // eslint-disable-next-line no-use-before-define
   }, []);
 
+  //TODO: change verify function
   const verify = (testId, userId, transId) => {
     setLoading(true);
     db.collection("Transactions")
@@ -149,13 +150,13 @@ function Admin() {
               <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Product
-                  </th>
-                  <th scope="col" className="px-6 py-3">
                     Customer
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Email
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Phone
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Date
@@ -174,18 +175,19 @@ function Admin() {
               <tbody>
                 {transactions.map((item) => (
                   <tr key={item.id} className="bg-white border-b">
-                    <th
+                    {/* <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
                       {item.test.title}
-                    </th>
+                    </th> */}
                     <td className="px-6 py-4">{item.user.name}</td>
                     <td className="px-6 py-4">{item.user.email}</td>
+                    <td className="px-6 py-4">{item.user.phone}</td>
                     <td className="px-6 py-4">
                       {item.createdAt.toDate().toISOString().split("T")[0]}
                     </td>
-                    <td className="px-6 py-4">ZK{item.test.amount}</td>
+                    <td className="px-6 py-4">ZK{item.amount}</td>
                     <td className="px-6 py-4">
                       <div
                         className={`${
