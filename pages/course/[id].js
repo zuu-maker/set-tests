@@ -11,17 +11,17 @@ import { FadeLoader } from "react-spinners";
 import Avatar from "@/components/utils/Avatar";
 import { db } from "@/firebase";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 // TODO: publish and Unpublish
 
 const CourseView = () => {
   const { id } = useParams();
-  //for lessons
+  //for tests
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState(null);
   const [tests, setTests] = useState([]);
-  const [students, setStudents] = useState(null);
 
   useEffect(() => {
     db.collection("Courses")
@@ -62,9 +62,9 @@ const CourseView = () => {
     db.collection("Courses")
       .doc(id)
       .update({
-        published: true,
+        publish: true,
       })
-      .then((res) => {
+      .then(() => {
         toast.success("Course is now live!!");
       })
       .catch((error) => {
@@ -82,9 +82,9 @@ const CourseView = () => {
     db.collection("Courses")
       .doc(id)
       .update({
-        published: false,
+        publish: false,
       })
-      .then((res) => {
+      .then(() => {
         toast.success("Course is now live!!");
       })
       .catch((error) => {
@@ -117,9 +117,6 @@ const CourseView = () => {
                     <p className="text-lg">
                       {tests.length > 0 ? tests.length : 0} test(s)
                     </p>
-                    <p className="text-md font-light ">
-                      {course && course.category}
-                    </p>
                   </div>
                 </div>
 
@@ -134,7 +131,7 @@ const CourseView = () => {
                       </Link>
 
                       <div>
-                        {course && course.published ? (
+                        {course && course.publish ? (
                           <button
                             onClick={() => unPublish(course.id)}
                             className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 rounded-md text-sm px-5 py-2.5 text-center mr-2 mb-2"

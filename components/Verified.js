@@ -29,7 +29,8 @@ const Verified = () => {
         </h3>
         <p className="text-gray-600 mb-2 mt-5">
           Thank you for completing your secure online payment. Your Payment has
-          been verified and your test has been added to your learn Tab.
+          been verified and you now have access to all your courses in the learn
+          tab.
         </p>
         <p>
           {" "}
@@ -44,7 +45,7 @@ const Verified = () => {
             </a>{" "}
             to get started 👩‍🎓.
           </span>{" "}
-          Have a great day!{" "}
+          Have a great day and thank you for your purchase!{" "}
         </p>
         <div className="py-12 text-center">
           {/* <Image src="/logo.png" width={72} height={68} className="mr-3 " /> */}

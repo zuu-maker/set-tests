@@ -36,69 +36,21 @@ function CreateTestForm({
             placeholder="Description"
           ></textarea>
 
-          <div>
-            <select
-              value={values.category}
-              onChange={handleChange}
-              name="category"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option defaultValue="No">Select Course Category</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.name}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <select
-              value={values.programme}
-              onChange={handleChange}
-              name="programme"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option defaultValue="No">Select Course Programme</option>
-              {programmes.map((c) => (
-                <option key={c.id} value={c.name}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <select
-              value={values.type}
-              onChange={handleChange}
-              name="type"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option defaultValue="No">Select Course Tyoe</option>
-              {types.map((t) => (
-                <option key={t.id} value={t.name}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
           <input
-            name="NumberOfQuestions"
-            value={values.NumberOfQuestions}
+            name="numberOfQuestions"
+            value={values.numberOfQuestions}
             onChange={handleChange}
             type="number"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Number of Questions"
           />
           <input
-            name="price"
-            value={values.price}
+            name="numberOfTests"
+            value={values.numberOfTests}
             onChange={handleChange}
             type="number"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            placeholder="Price"
+            placeholder="Number of Tests"
           />
 
           <div className="flex space-x-3">
@@ -130,8 +82,8 @@ function CreateTestForm({
             disabled={
               !values.title ||
               !values.description ||
-              !values.price ||
-              !values.NumberOfQuestions ||
+              !values.numberOfTests ||
+              !values.numberOfQuestions ||
               !image ||
               isLoading
             }

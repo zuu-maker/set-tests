@@ -75,7 +75,7 @@ function Browse() {
                             </h3>
                           </div>
                           <p className="text-sm font-medium text-gray-900">
-                            Price: ZK {" " + item?.price}
+                            {item?.numberOfQuestions} questions
                           </p>
                         </div>
                       </div>

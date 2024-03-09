@@ -27,11 +27,13 @@ const AuthCheck = ({ children }) => {
               dispatch(
                 setUser({
                   _id: doc._id,
-                  email: _user.email,
-                  verified: _user.emailVerified,
                   name: doc.name,
+                  email: _user.email,
                   role: doc.role,
                   phone: doc.phone,
+                  verified: _user.emailVerified,
+                  activeSubscription: doc.activeSubscription,
+                  subscribedBefore: doc.subscribedBefore,
                 })
               );
             }

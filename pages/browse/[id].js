@@ -15,6 +15,7 @@ import LessonList from "@/components/LessonList";
 function BrowseItem() {
   const [date, setDate] = useState(null);
   const [loader, setLoader] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [course, setCourse] = useState(null);
   const [tests, setTests] = useState([]);
 
@@ -51,6 +52,7 @@ function BrowseItem() {
   }, []);
 
   const handleSubscribe = () => {
+    setLoading(true);
     if (!course.id || !user._id) return;
 
     db.collection("Sessions")
@@ -144,23 +146,24 @@ function BrowseItem() {
                 {/* Options */}
                 <div className="sm:mt-4 lg:row-span-3 lg:mt-0">
                   <p className="text-xl tracking-tight text-gray-900">{`Price: ZK ${new Intl.NumberFormat().format(
-                    course?.price
+                    100
                   )}`}</p>
 
                   <div className=" mt-5 sm:mt-5 ">
                     <p>
-                      If you wish to subscribe to the course now click here.
+                      If you wish to subscribe to the course bundles, valid for
+                      7 days click here.
                     </p>
 
                     <div className="mt-1">
                       <button
-                        disabled={user === null}
+                        disabled={user === null || loading}
                         onClick={handleSubscribe}
                         className="disabled:opacity-75 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-3 px-8 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                       >
                         {user === null
                           ? "Please login to subscribe"
-                          : "Subscribe"}
+                          : "Purchase Bundle"}
                       </button>
                     </div>
                   </div>
@@ -197,7 +200,13 @@ function BrowseItem() {
                         <li className="text-gray-400">
                           <span className="text-gray-600">
                             <span className="font-bold">Questions:</span>
-                            {"" + course?.NumberOfQuestions}
+                            {"" + course?.numberOfQuestions}
+                          </span>
+                        </li>
+                        <li className="text-gray-400">
+                          <span className="text-gray-600">
+                            <span className="font-bold">Tests:</span>
+                            {"" + course?.numberOfTests}
                           </span>
                         </li>
                       </ul>

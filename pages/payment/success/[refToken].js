@@ -40,14 +40,13 @@ const VerifyToken = () => {
           return {
             token: res.docs[0].data().transactionToken,
             transId: res.docs[0].data().id,
-            testId: res.docs[0].data().test.id,
             userId: res.docs[0].data().user._id,
           };
         })
         .catch((error) => {
           console.log(error);
         })
-        .then(({ token, transId, userId, testId }) => {
+        .then(({ token, transId, userId }) => {
           if (token && token.length > 0) {
             console.log(token);
             axios
@@ -74,54 +73,29 @@ const VerifyToken = () => {
                       status: "Paid",
                     })
                     .then(() => {
-                      //Todo: added test to dash
-                      getTestInVerify(testId)
-                        .then((test) => {
-                          db.collection("Users")
-                            .doc(userId)
-                            .get()
-                            .then((doc) => {
-                              let courses = doc.data().courses;
-                              console.log(courses);
-                              if (courses.length > 0) {
-                                let filteredCourses = courses.filter(
-                                  (item) => item.id === test.id
-                                );
-                                console.log(filteredCourses);
-                                if (filteredCourses.length === 0) {
-                                  courses.push(test);
-                                  return tecoursessts;
-                                }
-                                Promise.reject(new Error("Whoops"));
-                              } else {
-                                courses.push(test);
-                                return courses;
-                              }
-                            })
-                            .then((courses) => {
-                              if (courses.length > 0) {
-                                db.collection("Users")
-                                  .doc(userId)
-                                  .update({
-                                    courses,
-                                    activeSubscription: true,
-                                  })
-                                  .then(() => {
-                                    setIsVerified(true);
-                                    setLoading(false);
-                                    toast.error("Course added ");
-                                  })
-                                  .catch((error) => {
-                                    console.log(error);
-                                    toast.error("Error aading course");
-                                  });
-                              }
-                            });
+                      let date = new Date();
+                      let future = new Date(); // get today date
+                      future.setDate(date.getDate() + 7);
+                      console.log(future.toISOString());
+
+                      db.collection("Users")
+                        .doc(userId)
+                        .update({
+                          activeSubscription: true,
+                          subscribedBefore: true,
+                          renewDate: future.getTime(),
+                          paidOn: date.getTime(),
+                        })
+                        .then(() => {
+                          setIsVerified(true);
+                          setLoading(false);
+                          toast.success(
+                            "You now have access to all the courses"
+                          );
                         })
                         .catch((error) => {
-                          alert("Failed");
-                          setLoading(false);
                           console.log(error);
+                          toast.error("Error aading course");
                         });
                     });
 

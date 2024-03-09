@@ -26,7 +26,7 @@ const LessonListUpdate = ({
       <div className="flex items-center space-x-4">
         <button
           className="text-sm text-red-500 cursor-pointer hover:scale-110"
-          onClick={(e) => removeTest(index)}
+          onClick={(e) => removeTest(lesson.id)}
         >
           Delete
         </button>

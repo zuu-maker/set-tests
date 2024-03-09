@@ -12,38 +12,69 @@ import { useRouter } from "next/router";
 function LearnPage() {
   const [tests, setTests] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(true);
   let router = useRouter();
 
-  const handlePush = () => {};
-
   const user = useSelector((state) => state.user);
 
-  useEffect(() => {
-    if (user && user._id) {
-      db.collection("Users")
-        .doc(user._id)
-        .get()
-        .then((doc) => {
-          let _courses = [];
-          doc.data().tests.forEach((course) => {
-            console.log(course);
-            db.collection("Courses")
-              .doc(course.id)
-              .get()
-              .then((snap) => {
-                _courses.push({ ...course, ...snap.data() });
-              })
-              .then(() => {
-                setCourses(_courses);
-              });
+  const handleSubscribe = () => {
+    setLoading(true);
+
+    db.collection("Sessions")
+      .add(user)
+      .then((docRef) => {
+        db.collection("Sessions")
+          .doc(docRef.id)
+          .update({
+            id: docRef.id,
+          })
+          .then(() => {
+            router.push(`/payment/${docRef.id}`);
           });
-          setLoader(false);
-        });
-    }
-    // eslint-disable-next-line no-use-before-define
-  }, [user]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    let unsubscribe = db.collection("Courses").onSnapshot((querySnapShot) => {
+      let _courses = [];
+      querySnapShot.forEach((snap) => {
+        _courses.push(snap.data());
+      });
+      setCourses(_courses);
+      setLoader(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // useEffect(() => {
+  //   if (user && user._id) {
+  //     db.collection("Users")
+  //       .doc(user._id)
+  //       .get()
+  //       .then((doc) => {
+  //         let _courses = [];
+  //         doc.data().tests.forEach((course) => {
+  //           console.log(course);
+  //           db.collection("Courses")
+  //             .doc(course.id)
+  //             .get()
+  //             .then((snap) => {
+  //               _courses.push({ ...course, ...snap.data() });
+  //             })
+  //             .then(() => {
+  //               setCourses(_courses);
+  //             });
+  //         });
+  //         setLoader(false);
+  //       });
+  //   }
+  //   // eslint-disable-next-line no-use-before-define
+  // }, [user]);
 
   const handleRenew = (test) => {
     if (!test.id || !user._id) return;
@@ -84,7 +115,10 @@ function LearnPage() {
             </div>
           ) : (
             <div>
-              {courses.length > 0 ? (
+              {/* <div className="px-2">
+          <p>Expires: {new Date(item.renewDate).toISOString().split("T")[0]}</p>
+        </div> */}
+              {user.activeSubscription ? (
                 <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                   {courses.map((item) => (
                     <TestCard
@@ -96,17 +130,34 @@ function LearnPage() {
                 </div>
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
-                  <p className="text-;g">
-                    You have not subcribed to any tests, click
-                    <Link
-                      href="/browse"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      {" "}
-                      here{" "}
-                    </Link>
-                    to browse tests
-                  </p>
+                  {user && user.subscribedBefore ? (
+                    <p className="text-lg">
+                      Your subcription has expired click here to renew.
+                      <button
+                        disabled={user === null}
+                        onClick={handleSubscribe}
+                        className="disabled:opacity-75 flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 py-3 px-8 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                      >
+                        {user === null
+                          ? "Please login to subscribe"
+                          : "Renew Subscription"}
+                      </button>
+                    </p>
+                  ) : (
+                    <p className="text-lg">
+                      You have not subcribed to the coursre bundle, click here
+                      to subscribe.
+                      <button
+                        disabled={user === null}
+                        onClick={handleSubscribe}
+                        className="disabled:opacity-75 flex w-full items-center justify-center rounded-md border border-transparent bg-cyan-600 py-3 px-8 text-base font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                      >
+                        {user === null
+                          ? "Please login to subscribe"
+                          : "Purchase Bundle"}
+                      </button>
+                    </p>
+                  )}
                 </div>
               )}
             </div>

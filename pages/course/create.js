@@ -12,67 +12,19 @@ import toast from "react-hot-toast";
 const initialValues = {
   title: "",
   description: "",
-  category: "",
-  type: "",
-  programme: "",
-  NumberOfQuestions: "",
-  price: "",
+  numberOfQuestions: "",
+  numberOfTests: "",
 };
 
 function CreateTest() {
   const [values, setValues] = useState(initialValues);
   const [image, setImage] = useState("");
-  const [progress, setProgress] = useState(0);
-  const [categories, setCategories] = useState([]);
-  const [types, setTypes] = useState([]);
-  const [programmes, setProgrammes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState("");
+  const [progress, setProgress] = useState("");
   const [buttonText, setButtonText] = useState("Upload Image");
   const [loader, setLoader] = useState(true);
-
-  useEffect(() => {
-    let unsubscribe = db
-      .collection("Categories")
-      .onSnapshot((querySnapshot) => {
-        let _categories = [];
-        querySnapshot.forEach((doc) => {
-          _categories.push(doc.data());
-        });
-        setCategories(_categories);
-      });
-    () => unsubscribe();
-    // eslint-disable-next-line no-use-before-define
-  }, []);
-
-  useEffect(() => {
-    let unsubscribe = db.collection("Types").onSnapshot((querySnapshot) => {
-      let _types = [];
-      querySnapshot.forEach((doc) => {
-        _types.push(doc.data());
-      });
-      setTypes(_types);
-      setLoader(false);
-    });
-    () => unsubscribe();
-    // eslint-disable-next-line no-use-before-define
-  }, []);
-
-  useEffect(() => {
-    let unsubscribe = db
-      .collection("Programmes")
-      .onSnapshot((querySnapshot) => {
-        let _programmes = [];
-        querySnapshot.forEach((doc) => {
-          _programmes.push(doc.data());
-        });
-        setTypes(_programmes);
-        setLoader(false);
-      });
-    () => unsubscribe();
-    // eslint-disable-next-line no-use-before-define
-  }, []);
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -120,6 +72,7 @@ function CreateTest() {
 
   const handleImage = (e) => {
     setButtonText("Uploading...");
+    let toastId = toast.loading("uploading image...");
     setUploading(true);
     let file = e.target.files[0];
 
@@ -137,10 +90,12 @@ function CreateTest() {
         },
         (err) => {
           console.log(err);
+          toast.dismiss(toastId);
           toast.error("upload Error");
         },
         async () => {
           const url = await storageRef.getDownloadURL();
+          toast.dismiss(toastId);
           toast.success("Upload complete");
           setImage({
             public_id: file.name.split(".")[0],
@@ -177,33 +132,30 @@ function CreateTest() {
       <div className="p-4 xl:ml-80">
         <AdminNav />
         <div className="mt-12">
-          {loader ? (
+          {/* {loader ? (
             <div className="h-screen w-full flex items-center justify-center">
               <FadeLoader color="#00FFFF" />
             </div>
-          ) : (
-            <div className="pl-8">
-              <h2 className="text-2xl font-semibold mb-3">Create Course</h2>
+          ) : ( */}
+          <div className="pl-8">
+            <h2 className="text-2xl font-semibold mb-3">Create Course</h2>
 
-              <div>
-                <CreateTestForm
-                  handleChange={handleChange}
-                  handleSubmit={handleSubmit}
-                  values={values}
-                  categories={categories}
-                  types={types}
-                  programmes={programmes}
-                  isLoading={isLoading}
-                  handleImage={handleImage}
-                  preview={preview}
-                  image={image}
-                  buttonText={buttonText}
-                  handleRemove={handleRemove}
-                  uploading={uploading}
-                />
-              </div>
+            <div>
+              <CreateTestForm
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                values={values}
+                isLoading={isLoading}
+                handleImage={handleImage}
+                preview={preview}
+                image={image}
+                buttonText={buttonText}
+                handleRemove={handleRemove}
+                uploading={uploading}
+              />
             </div>
-          )}
+          </div>
+          {/* )} */}
         </div>
       </div>
     </AdminAuth>

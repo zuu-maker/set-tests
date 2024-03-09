@@ -49,11 +49,11 @@ function ListTests() {
         {item.title}
       </th>
       <td className="px-6 py-4">{item.description}</td>
-      <td className="px-6 py-4">{item.category}</td>
-      <td className="px-6 py-4">Level 1</td>
-      <td className="px-6 py-4">{`ZK ${new Intl.NumberFormat().format(
+      <td className="px-6 py-4">{item.numberOfQuestions}</td>
+      <td className="px-6 py-4">{item.numberOfTests}</td>
+      {/* <td className="px-6 py-4">{`ZK ${new Intl.NumberFormat().format(
         item.price
-      )}`}</td>
+      )}`}</td> */}
       <td className="px-6 py-4 flex items-center space-x-4">
         <Link href={`/course/${item.id}`}>
           <svg
@@ -119,13 +119,10 @@ function ListTests() {
                       Description
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Category
+                      No. Questions
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Type
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Price
+                      No. Tests
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Actions

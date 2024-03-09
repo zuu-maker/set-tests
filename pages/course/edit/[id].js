@@ -9,16 +9,14 @@ import { useRouter } from "next/router";
 import LessonListUpdate from "../../../components/LessonListUpdate";
 import UpdateModal from "../../../components/UpdateModal";
 import AdminAuth from "@/components/auth/AdminPage";
-
 import { FadeLoader } from "react-spinners";
 import toast from "react-hot-toast";
+
 const initialValues = {
   title: "",
   description: "",
-  category: "",
-  type: "",
-  NumberOfQuestions: "",
-  price: "",
+  numberOfQuestions: "",
+  numberOfTests: "",
 };
 
 function EditCourse() {
@@ -66,32 +64,6 @@ function EditCourse() {
         console.log(error);
       });
   }, [id]);
-
-  useEffect(() => {
-    let unsubscribe = db
-      .collection("Categories")
-      .onSnapshot((querySnapshot) => {
-        let _categories = [];
-        querySnapshot.forEach((doc) => {
-          _categories.push(doc.data());
-        });
-        setCategories(_categories);
-      });
-    () => unsubscribe();
-    // eslint-disable-next-line no-use-before-define
-  }, []);
-
-  useEffect(() => {
-    let unsubscribe = db.collection("Types").onSnapshot((querySnapshot) => {
-      let _types = [];
-      querySnapshot.forEach((doc) => {
-        _types.push(doc.data());
-      });
-      setTypes(_types);
-    });
-    () => unsubscribe();
-    // eslint-disable-next-line no-use-before-define
-  }, []);
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -160,9 +132,6 @@ function EditCourse() {
         image,
       })
       .then(() => {
-        setImage("");
-        setButtonText("Upload Image");
-        setPreview("");
         setIsLoading(false);
         toast.dismiss(toastId);
         toast.success("Course editted successfully");
@@ -176,7 +145,27 @@ function EditCourse() {
   };
 
   // TODO: remove test
-  const removeTest = () => {};
+  const removeTest = (_id) => {
+    let answer = window.confirm("Are you sure you want to delete this test?");
+    if (!answer) return;
+
+    let toastId = toast.loading("Deleting...");
+
+    db.collection("Courses")
+      .doc(id)
+      .collection("Tests")
+      .doc(_id)
+      .delete()
+      .then(() => {
+        toast.dismiss(toastId);
+        toast.success("Test Deleted");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.dismiss(toast);
+        toast.error("Oops failed to delete");
+      });
+  };
 
   return (
     <AdminAuth className="min-h-screen bg-gray-50/50">

@@ -38,7 +38,8 @@ function Register() {
             city,
             phone,
             role: "student",
-            courses: [],
+            subscribedBefore: false,
+            expiresOn: 0,
             verified: false,
             activeSubscription: false,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -58,14 +59,20 @@ function Register() {
                       name,
                       email,
                       role: "student",
-                      phone,
+                      phone: doc.phone,
+                      activeSubscription: false,
+                      subscribedBefore: false,
+                      verified: false,
                     })
                   );
                   // make if statement for pushing
 
-                  toast.success("Please verify your email.", {
-                    duration: 5000,
-                  });
+                  toast.success(
+                    `A Verification email has been sent to ${email}, please verify your email.`,
+                    {
+                      duration: 5000,
+                    }
+                  );
                   console.log("Document written with ID: ", docRef.id);
                 });
               });

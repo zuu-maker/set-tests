@@ -35,22 +35,18 @@ function Payment() {
       .get()
       .then((doc) => {
         if (!doc.exists) router.replace("/browse");
-        let data = doc.data();
+        let user = doc.data();
         let lastName = "";
-        if (data.user.name.split(" ").length > 0) {
-          lastName = data.user.name.split(" ")[1];
+        if (user.name.split(" ").length > 0) {
+          lastName = user.name.split(" ")[1];
         }
         setData({
-          firstName: data.user.name.split(" ")[0],
+          firstName: user.name.split(" ")[0],
           lastName: lastName,
-          email: data.user.email,
-          phone: data.user.phone,
-          course: {
-            id: data.course.id,
-            image: data.course.image,
-            title: data.course.title,
-          },
-          user: data.user,
+          email: user.email,
+          phone: user.phone,
+          name: user.name,
+          _id: user._id,
         });
         setInfo({
           title: doc.data().title,
@@ -74,13 +70,14 @@ function Payment() {
   const handleOnClick = () => {
     console.table(data.firstName, data.lastName, data.email, data.phone);
     let toastId = toast.loading("loading...");
+    setLoading(true);
+
     if (!data.firstName || !data.lastName || !data.email || !data.phone) {
       toast.dismiss(toastId);
       toast.error("Please fill in all information");
       return;
     }
 
-    setLoading(true);
     console.log(info);
 
     // 1.setup ref-token - done
@@ -94,21 +91,19 @@ function Payment() {
     let refTokenRight = date.getTime().toString();
 
     //note this email comes from the previous page
-    let refToken = data.user._id + "-" + refTokenRight;
-    console.log(data.user);
-    let { _id, email, name, phone } = data.user;
+    let refToken = data._id + "-" + refTokenRight;
+    console.log(data);
+    let { _id, email, name, phone } = data;
     // 2.create the token
     let parser = new DOMParser();
-
-    let testId = data.test.id;
 
     axios
       .post("/api/dpo/createtoken", {
         //do not forget to upddate amount
         // amount: info.amount,
         amount: "1",
-        email: data.email,
-        phone: data.phone,
+        email: email,
+        phone: phone,
         date: _date,
         refToken,
       })
@@ -147,9 +142,8 @@ function Payment() {
               userId: _id,
               status: "Pending",
               transactionToken,
-              amount: info.amount,
+              amount: 100,
               tokenCreatedAt: date.getTime(),
-              test: { ...info, id: testId },
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             })
             .then((docRef) => {
@@ -165,7 +159,6 @@ function Payment() {
                     .then(() => {
                       // router.replace("/learn");
                       toast.dismiss(toastId);
-
                       toast.success("Please proceed to pay securely");
                       //done loading
                       setChecked(true);
@@ -182,7 +175,6 @@ function Payment() {
             .catch((err) => {
               console.log(err);
               toast.dismiss(toastId);
-
               toast.error("failed to add");
               setLoading(false);
             });
@@ -268,13 +260,13 @@ function Payment() {
               <h1 className="text-center font-bold text-xl uppercase">
                 Secure payment info
               </h1>
+              <h4 className="text-center font-bold text-lg "></h4>
               <h4 className="text-center font-bold text-lg ">
-                Test: <span className="font-normal">{info?.title}</span>
+                Amount: <span className="font-normal">ZK100</span>
               </h4>
-              <h4 className="text-center font-bold text-lg ">
-                Amount: <span className="font-normal">ZK{info?.amount}</span>
-              </h4>
-              <h5 className="text-center text-base ">Valid for 7 days</h5>
+              <h5 className="text-center text-base ">
+                Access to all courses, valid for 7 days.
+              </h5>
             </div>
             <div className="mb-3 flex -mx-2">
               <div className="px-2">
@@ -282,7 +274,7 @@ function Payment() {
                   htmlFor="type1"
                   className="flex items-center cursor-pointer"
                 >
-                  <img src="/airmtncard.png" className="h-12 w-36 ml-3" />
+                  <img src="/airmtncard.png" className="h-10 w-32 ml-3" />
                 </div>
               </div>
             </div>
