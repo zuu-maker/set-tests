@@ -56,12 +56,7 @@ function BrowseItem() {
     if (!course.id || !user._id) return;
 
     db.collection("Sessions")
-      .add({
-        title: course.title,
-        amount: course.price,
-        user: user,
-        course,
-      })
+      .add(user)
       .then((docRef) => {
         db.collection("Sessions")
           .doc(docRef.id)

@@ -71,6 +71,7 @@ function EditCourse() {
 
   const handleImage = (e) => {
     setButtonText("Uploading...");
+    let toastId = toast.loading("Uploading Image...");
     setUploading(true);
     let file = e.target.files[0];
 
@@ -88,6 +89,7 @@ function EditCourse() {
         },
         (err) => {
           console.log(err);
+          toast.dismiss(toastId);
           toast.error("upload Error");
         },
         async () => {
@@ -97,6 +99,8 @@ function EditCourse() {
             ref: file.name,
             url,
           });
+          toast.dismiss(toastId);
+          toast.success("upload complete");
         }
       );
     });
