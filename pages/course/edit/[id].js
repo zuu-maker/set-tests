@@ -109,7 +109,11 @@ function EditCourse() {
   const handleRemove = () => {
     setButtonText("Processing...");
     setUploading(true);
-    removeImage(image)
+
+    const storageRef = storageBucket.ref(image.ref);
+
+    storageRef
+      .delete()
       .then(() => {
         setImage({});
         setPreview("");
