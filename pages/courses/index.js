@@ -5,6 +5,7 @@ import { db } from "@/firebase";
 import Link from "next/link";
 import AdminAuth from "@/components/auth/AdminPage";
 import { FadeLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 function ListTests() {
   const [tests, setTests] = useState([]);
@@ -32,12 +33,24 @@ function ListTests() {
   }, []);
 
   const handleDelete = (_id) => {
+    let toastId = toast.loading("Processing...");
     if (
       window.confirm(
         "The test will be permanently deleted. Are you sure you want to delete?"
       )
     )
-      db.collection("Tests").doc(_id).delete();
+      db.collection("Courses")
+        .doc(_id)
+        .delete()
+        .then(() => {
+          toast.dismiss(toastId);
+          toast.success("Delete successful");
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.dismiss(toastId);
+          toast.error("Failed to delete");
+        });
   };
 
   const TableRow = (item) => (
@@ -54,7 +67,7 @@ function ListTests() {
       {/* <td className="px-6 py-4">{`ZK ${new Intl.NumberFormat().format(
         item.price
       )}`}</td> */}
-      <td className="px-6 py-4 flex items-center space-x-4">
+      <td className="px-6 py-4 flex items-center justify-center space-x-4">
         <Link href={`/course/${item.id}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +89,6 @@ function ListTests() {
             />
           </svg>
         </Link>
-
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

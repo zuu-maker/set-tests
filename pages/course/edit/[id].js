@@ -5,7 +5,6 @@ import Sidebar from "@/components/Sidebar";
 import { db, storageBucket } from "@/firebase";
 import Resizer from "react-image-file-resizer";
 import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
 import LessonListUpdate from "../../../components/LessonListUpdate";
 import UpdateModal from "../../../components/UpdateModal";
 import AdminAuth from "@/components/auth/AdminPage";
@@ -35,7 +34,6 @@ function EditCourse() {
   const [loader, setLoader] = useState(true);
 
   let { id } = useParams();
-  let router = useRouter();
 
   useEffect(() => {
     console.log(id);
