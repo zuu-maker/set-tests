@@ -12,7 +12,6 @@ import Banner from "./Banner";
 
 const navigation = [
   { name: "About", href: "/#about" },
-  { name: "Offerings", href: "/#offers" },
   { name: "FAQs", href: "/#faq" },
   { name: "Courses", href: "/browse" },
 ];
@@ -152,10 +151,10 @@ const Header = () => {
                 ))}
                 {user && (
                   <Link
-                    href="/learn"
+                    href={user.role === "admin" ? "/admin" : "/learn"}
                     className="-mx-3 block rounded-lg px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10"
                   >
-                    My Courses
+                    {user.role === "admin" ? "Dashboard" : "My Course"}
                   </Link>
                 )}
               </div>
