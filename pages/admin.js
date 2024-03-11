@@ -8,6 +8,7 @@ import { getTestInVerify } from "@/utils/test";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import firebase from "firebase";
 
 function Admin() {
   const user = useSelector((state) => state.user);
@@ -15,6 +16,10 @@ function Admin() {
   const [loader, setLoader] = useState(true);
   const [loading, setLoading] = useState(false);
   const [last, setLast] = useState({});
+  const [users, setUsers] = useState(0);
+  const [courses, setCourses] = useState(0);
+  const [completedTransactions, setCompletedTransactions] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -138,13 +143,56 @@ function Admin() {
     }
   };
 
+  useEffect(() => {
+    db.collection("Users")
+      .get()
+      .then((users) => {
+        setUsers(users.docs.length);
+      })
+      .catch((error) => {
+        console.log(first);
+      });
+  }, []);
+
+  useEffect(() => {
+    db.collection("Courses")
+      .get()
+      .then((users) => {
+        setCourses(users.docs.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  useEffect(() => {
+    let date = new Date();
+    date.setUTCHours(0, 0, 0, 0);
+    console.log(firebase.firestore.Timestamp.fromDate(date));
+    db.collection("Transactions")
+      .where("status", "==", "Paid")
+      .where("createdAt", ">", firebase.firestore.Timestamp.fromDate(date))
+      .get()
+      .then((transactions) => {
+        setCompletedTransactions(transactions.docs.length);
+        setAmount(transactions.docs.length * 100);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <AdminAuth className="min-h-screen bg-gray-50/50">
       <Sidebar />
       <div className="p-4 xl:ml-80">
         <AdminNav />
         <div className="mt-12">
-          <AdminStats />
+          <AdminStats
+            transactions={completedTransactions}
+            amount={amount}
+            courses={courses}
+            users={users}
+          />
           <div className="relative overflow-x-auto">
             <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
               Transcations

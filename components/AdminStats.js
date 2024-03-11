@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminCard from "./AdminCard";
 
 const stats = [
   {
     title: "Users",
-    stat: 800,
+    stat: 900,
     isMoney: false,
     svg: (
       <svg
@@ -79,12 +79,13 @@ const stats = [
   },
 ];
 
-function AdminStats() {
+function AdminStats({ amount, transactions, courses, users }) {
   return (
     <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-      {stats.map((item) => (
-        <AdminCard key={item.title} item={item} />
-      ))}
+      <AdminCard key={stats[0].title} item={stats[0]} stat={users} />
+      <AdminCard key={stats[1].title} item={stats[1]} stat={courses} />
+      <AdminCard key={stats[2].title} item={stats[2]} stat={transactions} />
+      <AdminCard key={stats[3].title} item={stats[3]} stat={amount} />
     </div>
   );
 }
