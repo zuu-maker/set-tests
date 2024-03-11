@@ -145,14 +145,13 @@ function BrowseItem() {
 
                 {/* Options */}
                 <div className="sm:mt-4 lg:row-span-3 lg:mt-0">
-                  <p className="text-xl tracking-tight text-gray-900">{`Price: ZK ${new Intl.NumberFormat().format(
+                  <p className="text-xl tracking-tight text-gray-900">{`Price: ZMW ${new Intl.NumberFormat().format(
                     100
                   )}`}</p>
 
                   <div className=" mt-5 sm:mt-5 ">
                     <p>
-                      If you wish to subscribe to the course bundles, valid for
-                      7 days click here.
+                      Purchase subscription for all courses valid for 7 days.
                     </p>
 
                     <div className="mt-1">
@@ -163,7 +162,7 @@ function BrowseItem() {
                       >
                         {user === null
                           ? "Please login to subscribe"
-                          : "Purchase Bundle"}
+                          : "Purchase Subscription"}
                       </button>
                     </div>
                   </div>

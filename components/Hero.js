@@ -54,7 +54,7 @@ export default function Hero() {
                       href="/browse"
                       className=" animate-bounce inline-block rounded-lg bg-cyan-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-cyan-600 hover:bg-cyan-700 hover:ring-cyan-700"
                     >
-                      Start practising today{" "}
+                      Start preparing today{" "}
                       <span className="text-indigo-200" aria-hidden="true">
                         &rarr;
                       </span>

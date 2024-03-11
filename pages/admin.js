@@ -190,7 +190,9 @@ function Admin() {
                     <td className="px-6 py-4">
                       {item.createdAt.toDate().toISOString().split("T")[0]}
                     </td>
-                    <td className="px-6 py-4">ZK{item.amount}</td>
+                    <td className="px-6 py-4">
+                      {`ZMW ${new Intl.NumberFormat().format(item.amount)}`}
+                    </td>
                     <td className="px-6 py-4">
                       <div
                         className={`${

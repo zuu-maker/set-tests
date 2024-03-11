@@ -12,7 +12,7 @@ function AdminCard({ item }) {
         </p>
         <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
           {item.isMoney
-            ? `ZK ${new Intl.NumberFormat().format(item.stat)}`
+            ? `ZMW ${new Intl.NumberFormat().format(item.stat)}`
             : item.stat}
         </h4>
       </div>
