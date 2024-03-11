@@ -11,7 +11,7 @@ function Study() {
         xmlns="http://www.w3.org/2000/svg"
         className="h-72 w-full p-5 sm:h-84 sm:ml-16"
       >
-        <g id="study" clip-path="url(#clip0_1_91)">
+        <g id="study" clipPath="url(#clip0_1_91)">
           <g id="Group">
             <path
               id="Vector"

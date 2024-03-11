@@ -4,7 +4,7 @@ import React from "react";
 function TestCard({ item, handleRenew }) {
   console.log("item ==>", item);
   return (
-    <div className="group">
+    <div className="group h-72">
       <div className="bg-gray-50 shadow-lg pb-2">
         <div className="aspect-w-1 aspect-h-1 w-full overflow-hidde bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
           <img

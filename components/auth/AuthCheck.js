@@ -11,39 +11,42 @@ const AuthCheck = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((_user) => {
-      db.collection("Users")
-        .where("email", "==", _user.email)
-        .get()
-        .then((snap) => {
-          if (!snap.empty) {
-            let doc = snap.docs[0].data();
-            if (_user.emailVerified && !doc.verified) {
-              db.collection("Users").doc(doc._id).update({
-                verified: true,
-              });
+      if (_user) {
+        db.collection("Users")
+          .where("email", "==", _user.email)
+          .get()
+          .then((snap) => {
+            if (!snap.empty) {
+              let doc = snap.docs[0].data();
+              if (_user.emailVerified && !doc.verified) {
+                db.collection("Users").doc(doc._id).update({
+                  verified: true,
+                });
+              }
+              console.log(doc);
+              dispatch(
+                setUser({
+                  _id: doc._id,
+                  name: doc.name,
+                  email: _user.email,
+                  role: doc.role,
+                  phone: doc.phone,
+                  verified: _user.emailVerified,
+                  activeSubscription: doc.activeSubscription,
+                  subscribedBefore: doc.subscribedBefore,
+                })
+              );
             }
-            console.log(doc);
-            dispatch(
-              setUser({
-                _id: doc._id,
-                name: doc.name,
-                email: _user.email,
-                role: doc.role,
-                phone: doc.phone,
-                verified: _user.emailVerified,
-                activeSubscription: doc.activeSubscription,
-                subscribedBefore: doc.subscribedBefore,
-              })
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          console.log("error loading");
-        })
-        .finally(() => {
-          setLoader(false);
-        });
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log("error loading");
+          })
+          .finally(() => {
+            setLoader(false);
+          });
+      }
+      setLoader(false);
     });
 
     return () => unsubscribe();

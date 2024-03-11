@@ -11,7 +11,7 @@ function Congratulations() {
         xmlns="http://www.w3.org/2000/svg"
         className="h-72 w-full p-5 sm:h-84 sm:ml-16"
       >
-        <g id="congratulations" clip-path="url(#clip0_1_130)">
+        <g id="congratulations" clipPath="url(#clip0_1_130)">
           <g id="man">
             <path
               id="Vector"

@@ -29,8 +29,10 @@ const Header = () => {
     auth
       .signOut()
       .then(() => {
-        dispatch(logOutUser());
         router.push("/login");
+      })
+      .then(() => {
+        dispatch(logOutUser());
       })
       .catch((error) => {
         console.log(error);

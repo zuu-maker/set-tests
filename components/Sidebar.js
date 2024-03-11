@@ -79,8 +79,10 @@ function Sidebar() {
     auth
       .signOut()
       .then(() => {
-        router.push("/");
         dispatch(logOutUser());
+      })
+      .then(() => {
+        router.push("/");
       })
       .catch((error) => {
         console.log(error);

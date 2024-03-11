@@ -1,11 +1,13 @@
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
 import StudentAuth from "@/components/auth/StudentAuth";
+import { useParams } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
 
 function Quiz() {
   let user = useSelector((state) => state.user);
+  let params = useParams();
   return (
     <StudentAuth>
       <Sidebar />
@@ -15,7 +17,7 @@ function Quiz() {
         <div className="mt-12">
           {user && user.activeSubscription ? (
             <iframe
-              src="/test8.html"
+              src="/test/word.html"
               width="100%"
               style={{ height: "100vh" }}
             ></iframe>
