@@ -17,7 +17,7 @@ function Quiz() {
         <div className="mt-12">
           {user && user.activeSubscription ? (
             <iframe
-              src="/test/word.html"
+              src="/SampleTest edited/index.html"
               width="100%"
               style={{ height: "100vh" }}
             ></iframe>
