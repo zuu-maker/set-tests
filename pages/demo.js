@@ -6,7 +6,7 @@ function Demo() {
   return (
     <div>
       <iframe
-        src="/test8.html"
+        src="/SampleTest edited/index.html"
         width="100%"
         style={{ height: "100vh" }}
       ></iframe>
