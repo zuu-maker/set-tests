@@ -118,7 +118,7 @@ function LearnPage() {
               {/* <div className="px-2">
           <p>Expires: {new Date(item.renewDate).toISOString().split("T")[0]}</p>
         </div> */}
-              {user.activeSubscription ? (
+              {user && user._id.length > 0 && user.activeSubscription ? (
                 <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                   {courses.map((item) => (
                     <TestCard
@@ -130,7 +130,7 @@ function LearnPage() {
                 </div>
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
-                  {user && user.subscribedBefore ? (
+                  {user && user._id.length > 0 && user.subscribedBefore ? (
                     <p className="text-lg">
                       Your subcription has expired click here to renew.
                       <button
@@ -148,11 +148,11 @@ function LearnPage() {
                       You have not subcribed to the coursre bundle, click here
                       to subscribe.
                       <button
-                        disabled={user === null}
+                        disabled={user && user._id.length > 0 === null}
                         onClick={handleSubscribe}
                         className="disabled:opacity-75 flex w-full items-center justify-center rounded-md border border-transparent bg-cyan-600 py-3 px-8 text-base font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                       >
-                        {user === null
+                        {user && user._id.length > 0 === null
                           ? "Please login to subscribe"
                           : "Purchase Bundle"}
                       </button>

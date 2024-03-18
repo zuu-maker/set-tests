@@ -52,19 +52,20 @@ function Register() {
               })
               .then(() => {
                 auth.currentUser.sendEmailVerification().then(() => {
-                  router.push("/learn");
                   dispatch(
                     setUser({
                       _id: docRef.id,
                       name,
                       email,
                       role: "student",
-                      phone: doc.phone,
+                      phone,
                       activeSubscription: false,
                       subscribedBefore: false,
                       verified: false,
                     })
                   );
+                  router.push("/learn");
+
                   // make if statement for pushing
 
                   toast.success(
@@ -75,6 +76,9 @@ function Register() {
                   );
                   console.log("Document written with ID: ", docRef.id);
                 });
+              })
+              .catch((err) => {
+                setLoading(false);
               });
           })
           .catch((error) => {

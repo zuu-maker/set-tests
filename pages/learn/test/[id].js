@@ -61,7 +61,7 @@ const MyCourse = () => {
             </div>
           ) : (
             <div className="container mx-auto px-8">
-              {user && user.activeSubscription ? (
+              {user && user._id.length > 0 && user.activeSubscription ? (
                 <div>
                   <div className="shadow-lg p-4 bg-gradient-to-br text-white font-sans from-gray-800 to-gray-900">
                     <h2 className=" text-xl sm:text-2xl ">

@@ -6,29 +6,35 @@ import { useSelector } from "react-redux";
 function StudentAuth({ children }) {
   const [hidden, setHidden] = useState(true);
   const [loader, setLoader] = useState(true);
+  const [checked, setChecked] = useState(false);
   const user = useSelector((state) => state.user);
 
   let router = useRouter();
 
   useEffect(() => {
-    if (user && user._id) {
-      if (user.role === "student") {
+    if (user) {
+      if (user._id.length > 0 && user.role === "student") {
         setLoader(false);
         setHidden(false);
-      } else {
-        setLoader(false);
+      } else if (user._id.length > 0 && user.role !== "student") {
         router.push("/");
+      } else if (user._id.length === 0) {
+        setLoader(false);
       }
-    } else {
-      setLoader(false);
     }
   }, [user]);
+
+  // useEffect(() => {
+  //   if (checked) {
+  //     setLoader(false);
+  //   }
+  // }, [checked]);
 
   if (hidden) {
     return (
       <div className="h-screen w-screen flex items-center justify-center">
         {loader ? (
-          <p>checking..</p>
+          <p>Verifying..</p>
         ) : (
           <p>
             Unauthorised please login{" "}

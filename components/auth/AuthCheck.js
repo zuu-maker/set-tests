@@ -24,6 +24,7 @@ const AuthCheck = ({ children }) => {
                 });
               }
               console.log(doc);
+
               dispatch(
                 setUser({
                   _id: doc._id,
@@ -45,6 +46,12 @@ const AuthCheck = ({ children }) => {
           .finally(() => {
             setLoader(false);
           });
+      } else {
+        dispatch(
+          setUser({
+            _id: "",
+          })
+        );
       }
       setLoader(false);
     });
