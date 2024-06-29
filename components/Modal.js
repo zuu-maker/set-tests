@@ -26,6 +26,7 @@ const Modal = ({ visible, setVisible, id }) => {
       .doc(id)
       .collection("Tests")
       .add({
+        questions: [],
         ...values,
       })
       .then((doc) => {
@@ -88,7 +89,7 @@ const Modal = ({ visible, setVisible, id }) => {
                         as="h3"
                         className="text-lg font-medium leading-6 text-gray-900"
                       >
-                        Add Lesson
+                        Add Test
                       </Dialog.Title>
                     </div>
                   </div>

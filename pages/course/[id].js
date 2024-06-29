@@ -172,7 +172,7 @@ const CourseView = () => {
                 </h4>
                 <ul className="w-full text-sm font-medium text-gray-900 bg-white rounded-lg">
                   {tests.map((item, i) => (
-                    <LessonList key={i} lesson={item} index={i} />
+                    <LessonList key={i} courseId={id} lesson={item} index={i} />
                   ))}
                 </ul>
               </div>
