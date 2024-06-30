@@ -11,6 +11,7 @@ function Question({
   onAnswerChange,
   answer,
   // handleSubmit,
+  setScore,
   showFeedback,
   currentQuestionIndex,
 }) {
@@ -23,6 +24,14 @@ function Question({
   // useEffect(() => {
   //   if (answer) setShowFeedback(false);
   // }, []);
+
+  useEffect(() => {
+    if (showFeedback) {
+      if (isCorrect) {
+        setScore((score) => score + 1);
+      }
+    }
+  }, [showFeedback]);
 
   useEffect(() => {
     setUserAnswer(answer);
@@ -38,6 +47,7 @@ function Question({
     const correct = Array.isArray(correctAnswer)
       ? correctAnswer.sort().join() === answer.sort().join()
       : correctAnswer === answer;
+    console.log("correct" + correct);
     setIsCorrect(correct);
   };
 
@@ -86,7 +96,11 @@ function Question({
       )}
 
       {showFeedback && (
-        <AlertComponent isCorrect={isCorrect} explanation={explanation} />
+        <AlertComponent
+          answer={question.correctAnswer}
+          isCorrect={isCorrect}
+          explanation={explanation}
+        />
       )}
     </div>
   );

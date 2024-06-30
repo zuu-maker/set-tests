@@ -1,6 +1,6 @@
 import React from "react";
 
-function Alert({ isCorrect, explanation }) {
+function Alert({ isCorrect, explanation, answer }) {
   return (
     <div className="shadow-lg rounded-lg w-full mt-10" role="alert">
       <div
@@ -8,7 +8,10 @@ function Alert({ isCorrect, explanation }) {
           isCorrect ? "bg-green-500" : "bg-red-500"
         } w-full flex items-center`}
       >
-        {isCorrect ? "Correct" : "Incorrect"}
+        <p>
+          <span>{isCorrect ? "Correct - " : "Incorrect - "}</span>
+          <span>{"answer is " + answer}</span>
+        </p>
       </div>
       <div className="text-sm font-medium px-2 py-4 w-full">{explanation}</div>
     </div>

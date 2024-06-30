@@ -8,13 +8,15 @@ import { FadeLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { useParams } from "next/navigation";
 import QuesitionForm from "../../../components/QuesitionForm";
+import AdminQuestion from "@/components/AdminQuestion";
 
 const initialValues = {
-  type: "",
+  type: "input",
   text: "",
-  image: "",
+  image: null,
   correctAnswer: "",
-  explainataion: "",
+  explanation: "",
+  options: [],
 };
 
 function TestView() {
@@ -23,18 +25,54 @@ function TestView() {
   const [values, setValues] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
-  const [current, setCurrent] = useState([]);
-  //   const [loading, setLoading] = useState(null);
+  const [isChanges, setIsChanegs] = useState(false);
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   function addQuestion() {
-    let _questions = setQuestions((prev) => [...prev, values]);
+    console.log(values);
+
+    setQuestions((prev) => [...prev, values]);
+    setValues(() => ({
+      type: "input",
+      text: "",
+      image: null,
+      correctAnswer: "" || [],
+      explanation: "",
+      options: [],
+    }));
+    if (!isChanges) setIsChanegs(true);
   }
 
-  function handleSubmit() {}
+  function removeQuestion(valueToRemove) {
+    let _questions = questions;
+    _questions = _questions.filter((item) => item !== valueToRemove);
+
+    setQuestions(_questions);
+    if (!isChanges) setIsChanegs(true);
+  }
+
+  function handleSubmit() {
+    setIsLoading(true);
+    db.collection("Courses")
+      .doc(id.split("-")[0])
+      .collection("Tests")
+      .doc(id.split("-")[1])
+      .update({
+        questions,
+      })
+      .then(() => {
+        toast.success("questions have been saved");
+        setIsLoading(false);
+        if (isChanges) setIsChanegs(false);
+      })
+      .catch((err) => {
+        toast.error("could not save");
+        setIsLoading(false);
+      });
+  }
 
   const { id } = useParams();
 
@@ -45,6 +83,9 @@ function TestView() {
       .doc(id.split("-")[1])
       .get()
       .then((doc) => {
+        if (doc.data().questions) {
+          setQuestions(doc.data().questions);
+        }
         setTest(doc.data());
         setLoader(false);
       })
@@ -69,25 +110,11 @@ function TestView() {
                 <div className="w-full">
                   <div className="flex w-full flex-col items-center space-x-4">
                     <div className="flex w-full items-center justify-between ">
-                      <div>
-                        {test && test.publish ? (
-                          <button
-                            onClick={() => unPublish(id)}
-                            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 rounded-md text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                          >
-                            Unpublish
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => publish(id)}
-                            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                          >
-                            Publish
-                          </button>
-                        )}
-                      </div>
+                      <h4 className="text-2xl mb-2 mt-2 capitalize font-bold text-cyan-500">
+                        {test.title}
+                      </h4>
                       <h4 className="text-xl mb-2 mt-2 font-semibold text-cyan-400">
-                        {test.questions.length > 0
+                        {test && test.questions && test.questions.length > 0
                           ? test.questions.length + " Question(s)"
                           : 0 + " Questions"}
                       </h4>
@@ -97,17 +124,29 @@ function TestView() {
               </div>
 
               <hr />
+
               <div className="flex flex-col">
                 <div>
                   <QuesitionForm
+                    setValues={setValues}
                     handleChange={handleChange}
                     handleSubmit={handleSubmit}
                     values={values}
                     isLoading={isLoading}
                   />
                 </div>
-                <hr />
-
+                <div className="w-1/2 mt-1">
+                  {isChanges ? (
+                    <p className="p-1 bg-red-200 text-center text-red-500">
+                      Unsaved Changes
+                    </p>
+                  ) : (
+                    <p className="p-1 bg-green-200 text-center text-green-500">
+                      All Good
+                    </p>
+                  )}
+                </div>
+                <hr className="mt-4" />
                 <div className="flex items-center">
                   <button
                     disabled={isLoading}
@@ -118,7 +157,7 @@ function TestView() {
                     {isLoading ? "Processing..." : "Add Question"}
                   </button>
                   <button
-                    onClick={() => {}}
+                    onClick={handleSubmit}
                     type="button"
                     className="text-white disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-2 mr-2 mb-2"
                   >
@@ -126,9 +165,15 @@ function TestView() {
                   </button>
                 </div>
                 <hr />
-                {questions.map((question) => (
-                  <p>{question.text}</p>
-                ))}
+                <div className="space-y-4">
+                  {questions.map((question, i) => (
+                    <AdminQuestion
+                      question={question}
+                      index={i}
+                      removeQuestion={removeQuestion}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           )}

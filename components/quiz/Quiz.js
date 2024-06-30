@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Question from "./Question";
 import Result from "./Result";
+import { db } from "@/firebase";
 
 const _questions = [
   {
@@ -48,13 +49,35 @@ const _questions = [
   },
 ];
 
-function Quiz() {
+// make results look better
+// make the quiz work like normal with db data
+
+function Quiz({ id }) {
   const [questions, setQuestions] = useState(_questions);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [showResult, setShowResult] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [score, setScore] = useState(0);
+
+  // useEffect(() => {
+  //   db.collection("Courses")
+  //     .doc(id.split("-")[0])
+  //     .collection("Tests")
+  //     .doc(id.split("-")[1])
+  //     .get()
+  //     .then((doc) => {
+  //       if (doc.data().questions) {
+  //         setQuestions(doc.data().questions);
+  //       }
+  //       setTest(doc.data());
+  //       // setLoader(false);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [id]);
 
   const handleAnswerChange = (questionId, answer) => {
     const updatedAnswers = { ...answers, [questionId]: answer };
@@ -63,20 +86,20 @@ function Quiz() {
     localStorage.setItem("quiz-answers", JSON.stringify(updatedAnswers));
   };
 
-  useEffect(() => {
-    const storedAnswers = JSON.parse(localStorage.getItem("quiz-answers"));
-    const currentIndex = localStorage.getItem("current-index");
-    if (storedAnswers || currentIndex) {
-      if (window.confirm("Do you with to continue from where you left off?")) {
-        if (storedAnswers) {
-          setAnswers(storedAnswers);
-        }
-        if (currentIndex) {
-          setCurrentQuestionIndex(Number(currentIndex));
-        }
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedAnswers = JSON.parse(localStorage.getItem("quiz-answers"));
+  //   const currentIndex = localStorage.getItem("current-index");
+  //   if (storedAnswers || currentIndex) {
+  //     if (window.confirm("Do you with to continue from where you left off?")) {
+  //       if (storedAnswers) {
+  //         setAnswers(storedAnswers);
+  //       }
+  //       if (currentIndex) {
+  //         setCurrentQuestionIndex(Number(currentIndex));
+  //       }
+  //     }
+  //   }
+  // }, []);
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -99,7 +122,7 @@ function Quiz() {
   const currentQuestion = questions[currentQuestionIndex];
   console.log(currentQuestion);
   if (showResult) {
-    return <Result answers={answers} questions={questions} />;
+    return <Result answers={answers} questions={questions} score={score} />;
   }
 
   return (
@@ -115,6 +138,7 @@ function Quiz() {
           <div className="border basis-5 flex-1 border-gray-100 p-6">
             {questions.length > 0 && (
               <Question
+                setScore={setScore}
                 submitted={submitted}
                 showFeedback={showFeedback}
                 setShowFeedback={setShowFeedback}

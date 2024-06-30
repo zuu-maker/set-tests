@@ -1,10 +1,14 @@
 import React from "react";
 
-function Result({ answers, questions }) {
-  console.log(questions);
+function Result({ answers, questions, score }) {
   return (
     <div>
-      <h2>Quiz Results</h2>
+      <div className="flex items-center justify-between">
+        <h2>Quiz Results</h2>
+        <div>
+          Score {score} of {questions.length}
+        </div>
+      </div>
       {questions.map((question, index) => (
         <div key={index}>
           <p>
