@@ -3,57 +3,13 @@ import Question from "./Question";
 import Result from "./Result";
 import { db } from "@/firebase";
 
-const _questions = [
-  {
-    id: 1,
-    type: "input",
-    text: "What is your name?",
-    image: null,
-    correctAnswer: "John Doe",
-    explanation: "This is just an example. Your name can be anything.",
-  },
-  {
-    id: 2,
-    type: "text",
-    text: "What is your name? please give an explanation",
-    image: null,
-    correctAnswer: "John Doe",
-    explanation: "This is just an example. Your name can be anything.",
-  },
-  {
-    id: 3,
-    type: "multiple",
-    text: "What is the capital of France?",
-    image: "https://www.francethisway.com/images/regions-of-france-map.jpg",
-    options: ["Paris", "London", "Berlin", "Madrid"],
-    correctAnswer: "Paris",
-    explanation: "Paris is the capital city of France.",
-  },
-  {
-    id: 4,
-    type: "multiselect",
-    text: "Select the programming languages you know",
-    image: null,
-    options: ["JavaScript", "Python", "Java", "C#"],
-    correctAnswer: ["JavaScript", "Python"],
-    explanation: "JavaScript and Python are popular programming languages.",
-  },
-  {
-    id: 5,
-    type: "range",
-    text: "would you fight?",
-    image: null,
-    options: ["Very unlikely", " likley", "middle", "likely", "Very likely"],
-    correctAnswer: "Very unlikely",
-    explanation: "People that do not fight are good ",
-  },
-];
-
 // make results look better
-// make the quiz work like normal with db data
+// fix the dashboard thing
+// add score
+// test the quiz
 
 function Quiz({ id }) {
-  const [questions, setQuestions] = useState(_questions);
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [showResult, setShowResult] = useState(false);
@@ -61,27 +17,28 @@ function Quiz({ id }) {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
-  // useEffect(() => {
-  //   db.collection("Courses")
-  //     .doc(id.split("-")[0])
-  //     .collection("Tests")
-  //     .doc(id.split("-")[1])
-  //     .get()
-  //     .then((doc) => {
-  //       if (doc.data().questions) {
-  //         setQuestions(doc.data().questions);
-  //       }
-  //       setTest(doc.data());
-  //       // setLoader(false);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, [id]);
+  useEffect(() => {
+    db.collection("Courses")
+      .doc(id.split("-")[0])
+      .collection("Tests")
+      .doc(id.split("-")[1])
+      .get()
+      .then((doc) => {
+        console.log(doc.data().questions);
+        if (doc.data().questions) {
+          setQuestions(doc.data().questions);
+        }
+        // setTest(doc.data());
+        // setLoader(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
   const handleAnswerChange = (questionId, answer) => {
     const updatedAnswers = { ...answers, [questionId]: answer };
-
+    console.log(updatedAnswers);
     setAnswers(updatedAnswers);
     localStorage.setItem("quiz-answers", JSON.stringify(updatedAnswers));
   };

@@ -1,7 +1,12 @@
 import React from "react";
 
-function MultiSelect({ questionId, options, selectedOptions, onAnswerChange }) {
-  console.log(selectedOptions);
+function MultiSelect({
+  options,
+  selectedOptions,
+  onAnswerChange,
+  correctAnswer,
+}) {
+  console.log("answer -->" + correctAnswer);
   const handleChange = (e) => {
     const value = e.target.value;
     const checked = e.target.checked;
@@ -10,7 +15,7 @@ function MultiSelect({ questionId, options, selectedOptions, onAnswerChange }) {
     console.log(updatedOptions);
 
     if (checked) {
-      if (selectedOptions.length >= 2) {
+      if (selectedOptions.length >= correctAnswer.length) {
         return;
       }
       updatedOptions = [...selectedOptions, value];

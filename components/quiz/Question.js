@@ -34,20 +34,33 @@ function Question({
   }, [showFeedback]);
 
   useEffect(() => {
+    console.table(id, answer);
     setUserAnswer(answer);
-  }, [answer]);
+  }, [id]);
 
   const handleAnswerChange = (answer) => {
-    if (showFeedback) {
-      console.log(showFeedback);
-      return;
+    console.log(answer);
+    if (typeof answer === "string") {
+      answer = answer.toLowerCase();
+    } else if (Array.isArray(answer)) {
+      answer.forEach((item, index) => {
+        answer[index] = item.toLowerCase();
+      });
     }
+    console.log(id);
+
+    console.log("answer " + answer);
+
+    // if (showFeedback) {
+    //   console.log(showFeedback);
+    //   return;
+    // }
     setUserAnswer(answer);
     onAnswerChange(id, answer);
     const correct = Array.isArray(correctAnswer)
       ? correctAnswer.sort().join() === answer.sort().join()
       : correctAnswer === answer;
-    console.log("correct" + correct);
+    console.log("correct " + correct);
     setIsCorrect(correct);
   };
 
@@ -75,6 +88,7 @@ function Question({
         <MultiSelect
           questionId={id}
           options={options}
+          correctAnswer={correctAnswer}
           onAnswerChange={handleAnswerChange}
           selectedOptions={userAnswer || []}
         />

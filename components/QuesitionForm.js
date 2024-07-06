@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Option from "@/components/Option";
+import TextEditor from "@/components/TextEditor";
 
 const options = [
   {
@@ -27,6 +28,9 @@ const options = [
 function QuesitionForm({
   values,
   setValues,
+  setExplanation,
+  explanation,
+  handleExplanationChange,
   handleSubmit,
   handleChange,
   categories,
@@ -45,7 +49,7 @@ function QuesitionForm({
 
   const addOption = () => {
     let _options = [...new Set(values.options)];
-    _options.push(value);
+    _options.push(value.toLowerCase());
     setValues((prev) => ({ ...prev, options: _options }));
     setValue("");
   };
@@ -55,7 +59,7 @@ function QuesitionForm({
     if (Array.isArray(values.correctAnswer)) {
       console.log("The variable is an array.");
       _answers = [...new Set(values.correctAnswer)];
-      _answers.push(answer);
+      _answers.push(answer.toLowerCase());
     } else {
       _answers.push(answer);
     }
@@ -80,7 +84,7 @@ function QuesitionForm({
   return (
     <div>
       <div className="flex">
-        <div className="flex flex-col space-y-8 justify-between h-100 basis-3/6">
+        <div className="flex flex-col space-y-8 justify-between basis-3/6">
           <div className="flex flex-col">
             <label
               for="options"
@@ -158,14 +162,25 @@ function QuesitionForm({
             />
           )}
 
-          <input
+          {/* <textarea
+            name="explanation"
+            value={values.explanation}
+            onChange={handleChange}
+            type="text"
+            className="bg-gray-50  mb-4 border h-100 border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Explaination"
+            rows={20}
+          ></textarea> */}
+          <TextEditor value={explanation} onChange={setExplanation} />
+
+          {/* <input
             name="explanation"
             value={values.explanation}
             onChange={handleChange}
             type="text"
             className="bg-gray-50  mb-4 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Explaination"
-          />
+          /> */}
 
           {(values.type === "range" ||
             values.type === "multiple" ||
@@ -198,8 +213,12 @@ function QuesitionForm({
               <div className="p-2 ">
                 <p className="text-base">Options</p>
                 <div className="p-2">
-                  {values.options.map((option) => (
-                    <Option option={option} removeOption={removeOption} />
+                  {values.options.map((option, index) => (
+                    <Option
+                      key={index}
+                      option={option}
+                      removeOption={removeOption}
+                    />
                   ))}
                 </div>
               </div>

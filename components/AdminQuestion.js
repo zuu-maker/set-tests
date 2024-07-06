@@ -60,8 +60,9 @@ function AdminQuestion({ question, index, removeQuestion }) {
         {question.text}
       </p>
       <p>
-        <strong>Question Text:</strong>
-        {question.text}
+        <strong>Question Explanation:</strong>
+        {/* {question.explanation} */}
+        <div dangerouslySetInnerHTML={{ __html: question.explanation }} />
       </p>
 
       {(question.type === "range" ||

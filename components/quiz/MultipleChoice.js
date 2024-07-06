@@ -5,6 +5,9 @@ function MultipleChoice({ questionId, options, onAnswerChange, answer }) {
     onAnswerChange(e.target.value);
   };
 
+  console.log("options -->", options);
+  console.log("answer in -->", answer);
+
   return (
     <div className="flex flex-col p-2">
       {options.map((option, index) => (

@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useParams } from "next/navigation";
 import QuesitionForm from "../../../components/QuesitionForm";
 import AdminQuestion from "@/components/AdminQuestion";
+import { v4 as uuidv4 } from "uuid";
 
 const initialValues = {
   type: "input",
@@ -26,15 +27,36 @@ function TestView() {
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [isChanges, setIsChanegs] = useState(false);
+  const [explanation, setExplanation] = useState("");
+  const [idCounter, setIdCounter] = useState(0);
+
+  console.log(questions);
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    setValues({ ...values, [e.target.name]: e.target.value.toLowerCase() });
+  };
+
+  const generateId = () => {
+    let _id = idCounter + 1;
+    setIdCounter(_id);
+    return _id;
+  };
+
+  const handleExplanationChange = (e) => {
+    console.log(first);
+    setValues({ ...values, explanation: e.target.value });
   };
 
   function addQuestion() {
-    console.log(values);
+    console.log({ ...values, explanation: explanation });
 
-    setQuestions((prev) => [...prev, values]);
+    console.log({ ...values, explanation: explanation });
+
+    let _values = { ...values, explanation: explanation };
+    _values.id = generateId();
+    console.log(_values);
+
+    setQuestions((prev) => [...prev, _values]);
     setValues(() => ({
       type: "input",
       text: "",
@@ -43,6 +65,7 @@ function TestView() {
       explanation: "",
       options: [],
     }));
+    setExplanation("");
     if (!isChanges) setIsChanegs(true);
   }
 
@@ -85,6 +108,7 @@ function TestView() {
       .then((doc) => {
         if (doc.data().questions) {
           setQuestions(doc.data().questions);
+          setIdCounter(doc.data().questions.length);
         }
         setTest(doc.data());
         setLoader(false);
@@ -129,13 +153,16 @@ function TestView() {
                 <div>
                   <QuesitionForm
                     setValues={setValues}
+                    setExplanation={setExplanation}
+                    explanation={explanation}
                     handleChange={handleChange}
+                    handleExplanationChange={handleExplanationChange}
                     handleSubmit={handleSubmit}
                     values={values}
                     isLoading={isLoading}
                   />
                 </div>
-                <div className="w-1/2 mt-1">
+                <div className="w-1/2 mt-12">
                   {isChanges ? (
                     <p className="p-1 bg-red-200 text-center text-red-500">
                       Unsaved Changes
@@ -168,6 +195,7 @@ function TestView() {
                 <div className="space-y-4">
                   {questions.map((question, i) => (
                     <AdminQuestion
+                      key={i}
                       question={question}
                       index={i}
                       removeQuestion={removeQuestion}
