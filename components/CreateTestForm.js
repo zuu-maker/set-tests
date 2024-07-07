@@ -4,16 +4,12 @@ function CreateTestForm({
   values,
   handleSubmit,
   handleChange,
-  categories,
-  types,
   isLoading,
   handleImage,
   preview,
   buttonText,
   image,
   handleRemove,
-  programmes,
-  uploading,
 }) {
   return (
     <div>

@@ -4,7 +4,6 @@ import Sidebar from "@/components/Sidebar";
 import AdminAuth from "@/components/auth/AdminPage";
 import { db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
-import Link from "next/link";
 import Paginate from "@/components/Paginate";
 
 function ListUsers() {
@@ -26,7 +25,6 @@ function ListUsers() {
         });
         var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
         setLast(lastVisible);
-        console.log("usrs->", _users);
         setUsers(_users);
         setLoader(false);
       });
@@ -63,7 +61,6 @@ function ListUsers() {
         if (_users.length > 0) {
           var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
           setLast(lastVisible);
-          console.log("usrs->", _users);
           setUsers(_users);
           setPage((prev) => prev + 1);
           setLoader(false);
@@ -83,11 +80,9 @@ function ListUsers() {
           querySnapshot.forEach((doc) => {
             _users.push(doc.data());
           });
-          console.log(_users);
           if (_users.length > 0) {
             var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
             setLast(lastVisible);
-            console.log("usrs->", _users);
             setUsers(_users);
             setPage((prev) => prev - 1);
             setLoader(false);

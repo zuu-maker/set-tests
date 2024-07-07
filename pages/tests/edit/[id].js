@@ -47,7 +47,7 @@ function EditTest() {
         setLoader(false);
       })
       .catch((error) => {
-        console.log(error);
+        toast.error("failed to get tests");
       });
   }, [id]);
 
@@ -89,7 +89,6 @@ function EditTest() {
     setPreview(window.URL.createObjectURL(file));
     setButtonText(file.name);
 
-    console.log(preview);
     const storageRef = storageBucket.ref(file.name);
     Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
       storageRef.putString(uri, "data_url").on(
@@ -99,7 +98,6 @@ function EditTest() {
           setProgress(percentage);
         },
         (err) => {
-          console.log(err);
           toast.error("upload Error");
         },
         async () => {
@@ -129,7 +127,6 @@ function EditTest() {
         setButtonText("Try again");
         setValues({ ...values, uploading: false });
         toast.error("failed to delete");
-        console.log(error);
       });
   };
 
@@ -152,7 +149,6 @@ function EditTest() {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.error("Error adding document: ", error);
         toast.error("Failed to create job");
         setIsLoading(false);
       });

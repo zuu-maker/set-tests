@@ -10,7 +10,6 @@ function ForgotPassword() {
 
   const handleForgot = (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     auth
@@ -26,6 +25,7 @@ function ForgotPassword() {
         // ..
       });
   };
+
   return (
     <div>
       {" "}

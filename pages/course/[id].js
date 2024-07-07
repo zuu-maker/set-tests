@@ -1,5 +1,4 @@
 import React from "react";
-import Head from "next/head";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
 import { useState, useEffect } from "react";
@@ -13,11 +12,8 @@ import { db } from "@/firebase";
 import Link from "next/link";
 import toast from "react-hot-toast";
 
-// TODO: publish and Unpublish
-
 const CourseView = () => {
   const { id } = useParams();
-  //for tests
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState(null);
@@ -152,7 +148,6 @@ const CourseView = () => {
                 </div>
               </div>
               <div className="mb-4">
-                {/* <ReactMarkdown source={course.description} /> */}
                 <p className="text-xs">{course?.description}</p>
               </div>
 

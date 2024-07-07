@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
 import CreateTestForm from "@/components/CreateTestForm";
@@ -6,7 +6,6 @@ import { db, storageBucket } from "@/firebase";
 import firebase from "firebase";
 import Resizer from "react-image-file-resizer";
 import AdminAuth from "@/components/auth/AdminPage";
-import { FadeLoader } from "react-spinners";
 import toast from "react-hot-toast";
 
 const initialValues = {
@@ -24,7 +23,6 @@ function CreateTest() {
   const [preview, setPreview] = useState("");
   const [progress, setProgress] = useState("");
   const [buttonText, setButtonText] = useState("Upload Image");
-  const [loader, setLoader] = useState(true);
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -132,14 +130,8 @@ function CreateTest() {
       <div className="p-4 xl:ml-80">
         <AdminNav />
         <div className="mt-12">
-          {/* {loader ? (
-            <div className="h-screen w-full flex items-center justify-center">
-              <FadeLoader color="#00FFFF" />
-            </div>
-          ) : ( */}
           <div className="pl-8">
             <h2 className="text-2xl font-semibold mb-3">Create Course</h2>
-
             <div>
               <CreateTestForm
                 handleChange={handleChange}
@@ -155,7 +147,6 @@ function CreateTest() {
               />
             </div>
           </div>
-          {/* )} */}
         </div>
       </div>
     </AdminAuth>

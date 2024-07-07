@@ -74,7 +74,6 @@ function Register() {
                       duration: 5000,
                     }
                   );
-                  console.log("Document written with ID: ", docRef.id);
                 });
               })
               .catch((err) => {
@@ -83,7 +82,6 @@ function Register() {
           })
           .catch((error) => {
             setLoading(false);
-            console.error("Error adding document: ", error);
           });
       })
       .catch((error) => {
@@ -91,7 +89,6 @@ function Register() {
         var errorCode = error.code;
         var errorMessage = error.message;
         toast.error(errorMessage);
-        console.log(error);
         // ..
       });
   };

@@ -17,21 +17,17 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
-    console.table(email, password);
 
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed in
-        console.log(userCredential);
         let user = userCredential.user;
         db.collection("Users")
           .where("email", "==", user.email)
           .get()
           .then((snap) => {
             if (snap.docs[0].exists) {
-              // console.log(res.docs[0].data().role);  s
-              console.log(snap.docs[0].data());
               dispatch(
                 setUser({
                   _id: snap.docs[0].data()._id,
@@ -51,7 +47,6 @@ function Login() {
           })
           .catch((error) => {
             setLoading(false);
-            console.log("failed to get" + error);
             toast.error("failed to get");
           });
         // ...

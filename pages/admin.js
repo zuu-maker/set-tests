@@ -7,11 +7,9 @@ import { db } from "@/firebase";
 import { getTestInVerify } from "@/utils/test";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 import firebase from "firebase";
 
 function Admin() {
-  const user = useSelector((state) => state.user);
   const [transactions, setTransactions] = useState([]);
   const [loader, setLoader] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -56,12 +54,10 @@ function Admin() {
               .get()
               .then((doc) => {
                 let tests = doc.data().tests;
-                console.log(tests);
                 if (tests.length > 0) {
                   let filteredTests = tests.filter(
                     (item) => item.id === test.id
                   );
-                  console.log(filteredTests);
                   if (filteredTests.length === 0) {
                     tests.push(test);
                     return tests;
@@ -73,7 +69,6 @@ function Admin() {
                 }
               })
               .then((tests) => {
-                console.log(tests);
                 if (tests.length > 0) {
                   db.collection("Users")
                     .doc(userId)
@@ -90,8 +85,7 @@ function Admin() {
           })
           .catch((error) => {
             setLoading(false);
-            alert("Failed");
-            console.log(error);
+            toast.error("Failed");
           });
       });
   };
@@ -110,7 +104,6 @@ function Admin() {
         if (_transactions.length > 0) {
           var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
           setLast(lastVisible);
-          console.log("usrs->", _transactions);
           setTransactions(_transactions);
           setPage((prev) => prev + 1);
           setLoader(false);
@@ -130,11 +123,9 @@ function Admin() {
           querySnapshot.forEach((doc) => {
             _transactions.push(doc.data());
           });
-          console.log(_u_transactionssers);
           if (_transactions.length > 0) {
             var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
             setLast(lastVisible);
-            console.log("usrs->", _us_transactionsers);
             setTransactions(_transactions);
             setPage((prev) => prev - 1);
             setLoader(false);
@@ -150,24 +141,24 @@ function Admin() {
         setUsers(users.docs.length);
       })
       .catch((error) => {
-        console.log(first);
+        toast.error("failed to get users");
       });
   }, []);
 
   useEffect(() => {
     db.collection("Courses")
       .get()
-      .then((users) => {
-        setCourses(users.docs.length);
+      .then((courses) => {
+        setCourses(courses.docs.length);
       })
       .catch((error) => {
-        console.log(error);
+        toast.error("failed to get courses");
       });
   }, []);
+
   useEffect(() => {
     let date = new Date();
     date.setUTCHours(0, 0, 0, 0);
-    console.log(firebase.firestore.Timestamp.fromDate(date));
     db.collection("Transactions")
       .where("status", "==", "Paid")
       .where("createdAt", ">", firebase.firestore.Timestamp.fromDate(date))
@@ -177,7 +168,7 @@ function Admin() {
         setAmount(transactions.docs.length * 100);
       })
       .catch((error) => {
-        console.log(error);
+        toast.error("Unable to complete task");
       });
   }, []);
 

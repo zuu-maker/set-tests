@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 
@@ -13,14 +12,8 @@ function TextEditor({ value, onChange }) {
   }, []);
 
   if (!mounted) {
-    return null; // or a loading spinner
+    return null;
   }
-
-  //   const [value, setValue] = useState("");
-
-  //   useEffect(() => {
-  //     console.log(value);
-  //   }, [value]);
 
   return (
     <ReactQuill
