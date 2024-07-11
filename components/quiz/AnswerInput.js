@@ -8,7 +8,7 @@ function AnswerInput({ questionId, onAnswerChange, answer }) {
   return (
     <div className="p-2">
       <input
-        className="w-full"
+        className="w-full capitalize"
         type="text"
         value={answer || ""}
         onChange={handleChange}

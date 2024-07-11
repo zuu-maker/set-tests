@@ -30,19 +30,7 @@ function QuesitionForm({
   setValues,
   setExplanation,
   explanation,
-  handleExplanationChange,
-  handleSubmit,
   handleChange,
-  categories,
-  types,
-  isLoading,
-  handleImage,
-  preview,
-  buttonText,
-  image,
-  handleRemove,
-  programmes,
-  uploading,
 }) {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState("");
@@ -82,9 +70,9 @@ function QuesitionForm({
   };
 
   return (
-    <div>
-      <div className="flex">
-        <div className="flex flex-col space-y-8 justify-between basis-3/6">
+    <div className="w-full">
+      <div className="flex w-full">
+        <div className="flex w-full flex-col space-y-8 justify-between">
           <div className="flex flex-col">
             <label
               for="options"
@@ -157,30 +145,12 @@ function QuesitionForm({
               value={values.correctAnswer}
               onChange={handleChange}
               type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              className="bg-gray-50 border capitalize border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Correct Answer"
             />
           )}
 
-          {/* <textarea
-            name="explanation"
-            value={values.explanation}
-            onChange={handleChange}
-            type="text"
-            className="bg-gray-50  mb-4 border h-100 border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            placeholder="Explaination"
-            rows={20}
-          ></textarea> */}
           <TextEditor value={explanation} onChange={setExplanation} />
-
-          {/* <input
-            name="explanation"
-            value={values.explanation}
-            onChange={handleChange}
-            type="text"
-            className="bg-gray-50  mb-4 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            placeholder="Explaination"
-          /> */}
 
           {(values.type === "range" ||
             values.type === "multiple" ||

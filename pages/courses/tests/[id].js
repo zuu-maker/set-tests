@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useParams } from "next/navigation";
 import QuesitionForm from "../../../components/QuesitionForm";
 import AdminQuestion from "@/components/AdminQuestion";
-import { v4 as uuidv4 } from "uuid";
+import QuestionModal from "@/components/QuestiomModal";
 
 const initialValues = {
   type: "input",
@@ -28,18 +28,21 @@ function TestView() {
   const [questions, setQuestions] = useState([]);
   const [isChanges, setIsChanegs] = useState(false);
   const [explanation, setExplanation] = useState("");
-  const [idCounter, setIdCounter] = useState(0);
+  const [editExplanation, setEditExplanation] = useState("");
+  const [current, setCurrent] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [index, setIndex] = useState(-1);
 
   console.log(questions);
+  const { id } = useParams();
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value.toLowerCase() });
-  };
-
-  const generateId = () => {
-    let _id = idCounter + 1;
-    setIdCounter(_id);
-    return _id;
+    let item = e.target.value;
+    console.log(e.target.value);
+    if (e.target.name == "correctAnswer") {
+      item = e.target.value.toLowerCase();
+    }
+    setValues({ ...values, [e.target.name]: item });
   };
 
   const handleExplanationChange = (e) => {
@@ -48,12 +51,13 @@ function TestView() {
   };
 
   function addQuestion() {
-    console.log({ ...values, explanation: explanation });
-
-    console.log({ ...values, explanation: explanation });
+    if (questions.length >= 15) {
+      toast.error("Max question length reached.");
+      return;
+    }
 
     let _values = { ...values, explanation: explanation };
-    _values.id = generateId();
+    _values.id = questions.length + 1;
     console.log(_values);
 
     setQuestions((prev) => [...prev, _values]);
@@ -70,11 +74,33 @@ function TestView() {
   }
 
   function removeQuestion(valueToRemove) {
+    if (valueToRemove != questions[questions.length - 1]) {
+      toast.error("Delete from the bottom up.");
+      return;
+    }
+
     let _questions = questions;
     _questions = _questions.filter((item) => item !== valueToRemove);
 
     setQuestions(_questions);
     if (!isChanges) setIsChanegs(true);
+  }
+
+  function editQuestionModal(_question, _index) {
+    setCurrent(_question);
+    setIndex(_index);
+    setVisible(true);
+  }
+
+  function editQuestion(_editedQuestion) {
+    let _questions = questions;
+    _questions[index] = { ..._editedQuestion, explanation: editExplanation };
+    setQuestions(_questions);
+    setExplanation("");
+    setVisible(false);
+    setIndex(-1);
+    setIsChanegs(true);
+    // setCurrent(null);
   }
 
   function handleSubmit() {
@@ -97,8 +123,6 @@ function TestView() {
       });
   }
 
-  const { id } = useParams();
-
   useEffect(() => {
     db.collection("Courses")
       .doc(id.split("-")[0])
@@ -108,13 +132,13 @@ function TestView() {
       .then((doc) => {
         if (doc.data().questions) {
           setQuestions(doc.data().questions);
-          setIdCounter(doc.data().questions.length);
         }
         setTest(doc.data());
         setLoader(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoader(false);
       });
   }, [id]);
 
@@ -150,7 +174,7 @@ function TestView() {
               <hr />
 
               <div className="flex flex-col">
-                <div>
+                <div className="w-1/2">
                   <QuesitionForm
                     setValues={setValues}
                     setExplanation={setExplanation}
@@ -199,6 +223,7 @@ function TestView() {
                       question={question}
                       index={i}
                       removeQuestion={removeQuestion}
+                      editQuestionModal={editQuestionModal}
                     />
                   ))}
                 </div>
@@ -207,6 +232,18 @@ function TestView() {
           )}
         </div>
       </div>
+      <QuestionModal
+        current={current}
+        setCurrent={setCurrent}
+        index={index}
+        visible={visible}
+        explanation={editExplanation}
+        setExplanation={setEditExplanation}
+        editQuestion={editQuestion}
+        setVisible={setVisible}
+        handleChange={handleChange}
+        handleExplanationChange={handleExplanationChange}
+      />
     </AdminAuth>
   );
 }

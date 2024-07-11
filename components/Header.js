@@ -4,11 +4,9 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { auth, db } from "@/firebase";
+import { auth } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
 import { useRouter } from "next/router";
-import axios from "axios";
-import Banner from "./Banner";
 
 const navigation = [
   { name: "About", href: "/#about" },
@@ -33,16 +31,6 @@ const Header = () => {
       })
       .then(() => {
         dispatch(logOutUser());
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const test = () => {
-    axios
-      .get("/api/dpo/createtoken")
-      .then((res) => {
-        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);

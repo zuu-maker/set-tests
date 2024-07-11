@@ -7,7 +7,7 @@ function Result({ answers, questions, score }) {
       <div className="flex items-center justify-between">
         <h2>Quiz Results</h2>
         <div>
-          Score {score} of {questions.length}
+          Score {score * 10} of {questions.length * 10}
         </div>
       </div>
       <div className="space-y-4">
@@ -18,26 +18,6 @@ function Result({ answers, questions, score }) {
             index={index}
             question={question}
           />
-          // <div className="shadow-lg p-2 rounded-md" key={index}>
-          //   <p>
-          //     <strong>Question {index + 1}:</strong> {question.text}
-          //   </p>
-          //   <p>
-          //     <strong>Your Answer:</strong>{" "}
-          //     {Array.isArray(answers[question.id])
-          //       ? answers[question.id].join(", ")
-          //       : answers[question.id]}
-          //   </p>
-          //   <p>
-          //     <strong>Correct Answer:</strong>{" "}
-          //     {Array.isArray(question.correctAnswer)
-          //       ? question.correctAnswer.join(", ")
-          //       : question.correctAnswer}
-          //   </p>
-          //   <p>
-          //     <strong>Explanation:</strong> {question.explanation}
-          //   </p>
-          // </div>
         ))}
       </div>
     </div>

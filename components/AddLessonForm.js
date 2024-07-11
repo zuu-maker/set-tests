@@ -2,7 +2,7 @@ import React from "react";
 import { Line } from "rc-progress";
 
 const AddLessonForm = ({ values, handleOnChange, progress }) => {
-  const { title, link } = values;
+  const { title, link, year } = values;
   return (
     <div className=" text-sm text-gray-500">
       <form className="">
@@ -19,6 +19,14 @@ const AddLessonForm = ({ values, handleOnChange, progress }) => {
           value={link}
           type="text"
           name="link"
+          placeholder="title in lowercase should be unique"
+          className="mb-2 block px-1 w-full border-2 border-gray-300 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        <input
+          onChange={handleOnChange}
+          value={year}
+          type="text"
+          name="year"
           placeholder="title in lowercase should be unique"
           className="mb-2 block px-1 w-full border-2 border-gray-300 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />

@@ -38,6 +38,14 @@ function Question({
     setUserAnswer(answer);
   }, [id]);
 
+  function checkStringInArray(array, searchString) {
+    // Check if the searchString exists in this array
+    var exists = array.includes(searchString);
+
+    // Return the result
+    return exists;
+  }
+
   const handleAnswerChange = (answer) => {
     console.log(answer);
     if (typeof answer === "string") {
@@ -51,15 +59,19 @@ function Question({
 
     console.log("answer " + answer);
 
-    // if (showFeedback) {
-    //   console.log(showFeedback);
-    //   return;
-    // }
     setUserAnswer(answer);
     onAnswerChange(id, answer);
-    const correct = Array.isArray(correctAnswer)
-      ? correctAnswer.sort().join() === answer.sort().join()
-      : correctAnswer === answer;
+    let correct;
+    if (Array.isArray(correctAnswer)) {
+      correct = correctAnswer.sort().join() === answer.sort().join();
+    } else {
+      var acceptedAnswers = correctAnswer.split("/");
+      if (acceptedAnswers.length > 1) {
+        correct = checkStringInArray(acceptedAnswers, answer);
+      } else {
+        correct = correctAnswer === answer;
+      }
+    }
     console.log("correct " + correct);
     setIsCorrect(correct);
   };

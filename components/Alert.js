@@ -46,7 +46,7 @@ function Alert({ isCorrect, explanation, answer }) {
       </div>
 
       <div className="text-sm font-medium px-2 py-4 w-full overflow-y-scroll max-h-[18rem]">
-        <p>
+        <p className="capitalize">
           <strong>Expected Answer:</strong>
           {newAnswer}
         </p>

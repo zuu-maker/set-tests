@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
 import { db, auth } from "@/firebase";
-import { ClipLoader } from "react-spinners";
+import { ClipLoader, ScaleLoader } from "react-spinners";
 
 const AuthCheck = ({ children }) => {
   const dispatch = useDispatch();
@@ -23,7 +23,6 @@ const AuthCheck = ({ children }) => {
                   verified: true,
                 });
               }
-              console.log(doc);
 
               dispatch(
                 setUser({
@@ -37,13 +36,12 @@ const AuthCheck = ({ children }) => {
                   subscribedBefore: doc.subscribedBefore,
                 })
               );
+              setLoader(false);
             }
           })
           .catch((error) => {
             console.log(error);
             console.log("error loading");
-          })
-          .finally(() => {
             setLoader(false);
           });
       } else {
@@ -52,8 +50,8 @@ const AuthCheck = ({ children }) => {
             _id: "",
           })
         );
+        setLoader(false);
       }
-      setLoader(false);
     });
 
     return () => unsubscribe();

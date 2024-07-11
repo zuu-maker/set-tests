@@ -6,10 +6,11 @@ import WhyUs from "@/components/WhyUs";
 import Faq from "@/components/Faq";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
+import AuthCheck from "@/components/auth/AuthCheck";
 
 export default function Home() {
   return (
-    <main>
+    <AuthCheck>
       <Head>
         <title>Sirius Educational Trust</title>
         <link rel="icon" href="/favicon.ico" />
@@ -24,6 +25,6 @@ export default function Home() {
         <Faq />
       </div>
       <Footer />
-    </main>
+    </AuthCheck>
   );
 }
