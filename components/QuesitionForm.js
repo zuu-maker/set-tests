@@ -66,7 +66,7 @@ function QuesitionForm({
     let _answers = values.correctAnswer;
 
     _answers = _answers.filter((item) => item !== answer);
-    setValues((prev) => ({ ...prev, options: _answers }));
+    setValues((prev) => ({ ...prev, correctAnswer: _answers }));
   };
 
   return (
@@ -155,13 +155,13 @@ function QuesitionForm({
           {(values.type === "range" ||
             values.type === "multiple" ||
             values.type === "multiselect") && (
-            <div className="mb-4">
+            <div className="">
               <div className="flex space-x-3 items-center">
                 <input
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
                   type="text"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-gray-50 mt-6 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Option"
                 />
                 <svg
@@ -170,7 +170,7 @@ function QuesitionForm({
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="size-8 text-blue-500 cursor-pointer hover:scale-105"
+                  className="size-8 mt-6 text-blue-500 cursor-pointer hover:scale-105"
                   onClick={addOption}
                 >
                   <path

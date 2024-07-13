@@ -18,9 +18,17 @@ function ResultCard({ answers, question, index }) {
           ? question.correctAnswer.join(", ")
           : question.correctAnswer}
       </p>
-      <p>
-        <strong>Explanation:</strong> {question.explanation}
-      </p>
+      <div>
+        <p>
+          <strong>Explanation:</strong>
+        </p>
+        <div
+          className="prose text-sm p-2 max-h-[18rem]"
+          dangerouslySetInnerHTML={{
+            __html: question.explanation,
+          }}
+        />
+      </div>
     </div>
   );
 }

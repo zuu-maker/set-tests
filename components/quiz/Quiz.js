@@ -6,9 +6,9 @@ import { FadeLoader } from "react-spinners";
 import Overlay from "@/components/quiz/Overlay";
 import toast from "react-hot-toast";
 
-// make results look better
-// test the quiz
+//make results look better
 //add results record
+//student charts
 
 function Quiz({ id }) {
   const [test, setTest] = useState(null);
@@ -98,7 +98,14 @@ function Quiz({ id }) {
   const currentQuestion = questions[currentQuestionIndex];
   console.log(currentQuestion);
   if (showResult) {
-    return <Result answers={answers} questions={questions} score={score} />;
+    return (
+      <Result
+        answers={answers}
+        quizId={id.split("-")[1]}
+        questions={questions}
+        score={score}
+      />
+    );
   }
 
   return (
