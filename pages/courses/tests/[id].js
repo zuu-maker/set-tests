@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import QuesitionForm from "../../../components/QuesitionForm";
 import AdminQuestion from "@/components/AdminQuestion";
 import QuestionModal from "@/components/QuestiomModal";
+import { v4 as uuidv4 } from "uuid";
 
 const initialValues = {
   type: "input",
@@ -21,7 +22,6 @@ const initialValues = {
 };
 
 // TODO:
-// -make tests reachable
 // -fix id issue
 // -add image upload
 // -add graph analysis
@@ -57,13 +57,9 @@ function TestView() {
   };
 
   function addQuestion() {
-    if (questions.length >= 15) {
-      toast.error("Max question length reached.");
-      return;
-    }
-
     let _values = { ...values, explanation: explanation };
-    _values.id = questions.length + 1;
+    _values.id = uuidv4();
+    // _values.id = questions.length + 1;
     console.log(_values);
 
     setQuestions((prev) => [...prev, _values]);
@@ -80,11 +76,6 @@ function TestView() {
   }
 
   function removeQuestion(valueToRemove) {
-    if (valueToRemove != questions[questions.length - 1]) {
-      toast.error("Delete from the bottom up.");
-      return;
-    }
-
     let _questions = questions;
     _questions = _questions.filter((item) => item !== valueToRemove);
 

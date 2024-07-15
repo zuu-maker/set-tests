@@ -22,6 +22,8 @@ function Quiz({ id }) {
   const [loader, setLoader] = useState(true);
   const [visible, setVisible] = useState(false);
 
+  console.log("answes", answers);
+
   useEffect(() => {
     db.collection("Courses")
       .doc(id.split("-")[0])
