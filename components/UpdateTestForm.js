@@ -2,7 +2,7 @@ import React from "react";
 import { Line } from "rc-progress";
 
 const UpdateTestForm = ({ current, handleOnChange, progress }) => {
-  const { title, link } = current;
+  const { title, link, year } = current;
   return (
     <div className=" text-sm text-gray-500">
       <form className="">
@@ -20,6 +20,14 @@ const UpdateTestForm = ({ current, handleOnChange, progress }) => {
           type="text"
           name="link"
           placeholder="title in lowercase should be unique"
+          className="mb-2 block px-1 w-full border-2 border-gray-300 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        <input
+          onChange={handleOnChange}
+          value={year}
+          type="text"
+          name="year"
+          placeholder="Year"
           className="mb-2 block px-1 w-full border-2 border-gray-300 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
 

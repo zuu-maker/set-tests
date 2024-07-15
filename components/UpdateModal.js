@@ -22,7 +22,12 @@ const UpdateModal = ({
   const [progress, setProgress] = useState(0);
 
   const handleOnChange = (e) => {
-    setCurrent((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    let item = e.target.value;
+    if (e.target.name == "year") {
+      item = Number(e.target.value);
+    }
+
+    setCurrent((prev) => ({ ...prev, [e.target.name]: item }));
   };
 
   const updateTest = async () => {
