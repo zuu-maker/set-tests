@@ -1,5 +1,5 @@
 import React from "react";
-import Quiz from "../../components/quiz/Quiz";
+import Quiz from "@/components/quiz/Quiz";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
 import { useParams } from "next/navigation";

@@ -8,6 +8,7 @@ import { getTestInVerify } from "@/utils/test";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import firebase from "firebase";
+import { FadeLoader } from "react-spinners";
 
 function Admin() {
   const [transactions, setTransactions] = useState([]);
@@ -178,88 +179,96 @@ function Admin() {
       <div className="p-4 xl:ml-80">
         <AdminNav />
         <div className="mt-12">
-          <AdminStats
-            transactions={completedTransactions}
-            amount={amount}
-            courses={courses}
-            users={users}
-          />
-          <div className="relative overflow-x-auto">
-            <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
-              Transcations
-            </h6>
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Customer
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Email
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Phone
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Date
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Amount
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Status
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactions.map((item) => (
-                  <tr key={item.id} className="bg-white border-b">
-                    {/* <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                    >
-                      {item.test.title}
-                    </th> */}
-                    <td className="px-6 py-4">{item.user.name}</td>
-                    <td className="px-6 py-4">{item.user.email}</td>
-                    <td className="px-6 py-4">{item.user.phone}</td>
-                    <td className="px-6 py-4">
-                      {item.createdAt.toDate().toISOString().split("T")[0]}
-                    </td>
-                    <td className="px-6 py-4">
-                      {`ZMW ${new Intl.NumberFormat().format(item.amount)}`}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div
-                        className={`${
-                          item.status === "Paid"
-                            ? "bg-green-200"
-                            : "bg-yellow-200"
-                        } px-6 py-0 w-fit`}
-                      >
-                        {item.status}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() =>
-                          verify(item.test.id, item.user._id, item.id)
-                        }
-                        disabled={item.status === "Paid" || loading}
-                        className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
-                      >
-                        Verify
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <Paginate page={page} prev={prev} next={next} />
+          {loader ? (
+            <div className="h-screen w-full flex items-center justify-center">
+              <FadeLoader color="#00FFFF" />
+            </div>
+          ) : (
+            <div>
+              <AdminStats
+                transactions={completedTransactions}
+                amount={amount}
+                courses={courses}
+                users={users}
+              />
+              <div className="relative overflow-x-auto">
+                <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  Transcations
+                </h6>
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
+                    <tr>
+                      <th scope="col" className="px-6 py-3">
+                        Customer
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Email
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Phone
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Date
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Amount
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Status
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transactions.map((item) => (
+                      <tr key={item.id} className="bg-white border-b">
+                        {/* <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                        >
+                          {item.test.title}
+                        </th> */}
+                        <td className="px-6 py-4">{item.user.name}</td>
+                        <td className="px-6 py-4">{item.user.email}</td>
+                        <td className="px-6 py-4">{item.user.phone}</td>
+                        <td className="px-6 py-4">
+                          {item.createdAt.toDate().toISOString().split("T")[0]}
+                        </td>
+                        <td className="px-6 py-4">
+                          {`ZMW ${new Intl.NumberFormat().format(item.amount)}`}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div
+                            className={`${
+                              item.status === "Paid"
+                                ? "bg-green-200"
+                                : "bg-yellow-200"
+                            } px-6 py-0 w-fit`}
+                          >
+                            {item.status}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() =>
+                              verify(item.test.id, item.user._id, item.id)
+                            }
+                            disabled={item.status === "Paid" || loading}
+                            className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
+                          >
+                            Verify
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Paginate page={page} prev={prev} next={next} />
+            </div>
+          )}
         </div>
       </div>
     </AdminAuth>

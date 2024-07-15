@@ -24,27 +24,31 @@ const MyCourse = () => {
   // TODO: protect this page so unsubscribed users can not access it
 
   useEffect(() => {
-    if (id && user && user._id && user.activeSubscription) {
-      db.collection("Courses")
-        .doc(id)
-        .get()
-        .then((doc) => {
-          console.log(doc.data());
-          setCourse(doc.data());
-          db.collection("Courses")
-            .doc(id)
-            .collection("Tests")
-            .onSnapshot((snapshot) => {
-              let _tests = [];
-              snapshot.forEach((snap) => {
-                _tests.push(snap.data());
-              });
-              setCurrent(_tests[0]);
-              setTests(_tests);
-              setLoader(false);
+    // TODO: uncomment this
+    // if (id && user && user._id && user.activeSubscription) {
+    db.collection("Courses")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        console.log(doc.data());
+        setCourse(doc.data());
+        db.collection("Courses")
+          .doc(id)
+          .collection("Tests")
+          .orderBy("year")
+          .orderBy("title")
+          .onSnapshot((snapshot) => {
+            let _tests = [];
+            snapshot.forEach((snap) => {
+              _tests.push(snap.data());
             });
-        });
-    }
+            console.log(_tests);
+            setCurrent(_tests[0]);
+            setTests(_tests);
+            setLoader(false);
+          });
+      });
+    // }
   }, [id]);
 
   return (
@@ -61,7 +65,8 @@ const MyCourse = () => {
             </div>
           ) : (
             <div className="container mx-auto px-8">
-              {user && user._id.length > 0 && user.activeSubscription ? (
+              {/* user && user._id.length > 0 && user.activeSubscription  */}
+              {true ? (
                 <div>
                   <div className="shadow-lg p-4 bg-gradient-to-br text-white font-sans from-gray-800 to-gray-900">
                     <h2 className=" text-xl sm:text-2xl ">
@@ -99,7 +104,7 @@ const MyCourse = () => {
                     {tests.map((item, i) => (
                       <LessonListStudent
                         key={i}
-                        course={course?.slug}
+                        courseId={id}
                         lesson={item}
                         index={i}
                         setCurrent={setCurrent}

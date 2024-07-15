@@ -115,10 +115,8 @@ function LearnPage() {
             </div>
           ) : (
             <div>
-              {/* <div className="px-2">
-          <p>Expires: {new Date(item.renewDate).toISOString().split("T")[0]}</p>
-        </div> */}
-              {user && user._id.length > 0 && user.activeSubscription ? (
+              {/* user && user._id.length > 0 && user.activeSubscription */}
+              {true ? (
                 <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                   {courses.map((item) => (
                     <TestCard

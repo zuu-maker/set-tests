@@ -13,7 +13,7 @@ const Modal = ({ visible, setVisible, id }) => {
   const [values, setValues] = useState({
     title: "",
     link: "",
-    year: 0,
+    year: "",
   });
 
   // TODO: remove pdf

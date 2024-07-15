@@ -20,6 +20,12 @@ const initialValues = {
   options: [],
 };
 
+// TODO:
+// -make tests reachable
+// -fix id issue
+// -add image upload
+// -add graph analysis
+
 function TestView() {
   const [loader, setLoader] = useState(true);
   const [test, setTest] = useState(null);
