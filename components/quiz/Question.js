@@ -5,6 +5,7 @@ import AnswerText from "./AnswerText";
 import MultipleChoice from "./MultipleChoice";
 import MultiSelect from "./MultiSelect";
 import AlertComponent from "../Alert";
+import Image from "next/image";
 
 function Question({
   question,
@@ -84,11 +85,12 @@ function Question({
       </h2>
       {image && (
         <div className="flex justify-center p-2">
-          <img
+          <Image src={image.url} alt={image.ref} width={400} height={50} />
+          {/* <img
             className="max-h-[136px] w-full bg-contain"
             src={image.url}
             alt={image.ref}
-          />
+          /> */}
         </div>
       )}
       {type === "input" && (
