@@ -79,8 +79,18 @@ function Question({
   return (
     <div>
       <p>{}.</p>
-      <h2>{currentQuestionIndex + 1 + "." + text}</h2>
-      {image && <img className="max-h-[136px]" src={image} alt="Question" />}
+      <h2 className="text-base capitalize">
+        {currentQuestionIndex + 1 + ". " + text}
+      </h2>
+      {image && (
+        <div className="flex justify-center p-2">
+          <img
+            className="max-h-[136px] w-full bg-contain"
+            src={image.url}
+            alt={image.ref}
+          />
+        </div>
+      )}
       {type === "input" && (
         <AnswerInput
           questionId={id}

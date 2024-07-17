@@ -17,7 +17,7 @@ function TextEditor({ value, onChange }) {
 
   return (
     <ReactQuill
-      className="h-72"
+      className="h-72 pb-4"
       theme="snow"
       value={value}
       onChange={onChange}

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
-import { db } from "@/firebase";
-import Link from "next/link";
+import { db, storageBucket } from "@/firebase";
 import AdminAuth from "@/components/auth/AdminPage";
 import { FadeLoader } from "react-spinners";
 import toast from "react-hot-toast";
@@ -11,6 +10,7 @@ import QuesitionForm from "../../../components/QuesitionForm";
 import AdminQuestion from "@/components/AdminQuestion";
 import QuestionModal from "@/components/QuestiomModal";
 import { v4 as uuidv4 } from "uuid";
+import Resizer from "react-image-file-resizer";
 
 const initialValues = {
   type: "input",
@@ -39,6 +39,12 @@ function TestView() {
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState(-1);
 
+  // const [image, setImage] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState("");
+  const [progress, setProgress] = useState("");
+  const [buttonText, setButtonText] = useState("Upload Image");
+
   console.log(questions);
   const { id } = useParams();
 
@@ -58,6 +64,7 @@ function TestView() {
 
   function addQuestion() {
     let _values = { ...values, explanation: explanation };
+
     _values.id = uuidv4();
     // _values.id = questions.length + 1;
     console.log(_values);
@@ -71,6 +78,8 @@ function TestView() {
       explanation: "",
       options: [],
     }));
+    setPreview("");
+    setButtonText("Upload Image");
     setExplanation("");
     if (!isChanges) setIsChanegs(true);
   }
@@ -85,19 +94,27 @@ function TestView() {
 
   function editQuestionModal(_question, _index) {
     setCurrent(_question);
+    if (_question.image) {
+      setPreview(_question.image.url);
+      setButtonText(_question.image.ref);
+    }
     setIndex(_index);
     setVisible(true);
   }
 
   function editQuestion(_editedQuestion) {
+    console.log(_editedQuestion);
+
     let _questions = questions;
     _questions[index] = { ..._editedQuestion, explanation: editExplanation };
     setQuestions(_questions);
     setExplanation("");
+    setPreview("");
+    setButtonText("Upload Image");
     setVisible(false);
     setIndex(-1);
-    setIsChanegs(true);
     // setCurrent(null);
+    setIsChanegs(true);
   }
 
   function handleSubmit() {
@@ -120,6 +137,88 @@ function TestView() {
       });
   }
 
+  const handleImage = (e, edit) => {
+    setButtonText("Uploading...");
+    let toastId = toast.loading("uploading image...");
+    setUploading(true);
+    let file = e.target.files[0];
+    console.log(edit);
+
+    setPreview(window.URL.createObjectURL(file));
+    setButtonText(file.name);
+
+    console.log(preview);
+    const storageRef = storageBucket.ref(file.name);
+    Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
+      storageRef.putString(uri, "data_url").on(
+        "state_changed",
+        (snap) => {
+          let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+          setProgress(percentage);
+        },
+        (err) => {
+          console.log(err);
+          toast.dismiss(toastId);
+          toast.error("upload Error");
+          setUploading(false);
+        },
+        async () => {
+          const url = await storageRef.getDownloadURL();
+          toast.dismiss(toastId);
+          toast.success("Upload complete");
+          if (edit) {
+            setCurrent((prev) => ({
+              ...prev,
+              image: {
+                public_id: file.name.split(".")[0],
+                ref: file.name,
+                url,
+              },
+            }));
+          } else {
+            setValues((prev) => ({
+              ...prev,
+              image: {
+                public_id: file.name.split(".")[0],
+                ref: file.name,
+                url,
+              },
+            }));
+          }
+          setUploading(false);
+        }
+      );
+    });
+  };
+
+  const handleRemove = (image) => {
+    console.log(image);
+    setButtonText("Processing...");
+    setUploading(true);
+
+    const storageRef = storageBucket.ref(image.ref);
+
+    storageRef
+      .delete()
+      .then(() => {
+        setValues((prev) => ({
+          ...prev,
+          image: null,
+        }));
+        setPreview("");
+        setButtonText("Upload Another Image");
+        toast.success("Image Deleted");
+        setUploading(false);
+        // setValues({ ...values, uploading: false });
+      })
+      .catch((error) => {
+        setButtonText("Try again");
+        setUploading(false);
+        toast.error("failed to delete");
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     db.collection("Courses")
       .doc(id.split("-")[0])
@@ -130,6 +229,9 @@ function TestView() {
         if (doc.data().questions) {
           setQuestions(doc.data().questions);
         }
+        // setPreview(doc.data().image.url);
+        // setButtonText(doc.data().image.ref);
+        // setImage(doc.data().image);
         setTest(doc.data());
         setLoader(false);
       })
@@ -156,11 +258,11 @@ function TestView() {
                   <div className="flex w-full flex-col items-center space-x-4">
                     <div className="flex w-full items-center justify-between ">
                       <h4 className="text-2xl mb-2 mt-2 capitalize font-bold text-cyan-500">
-                        {test.title}
+                        {test?.title}
                       </h4>
                       <h4 className="text-xl mb-2 mt-2 font-semibold text-cyan-400">
-                        {test && test.questions && test.questions.length > 0
-                          ? test.questions.length + " Question(s)"
+                        {questions.length > 0
+                          ? questions.length + " Question(s)"
                           : 0 + " Questions"}
                       </h4>
                     </div>
@@ -173,6 +275,10 @@ function TestView() {
               <div className="flex flex-col">
                 <div className="w-1/2">
                   <QuesitionForm
+                    handleImage={handleImage}
+                    preview={preview}
+                    buttonText={buttonText}
+                    handleRemove={handleRemove}
                     setValues={setValues}
                     setExplanation={setExplanation}
                     explanation={explanation}
@@ -181,6 +287,7 @@ function TestView() {
                     handleSubmit={handleSubmit}
                     values={values}
                     isLoading={isLoading}
+                    edit={false}
                   />
                 </div>
                 <div className="w-1/2 mt-12">
@@ -240,6 +347,13 @@ function TestView() {
         setVisible={setVisible}
         handleChange={handleChange}
         handleExplanationChange={handleExplanationChange}
+        handleImage={handleImage}
+        preview={preview}
+        buttonText={buttonText}
+        setButtonText={setButtonText}
+        setPreview={setPreview}
+        handleRemove={handleRemove}
+        edit={true}
       />
     </AdminAuth>
   );

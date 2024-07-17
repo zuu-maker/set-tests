@@ -108,9 +108,13 @@ function CreateTest() {
   const handleRemove = () => {
     setButtonText("Processing...");
     setUploading(true);
-    removeImage(image)
+
+    const storageRef = storageBucket.ref(image.ref);
+
+    storageRef
+      .delete()
       .then(() => {
-        setImage({});
+        setImage(null);
         setPreview("");
         setButtonText("Upload Another Image");
         toast.success("Image Deleted");

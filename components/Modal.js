@@ -27,6 +27,7 @@ const Modal = ({ visible, setVisible, id }) => {
   };
 
   const handleAddLesson = () => {
+    setUploading(true);
     db.collection("Courses")
       .doc(id)
       .collection("Tests")
@@ -42,16 +43,21 @@ const Modal = ({ visible, setVisible, id }) => {
           .then(() => {
             setValues({
               ...values,
+              year: "",
               title: "",
               link: "",
             });
+            setUploading(false);
+
             setVisible(false);
+            toast.success("Test added successfully");
           });
-        toast.success("Lesson had been added");
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Failed to Add lesson");
+        setUploading(false);
+
+        toast.error("Failed to Add test");
       });
   };
 
@@ -109,12 +115,14 @@ const Modal = ({ visible, setVisible, id }) => {
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
-                    disabled={!values.title || !values.link || !values.year}
+                    disabled={
+                      !values.title || !values.link || !values.year || uploading
+                    }
                     type="button"
                     className="inline-flex disabled:opacity-60 w-full justify-center rounded-md border border-transparent text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 px-4 py-2 text-base font-medium shadow-sm hover:bg-gradient-to-br focus:outline-none focus:ring-teal-300 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={handleAddLesson}
                   >
-                    Add
+                    {uploading ? "Uploading.." : "Add"}
                   </button>
 
                   <button

@@ -25,7 +25,7 @@ const options = [
   },
 ];
 
-function QuesitionForm({
+function EditQuesitionForm({
   values,
   setValues,
   setExplanation,
@@ -35,11 +35,9 @@ function QuesitionForm({
   preview,
   buttonText,
   handleRemove,
-  edit,
 }) {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState("");
-  // const [preview, setPreview] = useState(values?.image?.url || "");
 
   const addOption = () => {
     let _options = [...new Set(values.options)];
@@ -201,14 +199,14 @@ function QuesitionForm({
             </div>
           )}
 
-          <div className="flex space-x-3 mt-4">
+          <div className="flex space-x-3">
             <label className="text-white flex justify-center h-710 items-center w-full bg-gradient-to-r flex-grow from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               {buttonText}
               <input
                 hidden
                 type="file"
                 name="image"
-                onChange={(e) => handleImage(e, edit)}
+                onChange={(e) => handleImage(e, true)}
                 accept="image/*"
               />
             </label>
@@ -217,7 +215,7 @@ function QuesitionForm({
               <div className="relative">
                 <img src={preview} className="w-16 h-14 rounded" alt="" />
                 <div
-                  onClick={() => handleRemove(values.image)}
+                  onClick={handleRemove}
                   className="inline-flex absolute cursor-pointer -top-2 -right-2 justify-center items-center w-7 h-7 text-md font-bold text-white bg-red-500 rounded-full border-2 border-white "
                 >
                   x
@@ -231,4 +229,4 @@ function QuesitionForm({
   );
 }
 
-export default QuesitionForm;
+export default EditQuesitionForm;

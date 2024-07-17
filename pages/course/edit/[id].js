@@ -20,7 +20,7 @@ const initialValues = {
 
 function EditCourse() {
   const [values, setValues] = useState(initialValues);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [tests, setTests] = useState([]);
   const [current, setCurrent] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -97,6 +97,7 @@ function EditCourse() {
             ref: file.name,
             url,
           });
+          setPreview(url);
           toast.dismiss(toastId);
           toast.success("upload complete");
         }

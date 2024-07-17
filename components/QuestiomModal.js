@@ -15,6 +15,13 @@ const QuestionModal = ({
   editQuestion,
   explanation,
   setExplanation,
+  handleImage,
+  preview,
+  buttonText,
+  setPreview,
+  setButtonText,
+  handleRemove,
+  edit,
 }) => {
   const cancelButtonRef = useRef(null);
 
@@ -84,6 +91,11 @@ const QuestionModal = ({
                     handleChange={handleChange}
                     explanation={explanation}
                     setExplanation={setExplanation}
+                    handleImage={handleImage}
+                    preview={preview}
+                    buttonText={buttonText}
+                    handleRemove={handleRemove}
+                    edit={edit}
                   />
                 </div>
                 <div className="bg-gray-50 px-4 pb-3 mt-12 sm:flex sm:flex-row-reverse sm:px-6">
@@ -92,13 +104,17 @@ const QuestionModal = ({
                     className="inline-flex disabled:opacity-60 w-full justify-center rounded-md border border-transparent text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 px-4 py-2 text-base font-medium shadow-sm hover:bg-gradient-to-br focus:outline-none focus:ring-teal-300 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => editQuestion(current, index)}
                   >
-                    Edit
+                    Save
                   </button>
 
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => setVisible(false)}
+                    onClick={() => {
+                      setVisible(false);
+                      setButtonText("Upload Image");
+                      setPreview("");
+                    }}
                     ref={cancelButtonRef}
                   >
                     Cancel
