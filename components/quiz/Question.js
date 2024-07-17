@@ -85,7 +85,13 @@ function Question({
       </h2>
       {image && (
         <div className="flex justify-center p-2">
-          <Image src={image.url} alt={image.ref} width={400} height={50} />
+          <Image
+            src={image.url}
+            alt={image.ref}
+            width={400}
+            height={400}
+            style={{ objectFit: "cover" }}
+          />
           {/* <img
             className="max-h-[136px] w-full bg-contain"
             src={image.url}

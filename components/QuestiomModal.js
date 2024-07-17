@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import AddLessonForm from "./AddLessonForm";
-import { toast } from "react-hot-toast";
-import { db } from "@/firebase";
 import QuesitionForm from "./QuesitionForm";
 
 const QuestionModal = ({

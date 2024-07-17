@@ -39,14 +39,17 @@ function LearnPage() {
   };
 
   useEffect(() => {
-    let unsubscribe = db.collection("Courses").onSnapshot((querySnapShot) => {
-      let _courses = [];
-      querySnapShot.forEach((snap) => {
-        _courses.push(snap.data());
+    let unsubscribe = db
+      .collection("Courses")
+      .where("publish", "==", true)
+      .onSnapshot((querySnapShot) => {
+        let _courses = [];
+        querySnapShot.forEach((snap) => {
+          _courses.push(snap.data());
+        });
+        setCourses(_courses);
+        setLoader(false);
       });
-      setCourses(_courses);
-      setLoader(false);
-    });
 
     return () => unsubscribe();
   }, []);

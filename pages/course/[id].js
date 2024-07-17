@@ -82,7 +82,7 @@ const CourseView = () => {
         publish: false,
       })
       .then(() => {
-        toast.success("Course is now live!!");
+        toast.success("Course is not live");
       })
       .catch((error) => {
         console.log(error);
