@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Option from "@/components/Option";
 import TextEditor from "@/components/TextEditor";
 
@@ -39,7 +39,6 @@ function QuesitionForm({
 }) {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState("");
-  // const [preview, setPreview] = useState(values?.image?.url || "");
 
   const addOption = () => {
     let _options = [...new Set(values.options)];

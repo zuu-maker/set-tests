@@ -70,15 +70,15 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
         </div>
       </div>
       <p>
-        <strong>Question Type:</strong>
+        <strong className="mr-1">Question Type:</strong>
         {question.type}
       </p>
       <p>
-        <strong>Question Text:</strong>
+        <strong className="mr-1">Question Text:</strong>
         {question.text}
       </p>
       <p>
-        <strong>Question Explanation:</strong>
+        <strong className="mr-1">Question Explanation:</strong>
         {/* {question.explanation} */}
         <div dangerouslySetInnerHTML={{ __html: question.explanation }} />
       </p>
@@ -87,20 +87,20 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
         question.type === "multiple" ||
         question.type === "multiselect") && (
         <p>
-          <strong>Options:</strong>
+          <strong className="mr-1">Options:</strong>
           {optionsText}
         </p>
       )}
 
       {question.type !== "multiselect" && (
         <p>
-          <strong>Corret Answer:</strong>
+          <strong className="mr-1">Corret Answer:</strong>
           {question.correctAnswer}
         </p>
       )}
       {question.type === "multiselect" && (
         <p>
-          <strong>Corret Answers:</strong>
+          <strong className="mr-1">Corret Answers:</strong>
           {answersText}
         </p>
       )}

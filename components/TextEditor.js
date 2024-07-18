@@ -1,27 +1,94 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  lazy,
+  Suspense,
+} from "react";
+import { storageBucket } from "@/firebase";
+import toast from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
-import dynamic from "next/dynamic";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = lazy(() => import("react-quill"));
 
 function TextEditor({ value, onChange }) {
-  const [mounted, setMounted] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const quillRef = useRef(null);
 
   useEffect(() => {
-    setMounted(true);
+    // Set the state to true if the window object is available (meaning we are on the client)
+    if (process.title === "browser") {
+      setIsClient(true);
+    }
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
+  console.log(quillRef.current);
+  const handleImageInserted = async (file) => {
+    let toastId = toast.loading("Uploading...");
+    try {
+      const storageRef = storageBucket.ref();
+      const fileRef = storageRef.child(file.name);
+      await fileRef.put(file);
+      const fileUrl = await fileRef.getDownloadURL();
+      toast.dismiss(toastId);
+      toast.success("Image uploaded successfully");
+      // console.log(quillRef.current);
+      const quill = quillRef.current.getEditor();
+      const range = quill.getSelection();
+      quill.insertEmbed(range.index, "image", fileUrl);
+    } catch (error) {
+      console.error("Error handling image insertion:", error);
+      toast.dismiss(toastId);
+      toast.success("Failed to upload image");
+    }
+  };
+
+  const openImageFileDialog = () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.onchange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        handleImageInserted(file);
+      }
+    };
+    input.click();
+  };
+
+  const quillModules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          ["bold", "italic", "underline", "strike"],
+          [{ header: "1" }, { header: "2" }],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link", "image", "youtube"],
+        ],
+        handlers: {
+          image: openImageFileDialog,
+        },
+      },
+    }),
+    [isClient]
+  );
 
   return (
-    <ReactQuill
-      className="h-72 pb-4"
-      theme="snow"
-      value={value}
-      onChange={onChange}
-    />
+    <div>
+      {isClient && (
+        <Suspense fallback={<div>Loading editor...</div>}>
+          <ReactQuill
+            ref={quillRef}
+            className="h-72 pb-10"
+            theme="snow"
+            value={value}
+            onChange={onChange}
+            modules={quillModules}
+          />
+        </Suspense>
+      )}
+    </div>
   );
 }
 
