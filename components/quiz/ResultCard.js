@@ -12,18 +12,20 @@ function ResultCard({ answers, question, index }) {
           ? answers[question.id].join(", ")
           : answers[question.id]}
       </p>
-      <p>
-        <strong>Correct Answer:</strong>{" "}
-        {Array.isArray(question.correctAnswer)
-          ? question.correctAnswer.join(", ")
-          : question.correctAnswer}
-      </p>
+      {question && question.type == +"text" && (
+        <p>
+          <strong>Correct Answer:</strong>{" "}
+          {Array.isArray(question.correctAnswer)
+            ? question.correctAnswer.join(", ")
+            : question.correctAnswer}
+        </p>
+      )}
       <div>
         <p>
           <strong>Explanation:</strong>
         </p>
         <div
-          className="prose text-sm p-2 max-h-[18rem]"
+          className="prose text-sm p-2 h-fit"
           dangerouslySetInnerHTML={{
             __html: question.explanation,
           }}

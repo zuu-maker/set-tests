@@ -141,6 +141,7 @@ function Question({
 
       {showFeedback && (
         <AlertComponent
+          type={type}
           answer={question.correctAnswer}
           isCorrect={isCorrect}
           explanation={explanation}

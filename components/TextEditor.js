@@ -31,12 +31,13 @@ function TextEditor({ value, onChange }) {
       const fileRef = storageRef.child(file.name);
       await fileRef.put(file);
       const fileUrl = await fileRef.getDownloadURL();
-      toast.dismiss(toastId);
-      toast.success("Image uploaded successfully");
+
       // console.log(quillRef.current);
       const quill = quillRef.current.getEditor();
       const range = quill.getSelection();
       quill.insertEmbed(range.index, "image", fileUrl);
+      toast.dismiss(toastId);
+      toast.success("Image uploaded successfully");
     } catch (error) {
       console.error("Error handling image insertion:", error);
       toast.dismiss(toastId);

@@ -80,7 +80,7 @@ function QuesitionForm({
         <div className="flex w-full flex-col space-y-8 justify-between">
           <div className="flex flex-col">
             <label
-              for="options"
+              htmlFor="options"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Select a question type
@@ -107,6 +107,8 @@ function QuesitionForm({
             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Question"
           ></textarea>
+
+          <TextEditor value={explanation} onChange={setExplanation} />
 
           {values.type == "multiselect" ? (
             <div className="mb-4">
@@ -145,17 +147,19 @@ function QuesitionForm({
               </div>
             </div>
           ) : (
-            <input
-              name="correctAnswer"
-              value={values.correctAnswer}
-              onChange={handleChange}
-              type="text"
-              className="bg-gray-50 border capitalize border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Correct Answer"
-            />
+            <div>
+              {values.type != "text" && (
+                <input
+                  name="correctAnswer"
+                  value={values.correctAnswer}
+                  onChange={handleChange}
+                  type="text"
+                  className="bg-gray-50 border capitalize border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Correct Answer"
+                />
+              )}
+            </div>
           )}
-
-          <TextEditor value={explanation} onChange={setExplanation} />
 
           {(values.type === "range" ||
             values.type === "multiple" ||

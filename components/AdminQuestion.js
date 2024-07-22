@@ -77,11 +77,13 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
         <strong className="mr-1">Question Text:</strong>
         {question.text}
       </p>
-      <p>
-        <strong className="mr-1">Question Explanation:</strong>
-        {/* {question.explanation} */}
+      <div>
+        <p>
+          <strong className="mr-1">Question Explanation:</strong>
+          {/* {question.explanation} */}
+        </p>
         <div dangerouslySetInnerHTML={{ __html: question.explanation }} />
-      </p>
+      </div>
 
       {(question.type === "range" ||
         question.type === "multiple" ||

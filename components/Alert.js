@@ -24,7 +24,7 @@ This line is after the break.
     Another line of the indented code block.
 `;
 
-function Alert({ isCorrect, explanation, answer }) {
+function Alert({ isCorrect, explanation, answer, type }) {
   const [newAnswer, setNewAnswer] = useState("");
 
   useEffect(() => {
@@ -37,8 +37,10 @@ function Alert({ isCorrect, explanation, answer }) {
     <div className="shadow-lg rounded-lg w-full mt-10 pb-2" role="alert">
       <div
         className={`h-10 text-base font-bold p-2 max-h-40 text-white ${
-          isCorrect ? "bg-green-500" : "bg-red-500"
-        } w-full flex items-center`}
+          type === "text"
+            ? "bg-gray-500"
+            : `${isCorrect ? "bg-green-500" : "bg-red-500"}`
+        }   w-full flex items-center`}
       >
         <p>
           <span>{isCorrect ? "Correct" : "Incorrect"}</span>
@@ -50,7 +52,6 @@ function Alert({ isCorrect, explanation, answer }) {
           <strong>Expected Answer:</strong>
           {newAnswer}
         </p>
-        <strong>Explanation:</strong>
         <div
           className="prose text-sm p-2 max-h-[18rem]"
           dangerouslySetInnerHTML={{
