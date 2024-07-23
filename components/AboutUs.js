@@ -15,8 +15,8 @@ const AboutUs = () => {
             ABOUT
           </h4>
           <p className="text-gray-500">
-            Our mission is to assist applicants prepare and succeed in job
-            interviews.
+            Our mission is to assist candidates prepare and succeed in school
+            exams.
           </p>
         </div>
       </div>

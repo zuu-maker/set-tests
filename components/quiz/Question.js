@@ -80,9 +80,7 @@ function Question({
   return (
     <div>
       <p>{}.</p>
-      <h2 className="text-base capitalize">
-        {currentQuestionIndex + 1 + ". " + text}
-      </h2>
+      <h2 className="text-base ">{currentQuestionIndex + 1 + ". " + text}</h2>
       {image && (
         <div className="flex justify-center p-2">
           <Image

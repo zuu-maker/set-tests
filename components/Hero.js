@@ -46,8 +46,7 @@ export default function Hero() {
                     GAIN THE CONFIDENCE.
                   </h1>
                   <p className="mt-2 md:mt-6 text-lg leading-5 md:leading-8 text-gray-600 sm:text-center">
-                    Don't let a psychometric test stand between you and your
-                    dream job
+                    Grade 12 & GCE exam practice
                   </p>
                   <div className="mt-8 flex gap-x-4 sm:justify-center">
                     <Link

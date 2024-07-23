@@ -17,8 +17,8 @@ const Banner = ({ show }) => {
                   />
                 </span>
                 <p className="ml-3 truncate font-medium text-white">
-                  <span className="md:hidden">Psychometric Tests !!</span>
-                  <span className="hidden md:inline">Psychometric Tests!!</span>
+                  <span className="md:hidden">Online Exam Practice</span>
+                  <span className="hidden md:inline">Online Exam Practice</span>
                 </p>
               </div>
               <div className="order-3 mt-2 w-full flex-shrink-0 sm:order-2 sm:mt-0 sm:w-auto">

@@ -42,9 +42,23 @@ function Result({ answers, questions, score, quizId }) {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h2>Quiz Results</h2>
+        <h2 className="text-xl font-serif font-semibold">Quiz Results</h2>
         <div>
-          Score {score * 10} of {questions.length * 10}
+          <p
+            className={`text-lg font-semibold ${
+              (score / questions.length) * 100 > 80
+                ? "text-green-500"
+                : "text-red-500"
+            }`}
+          >
+            <span>
+              {(score / questions.length) * 100 > 80 ? "Pass  " : "Fail  "}
+            </span>
+            {Math.round((score / questions.length) * 100) + "%"}
+          </p>
+          <p>
+            Score {score * 10} of {questions.length * 10}
+          </p>
         </div>
       </div>
       <div className="space-y-4">

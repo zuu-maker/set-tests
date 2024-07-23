@@ -16,8 +16,7 @@ const Offer = () => {
           <p className="text-gray-500">
             We offer comprehensive tests that provide essential practice
             tailored to help candidates build up their confidence, knowledge and
-            skill set necessary to set them apart in the competitive Zambian job
-            market.
+            skill set necessary to set them apart.
           </p>
         </div>
       </div>

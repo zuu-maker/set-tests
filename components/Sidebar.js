@@ -191,7 +191,7 @@ function Sidebar() {
                 ></path>
               </svg>
               <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
-                Log Out
+                Sign Out
               </p>
             </button>
           </li>
