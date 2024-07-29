@@ -59,6 +59,7 @@ function Question({
     console.log(id);
 
     console.log("answer " + answer);
+    console.log(correctAnswer);
 
     setUserAnswer(answer);
     onAnswerChange(id, answer);
@@ -70,7 +71,7 @@ function Question({
       if (acceptedAnswers.length > 1) {
         correct = checkStringInArray(acceptedAnswers, answer);
       } else {
-        correct = correctAnswer === answer;
+        correct = correctAnswer.trim() === answer.trim();
       }
     }
     console.log("correct " + correct);
@@ -90,11 +91,6 @@ function Question({
             height={400}
             style={{ objectFit: "cover" }}
           />
-          {/* <img
-            className="max-h-[136px] w-full bg-contain"
-            src={image.url}
-            alt={image.ref}
-          /> */}
         </div>
       )}
       {type === "input" && (

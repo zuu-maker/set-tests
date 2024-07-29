@@ -45,6 +45,15 @@ function Quiz({ id }) {
       });
   }, [id]);
 
+  // useEffect(() => {
+  //   // TODO: uncomment this
+  //   if (id && user && user._id && user.activeSubscription) {
+  //     setShowQuestions(true);
+  //   } else {
+  //     setShowQuestions(false);
+  //   }
+  // }, [id]);
+
   const handleAnswerChange = (questionId, answer) => {
     const updatedAnswers = { ...answers, [questionId]: answer };
     console.log(updatedAnswers);
@@ -131,6 +140,7 @@ function Quiz({ id }) {
               </button>
             </div>
             <hr className="mt-4 mb-4 bg-gray-100" />
+
             <div className="border basis-5 flex-1 border-gray-100 p-6">
               {test.questions.length > 0 && (
                 <Question
@@ -146,6 +156,7 @@ function Quiz({ id }) {
                 />
               )}
             </div>
+
             <hr className="mt-4 mb-4" />
             <div className="basis-1">
               <div className="flex items-center justify-between">

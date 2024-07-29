@@ -218,7 +218,7 @@ function Register() {
                 disabled={!name || !email || !password || !city || !phone}
                 className="flex w-full justify-center rounded-md bg-cyan-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                {loading ? "Processing..." : "Register"}
+                {loading ? "Processing..." : "Sign Up"}
               </button>
             </div>
           </form>
@@ -229,7 +229,7 @@ function Register() {
               href="/login"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              login here
+              Sign In here
             </Link>
           </p>
         </div>

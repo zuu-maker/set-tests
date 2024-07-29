@@ -54,30 +54,30 @@ function LearnPage() {
     return () => unsubscribe();
   }, []);
 
-  // useEffect(() => {
-  //   if (user && user._id) {
-  //     db.collection("Users")
-  //       .doc(user._id)
-  //       .get()
-  //       .then((doc) => {
-  //         let _courses = [];
-  //         doc.data().tests.forEach((course) => {
-  //           console.log(course);
-  //           db.collection("Courses")
-  //             .doc(course.id)
-  //             .get()
-  //             .then((snap) => {
-  //               _courses.push({ ...course, ...snap.data() });
-  //             })
-  //             .then(() => {
-  //               setCourses(_courses);
-  //             });
-  //         });
-  //         setLoader(false);
-  //       });
-  //   }
-  //   // eslint-disable-next-line no-use-before-define
-  // }, [user]);
+  useEffect(() => {
+    if (user && user._id) {
+      db.collection("Users")
+        .doc(user._id)
+        .get()
+        .then((doc) => {
+          // let _courses = [];
+          // doc.data().tests.forEach((course) => {
+          //   console.log(course);
+          //   db.collection("Courses")
+          //     .doc(course.id)
+          //     .get()
+          //     .then((snap) => {
+          //       _courses.push({ ...course, ...snap.data() });
+          //     })
+          //     .then(() => {
+          //       setCourses(_courses);
+          //     });
+          // });
+          setLoader(false);
+        });
+    }
+    // eslint-disable-next-line no-use-before-define
+  }, [user]);
 
   const handleRenew = (test) => {
     if (!test.id || !user._id) return;
@@ -118,7 +118,7 @@ function LearnPage() {
             </div>
           ) : (
             <div>
-              {/* user && user._id.length > 0 && user.activeSubscription */}
+              {/* user && user._id.length > 0 && user.activeSubscription  */}
               {true ? (
                 <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                   {courses.map((item) => (

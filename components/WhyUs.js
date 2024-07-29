@@ -16,13 +16,14 @@ const WhyUs = () => {
               <li>Unlimited past papers </li>
               <li>Revision notes </li>
               <li>Full solutions and explanations</li>
+              <li>24/7 online access</li>
             </ol>
           </div>
 
           <div className="w-full space-y-8 shadow-md border border-gray-100 p-8 flex flex-col justify-center items-center bg-white">
             <ol className="font-medium list-disc text-gray-500">
-              <li>24/7 online access</li>
               <li>Affordable fee structure</li>
+              <li>Easy payment options</li>
             </ol>
             <div className="flex w-2/4 sm:w-1/4 items-center justify-between">
               <img src="/airmtncard.png" alt="" className="h-10" />

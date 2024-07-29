@@ -38,22 +38,24 @@ function Alert({ isCorrect, explanation, answer, type }) {
       <div
         className={`h-10 text-base font-bold p-2 max-h-40 text-white ${
           type === "text"
-            ? "bg-gray-500"
+            ? "bg-blue-500"
             : `${isCorrect ? "bg-green-500" : "bg-red-500"}`
         }   w-full flex items-center`}
       >
         <p>
-          <span>{isCorrect ? "Correct" : "Incorrect"}</span>
+          <span>
+            {type === "text" ? "Feedback" : isCorrect ? "Correct" : "Incorrect"}
+          </span>
         </p>
       </div>
 
       <div className="text-sm font-medium px-2 py-4 w-full overflow-y-scroll max-h-[18rem]">
         <p className="capitalize">
           <strong>Expected Answer:</strong>
-          {newAnswer}
+          {" " + newAnswer}
         </p>
         <div
-          className="prose text-sm p-2 max-h-[18rem]"
+          className="prose text-sm py-1 max-h-[18rem]"
           dangerouslySetInnerHTML={{
             __html: explanation,
           }}

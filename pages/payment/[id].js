@@ -101,7 +101,7 @@ function Payment() {
       .post("/api/dpo/createtoken", {
         //do not forget to upddate amount
         // amount: info.amount,
-        amount: "1",
+        amount: "25",
         email: email,
         phone: phone,
         date: _date,
@@ -195,17 +195,6 @@ function Payment() {
     // 6. the allow user to pay and delete the session
   };
 
-  const test = () => {
-    axios
-      .get("/dpo/createtoken")
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   if (hidden)
     return (
       <div className="min-h-screen w-full flex justify-center items-center">
@@ -262,7 +251,7 @@ function Payment() {
               </h1>
               <h4 className="text-center font-bold text-lg "></h4>
               <h4 className="text-center font-bold text-lg ">
-                Amount: <span className="font-normal">ZK100</span>
+                Amount: <span className="font-normal">ZK25</span>
               </h4>
               <h5 className="text-center text-base ">
                 Access to all courses, valid for 7 days.

@@ -26,7 +26,7 @@ const Banner = ({ show }) => {
                   href="/demo"
                   className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-cyan-600 shadow-sm hover:bg-indigo-50"
                 >
-                  Sample Test
+                  Explore
                 </Link>
               </div>
             </div>

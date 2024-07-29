@@ -31,6 +31,7 @@ const CourseView = () => {
           .doc(id)
           .collection("Tests")
           .orderBy("year")
+          .orderBy("title")
           .onSnapshot((querySnapshot) => {
             let _tests = [];
             querySnapshot.forEach((doc) => {

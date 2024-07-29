@@ -12,14 +12,13 @@ import Sidebar from "@/components/Sidebar";
 import { FadeLoader } from "react-spinners";
 
 const MyCourse = () => {
-  const { user } = useSelector((state) => state);
-
   let { id } = useParams();
 
   const [course, setCourse] = useState(null);
   const [current, setCurrent] = useState(null);
   const [tests, setTests] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   // TODO: protect this page so unsubscribed users can not access it
 
@@ -45,9 +44,12 @@ const MyCourse = () => {
             console.log(_tests);
             setCurrent(_tests[0]);
             setTests(_tests);
+            setVisible(true);
             setLoader(false);
           });
       });
+    // } else {
+    //   setLoader(false);
     // }
   }, [id]);
 
@@ -99,22 +101,27 @@ const MyCourse = () => {
                       ? tests.length + " Test(s)"
                       : 0 + " Tests"}
                   </h4>
-
-                  <ul className="w-full text-sm font-medium text-gray-900 bg-white rounded-lg">
-                    {tests.map((item, i) => (
-                      <LessonListStudent
-                        key={i}
-                        courseId={id}
-                        lesson={item}
-                        index={i}
-                        setCurrent={setCurrent}
-                      />
-                    ))}
-                  </ul>
+                  {visible ? (
+                    <ul className="w-full text-sm font-medium text-gray-900 bg-white rounded-lg">
+                      {tests.map((item, i) => (
+                        <LessonListStudent
+                          key={i}
+                          courseId={id}
+                          lesson={item}
+                          index={i}
+                          setCurrent={setCurrent}
+                        />
+                      ))}
+                    </ul>
+                  ) : (
+                    <div>
+                      <p>You are not authorised</p>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div>
-                  <p>
+                <div className="flex justify-center items-center h-full">
+                  <p className="font-bold text-red-500">
                     You are not subscribed kindly go to your dashboard and
                     subcribe thank you
                   </p>

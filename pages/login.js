@@ -144,7 +144,7 @@ function Login() {
               href="/register"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              register here
+              Sign Up here
             </Link>
           </p>
         </div>

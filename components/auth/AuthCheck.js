@@ -63,7 +63,7 @@ const AuthCheck = ({ children }) => {
       {loader ? (
         <div className="flex text-xl items-center justify-center h-screen w-screen">
           _ L<ClipLoader className="text-xs" />
-          ading Sirus Educational Trust _
+          ading Sirius Educational Trust _
         </div>
       ) : (
         children
