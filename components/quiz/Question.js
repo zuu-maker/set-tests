@@ -64,13 +64,16 @@ function Question({
     setUserAnswer(answer);
     onAnswerChange(id, answer);
     let correct;
-    if (Array.isArray(correctAnswer)) {
+    console.log("--> ", correctAnswer);
+    if (Array.isArray(correctAnswer) && correctAnswer.length > 1) {
       correct = correctAnswer.sort().join() === answer.sort().join();
     } else {
-      var acceptedAnswers = correctAnswer.split("/");
-      if (acceptedAnswers.length > 1) {
-        correct = checkStringInArray(acceptedAnswers, answer);
-      } else {
+      if (
+        !Array.isArray(correctAnswer) &&
+        correctAnswer.split("/").length > 1
+      ) {
+        correct = checkStringInArray(correctAnswer.split("/"), answer);
+      } else if (!Array.isArray(correctAnswer)) {
         correct = correctAnswer.trim() === answer.trim();
       }
     }

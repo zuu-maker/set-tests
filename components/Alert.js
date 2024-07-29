@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import remarkGfm from "remark-gfm";
-import ReactMarkdown from "react-markdown";
-import DOMPurify from "dompurify";
 
 const explanationMarkdown = `
 # Example Explanation
@@ -51,9 +48,10 @@ function Alert({ isCorrect, explanation, answer, type }) {
 
       <div className="text-sm font-medium px-2 py-4 w-full overflow-y-scroll max-h-[18rem]">
         <p className="capitalize">
-          <strong>Expected Answer:</strong>
+          <span className="font-semibold">Expected Answer:</span>
           {" " + newAnswer}
         </p>
+        {/* <MarkdownRenderer markdown={explanation} /> */}
         <div
           className="prose text-sm py-1 max-h-[18rem]"
           dangerouslySetInnerHTML={{
