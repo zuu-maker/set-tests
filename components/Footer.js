@@ -14,17 +14,17 @@ const Footer = () => {
     <footer className="p-4 text-xs w-full  rounded-lg shadow border border-t-2 border-t-slate-100 flex flex-col-reverse md:items-center md:justify-between md:p-6 ">
       <div className="sm:flex sm:justify-between sm:w-full sm:items-center ">
         <div className="flex mt-4 items-center justify-between sm:space-x-5 ">
-          <Link href="/#">
+          <Link href="/refund">
             <span className="text-sm hover:underline text-gray-500 sm:text-center ">
               Refund Policy
             </span>
           </Link>
-          <Link href="/#">
+          <Link href="/terms-and-conditions">
             <span className="text-sm hover:underline text-gray-500 sm:text-center ">
               Terms and Conditions
             </span>
           </Link>
-          <Link href="/#">
+          <Link href="/privacy">
             <span className="text-sm hover:underline text-gray-500 sm:text-center ">
               Privacy Policy
             </span>
