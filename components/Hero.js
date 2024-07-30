@@ -43,7 +43,7 @@ export default function Hero() {
               <div>
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
-                    GAIN THE CONFIDENCE.
+                    GET READY TO EXCEL.
                   </h1>
                   <p className="mt-2 md:mt-6 text-lg leading-5 md:leading-8 text-gray-600 sm:text-center">
                     Grade 12 & GCE exam practice

@@ -1,4 +1,5 @@
 import React from "react";
+import Banner from "@/components/Banner";
 import Header from "@/components/Header";
 import Head from "next/head";
 
@@ -9,6 +10,8 @@ const privacyPolicy = () => {
         <title>Pricay Policy </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Banner show={true} />
+
       <div className="container mx-auto">
         <div className="h-8"></div>
         <Header />
