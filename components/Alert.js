@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "tailwindcss/tailwind.css";
 
 const explanationMarkdown = `
 # Example Explanation
@@ -48,16 +49,18 @@ function Alert({ isCorrect, explanation, answer, type }) {
 
       <div className="text-sm font-medium px-2 py-4 w-full overflow-y-scroll max-h-[18rem]">
         <p className="capitalize">
-          <span className="font-semibold">Expected Answer:</span>
+          <span className="font-extrabold">Expected Answer:</span>
           {" " + newAnswer}
         </p>
         {/* <MarkdownRenderer markdown={explanation} /> */}
-        <div
-          className="prose text-sm py-1 max-h-[18rem]"
-          dangerouslySetInnerHTML={{
-            __html: explanation,
-          }}
-        />
+        <div className="text-sm py-1 max-h-[18rem] prose">
+          <div
+            className="ql-editor"
+            dangerouslySetInnerHTML={{
+              __html: explanation,
+            }}
+          />
+        </div>
       </div>
     </div>
   );

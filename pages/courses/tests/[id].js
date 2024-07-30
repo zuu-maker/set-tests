@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
 import { db, storageBucket } from "@/firebase";
@@ -38,6 +38,7 @@ function TestView() {
   const [current, setCurrent] = useState(null);
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState(-1);
+  const fileInputRef = useRef(null);
 
   // const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -175,6 +176,7 @@ function TestView() {
                 url,
               },
             }));
+            fileInputRef.current.value = "";
           } else {
             setValues((prev) => ({
               ...prev,
@@ -184,6 +186,7 @@ function TestView() {
                 url,
               },
             }));
+            fileInputRef.current.value = "";
           }
           setUploading(false);
         }
@@ -275,6 +278,7 @@ function TestView() {
               <div className="flex flex-col">
                 <div className="w-1/2">
                   <QuesitionForm
+                    fileInputRef={fileInputRef}
                     handleImage={handleImage}
                     preview={preview}
                     buttonText={buttonText}
@@ -337,6 +341,7 @@ function TestView() {
         </div>
       </div>
       <QuestionModal
+        fileInputRef={fileInputRef}
         current={current}
         setCurrent={setCurrent}
         index={index}

@@ -10,6 +10,12 @@ import { storageBucket } from "@/firebase";
 import toast from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
 
+const formats = {
+  bold: {
+    className: "font-bold", // Use Tailwind's font-bold class
+  },
+};
+
 const ReactQuill = lazy(() => import("react-quill"));
 
 function TextEditor({ value, onChange }) {
@@ -65,7 +71,7 @@ function TextEditor({ value, onChange }) {
           ["bold", "italic", "underline", "strike"],
           [{ header: "1" }, { header: "2" }],
           [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image", "youtube"],
+          ["link", "image"],
         ],
         handlers: {
           image: openImageFileDialog,
@@ -80,6 +86,7 @@ function TextEditor({ value, onChange }) {
       {isClient && (
         <Suspense fallback={<div>Loading editor...</div>}>
           <ReactQuill
+            formats={formats}
             ref={quillRef}
             className="h-72 pb-10"
             theme="snow"

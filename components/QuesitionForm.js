@@ -36,6 +36,7 @@ function QuesitionForm({
   buttonText,
   handleRemove,
   edit,
+  fileInputRef,
 }) {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState("");
@@ -208,6 +209,7 @@ function QuesitionForm({
             <label className="text-white flex justify-center h-710 items-center w-full bg-gradient-to-r flex-grow from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               {buttonText}
               <input
+                ref={fileInputRef}
                 hidden
                 type="file"
                 name="image"

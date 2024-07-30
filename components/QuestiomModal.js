@@ -4,6 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import QuesitionForm from "./QuesitionForm";
 
 const QuestionModal = ({
+  fileInputRef,
   visible,
   setVisible,
   current,
@@ -83,6 +84,7 @@ const QuestionModal = ({
                 </div>
                 <div className="px-10">
                   <QuesitionForm
+                    fileInputRef={fileInputRef}
                     values={current}
                     setValues={setCurrent}
                     handleChange={handleChange}

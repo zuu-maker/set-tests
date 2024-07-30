@@ -16,5 +16,10 @@
   }
 }
 
+.ql-editor strong {
+  font-weight: 800; /* Adjust the font weight to make it bolder */
+  color: #000; /* Ensure the color is black for better visibility */
+}
+
 body {
 }
