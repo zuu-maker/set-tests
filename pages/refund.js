@@ -2,6 +2,7 @@ import React from "react";
 import Banner from "@/components/Banner";
 import Header from "@/components/Header";
 import Head from "next/head";
+import Footer from "@/components/Footer";
 
 const refundPolicy = () => {
   return (
@@ -19,50 +20,39 @@ const refundPolicy = () => {
           <div className="flex flex-col items-center justify-center w-full">
             <div className="w-5/6 sm:w-3/5 h-126">
               <h2 className="text-2xl font-semibold text-gray-500">
-                Refund and Cancellation Policy
+                Refund Policy
               </h2>
               <div className=" shadow-xl  p-5 sm:p-10 bg-cyan-400 brightness-115 ">
                 <p className="text-gray-600  text-md font-sans">
-                  Effective Date: December 15th, 2021.
+                  Effective Date: August 1st, 2024
                 </p>
                 <p className="text-gray-600 text-md font-sans">
-                  1. If a student is unable to start class, a full course refund
-                  less 25% adminstrative fee can be requested but no less than
-                  48 hours from the programme start date. The refund request
-                  must be in writing and sent to: accounts@set.edu.zm
+                  <strong>1.Acceptance of Terms </strong>
+                  Welcome to SET online school, which is owned and operated by
+                  Sirius Educational Trust (we, our, us or the Company). By
+                  purchasing a subscription, registering an account, or using
+                  our services, including all of the services provided therein,
+                  and any other websites, applications, and online services that
+                  link too these Terms (collectively, the Services), you
+                  acknowledge that you have read and understand these Terms and
+                  agree to be bound by them.
                 </p>
                 <br />
                 <p className="text-gray-600  text-md font-sans">
-                  2. If a student has not requested a refund prior to 48 hours
-                  from the course start date, refunds are not applicable.
-                </p>
-                <br />
-                <p className="text-gray-600  text-md font-sans">
-                  3. There shall be no refund of any manner once lessons have
-                  begun
-                </p>
-                <br />
-                <p className="text-gray-600  text-md font-sans">
-                  4. SET does not, under any circumstance, give refunds to
-                  students who do not or cannot finish the programme for which
-                  they have registered.
-                </p>
-                <br />
-                <p className="text-gray-600  text-md font-sans">
-                  5. It is the student's responsibility to comply with the
-                  established schedule.
-                </p>
-                <br />
-                <hr className="text-gray-600" />
-                <p className="text-gray-600  text-md font-sans">
-                  *By starting your first class, you hereby confirm to have read
-                  the Refund and Cancellation, Terms of Service & Privacy
-                  policies and confirm to be in agreement with such.*
+                  <strong>2.Cancellation and Refunds </strong>
+                  Without prejudice to any statutory rights you may have, we do
+                  not provide full or partial refunds for prepaid sums. In any
+                  event, you will be able to continue to use the Services
+                  throughout the remainder of the subscription period for which
+                  you have already paid.
                 </p>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="fixed bottom-0 left-0 w-screen">
+        <Footer />
       </div>
     </div>
   );
