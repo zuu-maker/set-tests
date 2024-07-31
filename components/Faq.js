@@ -3,20 +3,25 @@ import FaqListItem from "./FaqListItem";
 
 const faqs = [
   {
-    q: "What is a psychometric test?",
-    a: "Psychometric tests, also know as an aptitude test, are now an integral part of the job interview process.  It is used as a means to filter out large applications at the early stage of the screening process.",
+    q: "Pricing",
+    a: "All courses, ZMW 100 per month billed ZMW 25/week",
   },
   {
-    q: "Why do employers use psychometric tests?",
-    a: "With thousands of applications received for open positions, psychometric tests are an objective, transparent, quick and easier tool to reduce applicant pool and identify suitable employees. Research has revealed that candidates that score highly in a psychometric test tend to perform well in their job. This predicative quality makes psychometric tests very attractive to employers.",
+    q: "Getting started",
+    a: "Step 1: Create account 2: Verify email Step 3: Subscribe Step 4: Follow through the payment steps Step 5: Approve payment Step 6: Log in with registered account to access student dashboard",
   },
   {
-    q: "Why should I invest in psychometric tests?",
-    a: "If you are applying for a job (especially graduate entry level and internship positions) you will mostly likely encounter some form of psychometric test as a preliminary round of the application process. They have become the standard way in which employers judge abilities – your capacity to work with numbers, words and diagrams; your attainment – what you actually know; and your personality – how you’re likely to act.",
+    q: "Featured courses",
+    a: [
+      "Civic Education 2030/1",
+      "Science 5124/1",
+      "Mathematics 4024/1",
+      "Biology 5090/1",
+    ],
   },
   {
-    q: "How are psychometric tests administered?",
-    a: "They are normally administered online and candidates are required to submit answers within the time limits. Without online practice, many applicants struggle to get past this stage.",
+    q: "Payment methods",
+    a: "You can easily purchase subscription using VISA card, Airtel and MTN mobile money",
   },
 ];
 

@@ -56,8 +56,16 @@ function BrowseItem() {
     let toastId = toast.loading("Processing...");
     if (!course.id || !user._id) return;
 
+    // console.log(user);
+    // return;
+
     db.collection("Sessions")
-      .add(user)
+      .add({
+        email: user.email,
+        phone: user.phone,
+        _id: user._id,
+        name: user.name,
+      })
       .then((docRef) => {
         db.collection("Sessions")
           .doc(docRef.id)
@@ -145,9 +153,12 @@ function BrowseItem() {
 
                 {/* Options */}
                 <div className="sm:mt-4 lg:row-span-3 lg:mt-0">
-                  <p className="text-xl tracking-tight text-gray-900">{`Price: ZMW ${new Intl.NumberFormat().format(
-                    100
-                  )}`}</p>
+                  <p className="text-xl tracking-tight text-gray-900">
+                    Price:
+                    <span className="font-extrabold ">
+                      {` ZK ${new Intl.NumberFormat().format(100)}`}
+                    </span>
+                  </p>
 
                   <div className=" mt-5 sm:mt-5 ">
                     <p>

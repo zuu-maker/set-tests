@@ -250,8 +250,8 @@ function Payment() {
                 Secure payment info
               </h1>
               <h4 className="text-center font-bold text-lg "></h4>
-              <h4 className="text-center font-bold text-lg ">
-                Amount: <span className="font-normal">ZK25</span>
+              <h4 className="text-center font-normal text-lg ">
+                Amount: <span className="font-bold">ZK25</span>
               </h4>
               <h5 className="text-center text-base ">
                 Access to all courses, valid for 7 days.

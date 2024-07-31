@@ -54,8 +54,17 @@ const FaqListItem = ({ q, a }) => {
         {show && (
           <div className=" transition ease-in-out delay-150">
             <hr className="border-gray-200" />
-
-            <p className="p-8 text-sm text-gray-500 ">{a}</p>
+            <div className="p-8 text-sm text-gray-500 ">
+              {Array.isArray(a) ? (
+                <ul className="list-disc">
+                  {a.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="">{a}</p>
+              )}
+            </div>
           </div>
         )}
       </div>
