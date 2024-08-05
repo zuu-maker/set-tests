@@ -8,6 +8,11 @@ export default function Document() {
         <Main />
         <NextScript />
       </body>
+      {/* <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"
+        integrity="sha512-jNhQbIhAWxcrT7jW8v+d0yV5Kr6JdV19ihsD3Z43VoS4/Cm0/O1zSoD20F8ffw5FRO+ZT5ucv8SwR+LFeNZ1sA=="
+        crossOrigin="anonymous"
+      ></script> */}
     </Html>
   );
 }

@@ -10,11 +10,23 @@ import { storageBucket } from "@/firebase";
 import toast from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
 
-const formats = {
-  bold: {
-    className: "font-bold", // Use Tailwind's font-bold class
-  },
-};
+// const formats = {
+//   bold: {
+//     className: "font-bold", // Use Tailwind's font-bold class
+//   },
+// };
+
+import katex from "katex";
+import "katex/dist/katex.min.css";
+
+// const loadMathJax = (callback) => {
+//   const script = document.createElement("script");
+//   script.src =
+//     "https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js";
+//   script.async = true;
+//   script.onload = callback;
+//   document.body.appendChild(script);
+// };
 
 const ReactQuill = lazy(() => import("react-quill"));
 
@@ -26,6 +38,31 @@ function TextEditor({ value, onChange }) {
     // Set the state to true if the window object is available (meaning we are on the client)
     if (process.title === "browser") {
       setIsClient(true);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   loadMathJax(() => {
+  //     if (window.MathJax) {
+  //       window.MathJax.typesetPromise();
+  //     }
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    const renderMath = () => {
+      if (window.MathJax && isClient) {
+        window.MathJax.typesetPromise();
+      }
+    };
+
+    renderMath();
+  }, [value]);
+
+  useEffect(() => {
+    // Ensure MathJax is available on the window object
+    if (typeof window !== "undefined") {
+      window.katex = katex;
     }
   }, []);
 
@@ -64,14 +101,56 @@ function TextEditor({ value, onChange }) {
     input.click();
   };
 
+  // const formats = [
+  //   "header",
+  //   "font",
+  //   "list",
+  //   "bullet",
+  //   "bold",
+  //   "italic",
+  //   "underline",
+  //   "formula",
+  // ];
+
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+    "formula",
+    "color",
+    "background",
+    "align",
+    "script",
+  ];
+
   const quillModules = useMemo(
     () => ({
       toolbar: {
         container: [
-          ["bold", "italic", "underline", "strike"],
-          [{ header: "1" }, { header: "2" }],
+          ["bold", "italic", "underline", "strike"], // toggled buttons
+          ["blockquote", "code-block"],
+
           [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image"],
+          [{ script: "sub" }, { script: "super" }], // superscript/subscript
+          [{ header: [1, 2, 3, false] }],
+
+          ["link", "image", "formula"],
+
+          [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+          [{ align: [] }],
+
+          ["clean"], // remove formatting button
         ],
         handlers: {
           image: openImageFileDialog,

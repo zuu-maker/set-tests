@@ -37,9 +37,8 @@ function MultiSelect({
             value={option}
             checked={selectedOptions.includes(option)}
             onChange={handleChange}
-            className="mr-2"
           />
-          {option}
+          <span className="ml-2">{option}</span>
         </label>
       ))}
     </div>

@@ -19,7 +19,7 @@ function MultipleChoice({ questionId, options, onAnswerChange, answer }) {
             checked={answer === option}
             onChange={handleChange}
           />
-          {option}
+          <span className="ml-2">{option}</span>
         </label>
       ))}
     </div>

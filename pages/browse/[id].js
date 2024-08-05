@@ -32,6 +32,8 @@ function BrowseItem() {
         db.collection("Courses")
           .doc(id)
           .collection("Tests")
+          .orderBy("year", "desc")
+          .orderBy("title", "asc")
           .onSnapshot((snaps) => {
             let _tests = [];
             snaps.docs.forEach((doc) => {

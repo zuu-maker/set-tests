@@ -34,7 +34,7 @@ const MyCourse = () => {
         db.collection("Courses")
           .doc(id)
           .collection("Tests")
-          .orderBy("year")
+          .orderBy("year", "desc")
           .orderBy("title")
           .onSnapshot((snapshot) => {
             let _tests = [];
