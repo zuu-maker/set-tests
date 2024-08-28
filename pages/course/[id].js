@@ -30,7 +30,7 @@ const CourseView = () => {
         db.collection("Courses")
           .doc(id)
           .collection("Tests")
-          .orderBy("year")
+          .orderBy("year", "desc")
           .orderBy("title")
           .onSnapshot((querySnapshot) => {
             let _tests = [];

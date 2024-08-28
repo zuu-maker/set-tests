@@ -1,3 +1,4 @@
+import { containsHtmlTags } from "@/utils";
 import React from "react";
 
 function MultipleChoice({ questionId, options, onAnswerChange, answer }) {
@@ -11,7 +12,7 @@ function MultipleChoice({ questionId, options, onAnswerChange, answer }) {
   return (
     <div className="flex flex-col p-2">
       {options.map((option, index) => (
-        <label key={index}>
+        <label className="flex items-center space-x-2" key={index}>
           <input
             type="radio"
             value={option}
@@ -19,7 +20,15 @@ function MultipleChoice({ questionId, options, onAnswerChange, answer }) {
             checked={answer === option}
             onChange={handleChange}
           />
-          <span className="ml-2">{option}</span>
+          {containsHtmlTags(option) ? (
+            <span
+              dangerouslySetInnerHTML={{
+                __html: option,
+              }}
+            />
+          ) : (
+            <span className="ml-2">{option}</span>
+          )}
         </label>
       ))}
     </div>

@@ -6,7 +6,7 @@ import MultipleChoice from "./MultipleChoice";
 import MultiSelect from "./MultiSelect";
 import AlertComponent from "../Alert";
 import Image from "next/image";
-import { stripHtmlTags } from "@/utils";
+import { containsHtmlTags, stripHtmlTags } from "@/utils";
 
 function Question({
   question,
@@ -19,6 +19,9 @@ function Question({
 }) {
   const { id, type, text, image, options, correctAnswer, explanation } =
     question;
+
+  console.log("options -->", options);
+  console.log("ans -->", correctAnswer);
   const [userAnswer, setUserAnswer] = useState(answer);
   // const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -72,7 +75,8 @@ function Question({
     } else {
       if (
         !Array.isArray(correctAnswer) &&
-        correctAnswer.split("/").length > 2
+        correctAnswer.split("/").length > 1 &&
+        !containsHtmlTags(correctAnswer)
       ) {
         correct = checkStringInArray(correctAnswer.split("/"), answer);
       } else if (typeof correctAnswer === "string") {

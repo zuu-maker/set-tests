@@ -85,9 +85,14 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
       {(question.type === "range" ||
         question.type === "multiple" ||
         question.type === "multiselect") && (
-        <p>
+        <p className="flex items-center space-x-1">
           <strong className="mr-1">Options:</strong>
-          {optionsText}
+          <span
+            className="flex items-center"
+            dangerouslySetInnerHTML={{
+              __html: optionsText,
+            }}
+          />
         </p>
       )}
 
@@ -98,9 +103,14 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
         </p>
       )}
       {question.type === "multiselect" && (
-        <p>
+        <p className="flex items-center space-x-1">
           <strong className="mr-1">Correct Answers:</strong>
-          {stripHtmlTags(answersText)}
+          <span
+            className="flex items-center"
+            dangerouslySetInnerHTML={{
+              __html: answersText,
+            }}
+          />
         </p>
       )}
     </div>

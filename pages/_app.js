@@ -3,6 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import AuthCheck from "@/components/auth/AuthCheck";
+import MathJax from "react-mathjax";
 import { Toaster } from "react-hot-toast";
 
 function MyApp({ Component, pageProps }) {

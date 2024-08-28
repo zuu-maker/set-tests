@@ -129,12 +129,20 @@ function TestView() {
     console.log(_editedQuestion);
 
     let _questions = questions;
-    _questions[index] = {
-      ..._editedQuestion,
-      explanation: editExplanation,
-      text: question,
-      correctAnswer,
-    };
+    if (_questions[index].type === "multiselect") {
+      _questions[index] = {
+        ..._editedQuestion,
+        explanation: editExplanation,
+        text: question,
+      };
+    } else {
+      _questions[index] = {
+        ..._editedQuestion,
+        explanation: editExplanation,
+        text: question,
+        correctAnswer,
+      };
+    }
     setQuestions(_questions);
     setExplanation("");
     setExplanation("");

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Option from "@/components/Option";
 import TextEditor from "@/components/TextEditor";
 
@@ -45,12 +45,15 @@ function QuesitionForm({
 }) {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState("");
+  const [option, setOption] = useState("");
+
+  console.log("ques-->", question);
 
   const addOption = () => {
     let _options = [...new Set(values.options)];
-    _options.push(value.toLowerCase());
+    _options.push(option.toLowerCase());
     setValues((prev) => ({ ...prev, options: _options }));
-    setValue("");
+    setOption("");
   };
 
   const addAnswer = () => {
@@ -65,6 +68,7 @@ function QuesitionForm({
       console.log("in here 2");
       _answers.push(answer);
     }
+    console.log(_answers);
     setValues((prev) => ({ ...prev, correctAnswer: _answers }));
     setAnswer("");
   };
@@ -133,14 +137,13 @@ function QuesitionForm({
 
           {values.type == "multiselect" ? (
             <div className="mb-4">
+              <TextEditor
+                value={answer}
+                onChange={setAnswer}
+                placeholder="Correct Answer"
+                isInput={true}
+              />
               <div className="flex space-x-3 items-center">
-                <input
-                  value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
-                  type="text"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Answer"
-                />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -158,7 +161,7 @@ function QuesitionForm({
                 </svg>
               </div>
               <div className="p-2 ">
-                <p className="text-base">Answers</p>
+                <p className="text-base text-gray-600">Answers</p>
                 <div className="p-2">
                   {Array.isArray(values.correctAnswer) &&
                     values.correctAnswer?.map((answer) => (
@@ -183,33 +186,40 @@ function QuesitionForm({
           {(values.type === "range" ||
             values.type === "multiple" ||
             values.type === "multiselect") && (
-            <div className="">
-              <div className="flex space-x-3 items-center">
-                <input
+            <div className="w-full">
+              <TextEditor
+                value={option}
+                onChange={setOption}
+                placeholder="Option"
+                isInput={true}
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-8 text-right text-blue-500 cursor-pointer hover:scale-105"
+                onClick={addOption}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+
+              <div className="flex w-full space-x-3 items-center bg-red-200">
+                {/* <input
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
                   type="text"
                   className="bg-gray-50 mt-6 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Option"
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-8 mt-6 text-blue-500 cursor-pointer hover:scale-105"
-                  onClick={addOption}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
+                /> */}
               </div>
               <div className="p-2 ">
-                <p className="text-base">Options</p>
+                <p className="text-base text-gray-600">Options</p>
                 <div className="p-2">
                   {values.options.map((option, index) => (
                     <Option

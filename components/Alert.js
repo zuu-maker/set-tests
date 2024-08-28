@@ -31,8 +31,8 @@ function Alert({ isCorrect, explanation, answer, type }) {
         <div className="capitalize flex items-center space-x-2">
           <span className="font-extrabold">Expected Answer:</span>
           <div className="text-sm  prose">
-            <div
-              className=""
+            <span
+              className="flex items-center"
               dangerouslySetInnerHTML={{
                 __html: newAnswer,
               }}

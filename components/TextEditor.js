@@ -138,16 +138,11 @@ function TextEditor({ value, onChange, placeholder, isInput = true }) {
       toolbar: {
         container: [
           ["bold", "italic", "underline", "strike"], // toggled buttons
-          ["blockquote", "code-block"],
 
           [{ list: "ordered" }, { list: "bullet" }],
           [{ script: "sub" }, { script: "super" }], // superscript/subscript
-          [{ header: [1, 2, 3, false] }],
 
-          ["link", "image", "formula"],
-
-          [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-          [{ align: [] }],
+          ["image", "formula"],
 
           ["clean"], // remove formatting button
         ],

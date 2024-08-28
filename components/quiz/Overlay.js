@@ -1,12 +1,21 @@
+import { stripHtmlTags } from "@/utils";
 import React from "react";
 
 function Overlay({
+  answers,
   visible,
   setVisible,
   questions,
   currentQuestionIndex,
   gotoQuestion,
 }) {
+  console.log("All Answers -->", answers);
+  console.log("All Answers -->", questions);
+  console.log(
+    "All Answers -->",
+    answers.hasOwnProperty("3fd58b80-9477-4086-b88f-db738a4bcd5f")
+  );
+
   return (
     <div
       className={`${
@@ -39,14 +48,16 @@ function Overlay({
         {questions.map((question, index) => (
           <li
             key={index}
-            className={`p-1 border cursor-pointer text-sm ${
+            className={`p-1 border cursor-pointer text-sm  ${
+              answers.hasOwnProperty(question.id) && "bg-green-200"
+            } ${
               currentQuestionIndex === index
                 ? "bg-gray-300"
                 : "hover:bg-gray-300"
             }`}
             onClick={() => gotoQuestion(index)}
           >
-            {index + 1 + ". " + question.text}
+            {index + 1 + ". " + stripHtmlTags(question.text)}
           </li>
         ))}
       </ul>

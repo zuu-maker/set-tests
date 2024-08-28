@@ -42,6 +42,7 @@ function LearnPage() {
     let unsubscribe = db
       .collection("Courses")
       .where("publish", "==", true)
+      .orderBy("title", "asc")
       .onSnapshot((querySnapShot) => {
         let _courses = [];
         querySnapShot.forEach((snap) => {

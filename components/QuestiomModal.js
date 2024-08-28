@@ -27,6 +27,8 @@ const QuestionModal = ({
 }) => {
   const cancelButtonRef = useRef(null);
 
+  // TODO: Fix question and explanation call
+
   const handleChange = (e) => {
     let item = e.target.value;
     console.log(e.target.value);
@@ -38,12 +40,15 @@ const QuestionModal = ({
 
   useEffect(() => {
     if (current && current.explanation) {
-      console.log("current -->", current);
       setExplanation(current.explanation);
-      setQuestion(current.text);
-      setCorrectAnswer(current.correctAnswer);
     }
-  }, [current]);
+  }, [current && current.explanation]);
+
+  useEffect(() => {
+    if (current && current.text) {
+      setQuestion(current.text);
+    }
+  }, [current && current.text]);
 
   return (
     <Transition.Root show={visible} as={Fragment}>
@@ -124,6 +129,8 @@ const QuestionModal = ({
                       setVisible(false);
                       setButtonText("Upload Image");
                       setPreview("");
+                      setQuestion("");
+                      setCorrectAnswer("");
                     }}
                     ref={cancelButtonRef}
                   >

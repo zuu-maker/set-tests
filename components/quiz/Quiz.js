@@ -182,6 +182,7 @@ function Quiz({ id }) {
               </div>
             </div>
             <Overlay
+              answers={answers}
               currentQuestionIndex={currentQuestionIndex}
               visible={visible}
               setVisible={setVisible}

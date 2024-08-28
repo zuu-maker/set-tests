@@ -1,3 +1,4 @@
+import { containsHtmlTags } from "@/utils";
 import React from "react";
 
 function MultiSelect({
@@ -7,6 +8,9 @@ function MultiSelect({
   correctAnswer,
 }) {
   console.log("answer -->" + correctAnswer);
+  console.log("opt -->" + options);
+  console.log("sopt -->" + selectedOptions);
+
   const handleChange = (e) => {
     const value = e.target.value;
     const checked = e.target.checked;
@@ -29,14 +33,22 @@ function MultiSelect({
   return (
     <div>
       {options.map((option, index) => (
-        <label key={index} className="block">
+        <label className="flex items-center space-x-2" key={index}>
           <input
             type="checkbox"
             value={option}
             checked={selectedOptions.includes(option)}
             onChange={handleChange}
           />
-          <span className="ml-2">{option}</span>
+          {containsHtmlTags(option) ? (
+            <span
+              dangerouslySetInnerHTML={{
+                __html: option,
+              }}
+            />
+          ) : (
+            <span className="ml-2">{option}</span>
+          )}
         </label>
       ))}
     </div>

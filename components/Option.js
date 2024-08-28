@@ -1,9 +1,17 @@
 import React from "react";
 
 function Option({ option, removeOption }) {
+  console.log("option-->", option);
   return (
     <div className="flex justify-between items-center border shadow-sm p-1">
-      <p className="text-lg">{option}</p>
+      <div className="text-black text-sm">
+        <div
+          className="ql-editor"
+          dangerouslySetInnerHTML={{
+            __html: option,
+          }}
+        />
+      </div>
       <svg
         onClick={() => removeOption(option)}
         xmlns="http://www.w3.org/2000/svg"
