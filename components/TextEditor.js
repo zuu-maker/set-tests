@@ -30,7 +30,7 @@ import "katex/dist/katex.min.css";
 
 const ReactQuill = lazy(() => import("react-quill"));
 
-function TextEditor({ value, onChange }) {
+function TextEditor({ value, onChange, placeholder, isInput = true }) {
   const [isClient, setIsClient] = useState(false);
   const quillRef = useRef(null);
 
@@ -66,7 +66,6 @@ function TextEditor({ value, onChange }) {
     }
   }, []);
 
-  console.log(quillRef.current);
   const handleImageInserted = async (file) => {
     let toastId = toast.loading("Uploading...");
     try {
@@ -167,11 +166,12 @@ function TextEditor({ value, onChange }) {
           <ReactQuill
             formats={formats}
             ref={quillRef}
-            className="h-72 pb-10"
+            className={`${isInput ? "h-20" : "h-72"} pb-10`}
             theme="snow"
             value={value}
             onChange={onChange}
             modules={quillModules}
+            placeholder={placeholder}
           />
         </Suspense>
       )}

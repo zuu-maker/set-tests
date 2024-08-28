@@ -13,3 +13,7 @@ export function capitalize(str, lc, all) {
       : str.charAt(0).toUpperCase() + str.slice(1);
   }
 }
+
+export function stripHtmlTags(str) {
+  return str.replace(/<\/?[^>]+(>|$)/g, "");
+}

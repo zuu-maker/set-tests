@@ -46,13 +46,13 @@ function Result({ answers, questions, score, quizId }) {
         <div>
           <p
             className={`text-lg font-semibold ${
-              (score / questions.length) * 100 > 80
+              (score / questions.length) * 100 > 75
                 ? "text-green-500"
                 : "text-red-500"
             }`}
           >
             <span>
-              {(score / questions.length) * 100 > 80 ? "Pass  " : "Fail  "}
+              {(score / questions.length) * 100 > 75 ? "Pass  " : "Fail  "}
             </span>
             {Math.round((score / questions.length) * 100) + "%"}
           </p>

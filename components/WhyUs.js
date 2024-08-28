@@ -13,10 +13,11 @@ const WhyUs = () => {
           <div className="w-full space-y-6 shadow-md border border-gray-100 p-8 flex flex-col justify-center items-center bg-white">
             <ol className="font-medium list-disc text-gray-500">
               <li>Interactive learning platform</li>
-              <li>Unlimited past papers </li>
-              <li>Revision notes </li>
+              <li>Complete revision guide</li>
               <li>Full solutions and explanations</li>
               <li>24/7 online access</li>
+              <li>Affordable fee stricture</li>
+              <li>Easy payment options </li>
             </ol>
           </div>
 

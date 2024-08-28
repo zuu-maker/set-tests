@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import TextEditor from "@/components/TextEditor";
 
 function AnswerInput({ questionId, onAnswerChange, answer }) {
   const handleChange = (e) => {
-    onAnswerChange(e.target.value);
+    onAnswerChange(e);
   };
+
+  const [value, setValue] = useState("");
+  useEffect(() => {
+    if (value !== "") {
+      handleChange(value);
+    }
+  }, [value]);
 
   return (
     <div className="p-2">
-      <input
+      {/* <input
         className="w-full"
         type="text"
-        value={answer || ""}
-        onChange={handleChange}
+  
+      /> */}
+      <TextEditor
+        value={value}
+        onChange={setValue}
+        placeholder="Answer here"
+        isInput={false}
       />
     </div>
   );

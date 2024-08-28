@@ -4,11 +4,18 @@ import FaqListItem from "./FaqListItem";
 const faqs = [
   {
     q: "Pricing",
-    a: "2.99 ZMW per day, Billed @ 25 ZMW/week",
+    a: "3.99 ZMW per day Billed 25 ZMW /week",
   },
   {
     q: "Getting started",
-    a: "Step 1: Create account 2: Verify email Step 3: Subscribe Step 4: Follow through the payment steps Step 5: Approve payment Step 6: Log in with registered account to access student dashboard",
+    a: [
+      "Step 1: Create account ",
+      "Step 2: Verify email",
+      "Step 3: Subscribe",
+      "Step 4: Follow through the payment steps",
+      "Step 5: Approve payment",
+      "Step 6: Log in with registered account to access student dashboard",
+    ],
   },
   {
     q: "Featured courses",

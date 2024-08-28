@@ -26,8 +26,6 @@ function MultiSelect({
     onAnswerChange(updatedOptions);
   };
 
-  console.log(selectedOptions);
-
   return (
     <div>
       {options.map((option, index) => (

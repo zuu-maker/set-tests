@@ -37,6 +37,11 @@ function QuesitionForm({
   handleRemove,
   edit,
   fileInputRef,
+  question,
+  setQuestion,
+  correctAnswer,
+  setCorrectAnswer,
+  // handleQuestionChange
 }) {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState("");
@@ -50,11 +55,14 @@ function QuesitionForm({
 
   const addAnswer = () => {
     let _answers = [];
+
     if (Array.isArray(values.correctAnswer)) {
+      console.log("IN here one");
       console.log("The variable is an array.");
       _answers = [...new Set(values.correctAnswer)];
       _answers.push(answer.toLowerCase());
     } else {
+      console.log("in here 2");
       _answers.push(answer);
     }
     setValues((prev) => ({ ...prev, correctAnswer: _answers }));
@@ -90,7 +98,7 @@ function QuesitionForm({
               name="type"
               onChange={handleChange}
               defaultValue=""
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             >
               {options.map((option, i) => (
                 <option key={i} value={option.value}>
@@ -100,16 +108,28 @@ function QuesitionForm({
             </select>
           </div>
 
-          <textarea
+          {/* <textarea
             name="text"
             value={values.text}
             onChange={handleChange}
             rows={6}
             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Question"
-          ></textarea>
+          ></textarea> */}
 
-          <TextEditor value={explanation} onChange={setExplanation} />
+          <TextEditor
+            value={question}
+            onChange={setQuestion}
+            placeholder="Question"
+            isInput={false}
+          />
+
+          <TextEditor
+            value={explanation}
+            onChange={setExplanation}
+            placeholder="Explanation"
+            isInput={false}
+          />
 
           {values.type == "multiselect" ? (
             <div className="mb-4">
@@ -118,7 +138,7 @@ function QuesitionForm({
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
                   type="text"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Answer"
                 />
                 <svg
@@ -150,13 +170,11 @@ function QuesitionForm({
           ) : (
             <div>
               {values.type != "text" && (
-                <input
-                  name="correctAnswer"
-                  value={values.correctAnswer}
-                  onChange={handleChange}
-                  type="text"
-                  className="bg-gray-50 border capitalize border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                <TextEditor
+                  value={correctAnswer}
+                  onChange={setCorrectAnswer}
                   placeholder="Correct Answer"
+                  isInput={true}
                 />
               )}
             </div>
@@ -237,3 +255,12 @@ function QuesitionForm({
 }
 
 export default QuesitionForm;
+
+// <input
+//   name="correctAnswer"
+//   value={values.correctAnswer}
+//   onChange={handleChange}
+//   type="text"
+//   className="bg-gray-50 border capitalize border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+//   placeholder="Correct Answer"
+// />

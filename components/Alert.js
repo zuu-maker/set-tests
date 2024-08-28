@@ -1,27 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "tailwindcss/tailwind.css";
 
-const explanationMarkdown = `
-# Example Explanation
-
-This is the first paragraph of the explanation.
-
-This is a second paragraph with a line break after this line.  
-This line is after the break.
-
-> This is an indented blockquote.
-> Another line of the indented blockquote.
-
-1. First item
-2. Second item
-   - Subitem
-   - Subitem
-3. Third item
-
-    This is an indented code block using four spaces.
-    Another line of the indented code block.
-`;
-
 function Alert({ isCorrect, explanation, answer, type }) {
   const [newAnswer, setNewAnswer] = useState("");
 
@@ -47,13 +26,21 @@ function Alert({ isCorrect, explanation, answer, type }) {
         </p>
       </div>
 
-      <div className="text-sm font-medium px-2 py-4 w-full overflow-y-scroll max-h-[18rem]">
-        <p className="capitalize">
+      <div className="text-sm font-medium px-2 w-full overflow-y-scroll max-h-[18rem]">
+        {answer === newAnswer ? "Correct" : "wrong"}
+        <div className="capitalize flex items-center space-x-2">
           <span className="font-extrabold">Expected Answer:</span>
-          {" " + newAnswer}
-        </p>
+          <div className="text-sm  prose">
+            <div
+              className=""
+              dangerouslySetInnerHTML={{
+                __html: newAnswer,
+              }}
+            />
+          </div>
+        </div>
         {/* <MarkdownRenderer markdown={explanation} /> */}
-        <div className="text-sm py-1 max-h-[18rem] prose">
+        <div className="text-sm max-h-[18rem] prose">
           <div
             className="ql-editor"
             dangerouslySetInnerHTML={{

@@ -20,6 +20,10 @@ const QuestionModal = ({
   setButtonText,
   handleRemove,
   edit,
+  question,
+  setQuestion,
+  correctAnswer,
+  setCorrectAnswer,
 }) => {
   const cancelButtonRef = useRef(null);
 
@@ -34,7 +38,10 @@ const QuestionModal = ({
 
   useEffect(() => {
     if (current && current.explanation) {
+      console.log("current -->", current);
       setExplanation(current.explanation);
+      setQuestion(current.text);
+      setCorrectAnswer(current.correctAnswer);
     }
   }, [current]);
 
@@ -90,6 +97,10 @@ const QuestionModal = ({
                     handleChange={handleChange}
                     explanation={explanation}
                     setExplanation={setExplanation}
+                    question={question}
+                    setQuestion={setQuestion}
+                    correctAnswer={correctAnswer}
+                    setCorrectAnswer={setCorrectAnswer}
                     handleImage={handleImage}
                     preview={preview}
                     buttonText={buttonText}

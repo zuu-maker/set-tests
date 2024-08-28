@@ -1,3 +1,4 @@
+import { stripHtmlTags } from "@/utils";
 import React, { useEffect, useState } from "react";
 
 function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
@@ -75,7 +76,7 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
       </p>
       <p>
         <strong className="mr-1">Question Text:</strong>
-        {question.text}
+        {stripHtmlTags(question.text)}
       </p>
       <div>
         <div dangerouslySetInnerHTML={{ __html: question.explanation }} />
@@ -93,13 +94,13 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
       {question.type !== "multiselect" && (
         <p>
           <strong className="mr-1">Correct Answer:</strong>
-          {question.correctAnswer}
+          {stripHtmlTags(question.correctAnswer)}
         </p>
       )}
       {question.type === "multiselect" && (
         <p>
           <strong className="mr-1">Correct Answers:</strong>
-          {answersText}
+          {stripHtmlTags(answersText)}
         </p>
       )}
     </div>

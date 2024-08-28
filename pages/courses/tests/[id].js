@@ -32,8 +32,10 @@ function TestView() {
   const [values, setValues] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const [correctAnswer, setCorrectAnswer] = useState("");
   const [isChanges, setIsChanegs] = useState(false);
   const [explanation, setExplanation] = useState("");
+  const [question, setQuestion] = useState("");
   const [editExplanation, setEditExplanation] = useState("");
   const [current, setCurrent] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -63,12 +65,30 @@ function TestView() {
     setValues({ ...values, explanation: e.target.value });
   };
 
-  function addQuestion() {
-    let _values = { ...values, explanation: explanation };
+  const handleQuestionChange = (e) => {
+    console.log(first);
+    setValues({ ...values, text: e.target.value });
+  };
 
+  function addQuestion() {
+    console.log(values);
+    let _values = {};
+    if (values.type === "multiselect") {
+      _values = {
+        ...values,
+        explanation: explanation,
+        text: question,
+      };
+    } else {
+      _values = {
+        ...values,
+        explanation: explanation,
+        text: question,
+        correctAnswer,
+      };
+    }
+    // return;
     _values.id = uuidv4();
-    // _values.id = questions.length + 1;
-    console.log(_values);
 
     setQuestions((prev) => [...prev, _values]);
     setValues(() => ({
@@ -82,6 +102,8 @@ function TestView() {
     setPreview("");
     setButtonText("Upload Image");
     setExplanation("");
+    setQuestion("");
+    setCorrectAnswer("");
     if (!isChanges) setIsChanegs(true);
   }
 
@@ -107,9 +129,17 @@ function TestView() {
     console.log(_editedQuestion);
 
     let _questions = questions;
-    _questions[index] = { ..._editedQuestion, explanation: editExplanation };
+    _questions[index] = {
+      ..._editedQuestion,
+      explanation: editExplanation,
+      text: question,
+      correctAnswer,
+    };
     setQuestions(_questions);
     setExplanation("");
+    setExplanation("");
+    setQuestion("");
+    setCorrectAnswer("");
     setPreview("");
     setButtonText("Upload Image");
     setVisible(false);
@@ -279,6 +309,8 @@ function TestView() {
                 <div className="w-1/2">
                   <QuesitionForm
                     fileInputRef={fileInputRef}
+                    correctAnswer={correctAnswer}
+                    setCorrectAnswer={setCorrectAnswer}
                     handleImage={handleImage}
                     preview={preview}
                     buttonText={buttonText}
@@ -288,6 +320,9 @@ function TestView() {
                     explanation={explanation}
                     handleChange={handleChange}
                     handleExplanationChange={handleExplanationChange}
+                    question={question}
+                    setQuestion={setQuestion}
+                    handleQuestionChange={handleQuestionChange}
                     handleSubmit={handleSubmit}
                     values={values}
                     isLoading={isLoading}
@@ -342,6 +377,11 @@ function TestView() {
       </div>
       <QuestionModal
         fileInputRef={fileInputRef}
+        correctAnswer={correctAnswer}
+        setCorrectAnswer={setCorrectAnswer}
+        setQuestion={setQuestion}
+        handleQuestionChange={handleQuestionChange}
+        question={question}
         current={current}
         setCurrent={setCurrent}
         index={index}

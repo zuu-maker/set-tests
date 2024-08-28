@@ -6,6 +6,7 @@ import MultipleChoice from "./MultipleChoice";
 import MultiSelect from "./MultiSelect";
 import AlertComponent from "../Alert";
 import Image from "next/image";
+import { stripHtmlTags } from "@/utils";
 
 function Question({
   question,
@@ -25,6 +26,11 @@ function Question({
   // useEffect(() => {
   //   if (answer) setShowFeedback(false);
   // }, []);
+
+  function capitalizeFirstChar(str) {
+    if (!str) return str;
+    return `${str[3].toUpperCase()}${str.slice(4)}`;
+  }
 
   useEffect(() => {
     if (showFeedback) {
@@ -48,7 +54,6 @@ function Question({
   }
 
   const handleAnswerChange = (answer) => {
-    console.log(answer);
     if (typeof answer === "string") {
       answer = answer.toLowerCase();
     } else if (Array.isArray(answer)) {
@@ -56,35 +61,49 @@ function Question({
         answer[index] = item.toLowerCase();
       });
     }
-    console.log(id);
-
-    console.log("answer " + answer);
-    console.log(correctAnswer);
 
     setUserAnswer(answer);
     onAnswerChange(id, answer);
     let correct;
-    console.log("--> ", correctAnswer);
+    console.log("My Ans --> ", answer);
+    console.log("Ans --> ", correctAnswer);
     if (Array.isArray(correctAnswer) && correctAnswer.length > 1) {
       correct = correctAnswer.sort().join() === answer.sort().join();
     } else {
       if (
         !Array.isArray(correctAnswer) &&
-        correctAnswer.split("/").length > 1
+        correctAnswer.split("/").length > 2
       ) {
         correct = checkStringInArray(correctAnswer.split("/"), answer);
-      } else if (!Array.isArray(correctAnswer)) {
-        correct = correctAnswer.trim() === answer.trim();
+      } else if (typeof correctAnswer === "string") {
+        correct =
+          stripHtmlTags(correctAnswer.trim().toLowerCase()) ===
+          stripHtmlTags(answer.trim().toLowerCase());
+        console.log(correct);
       }
     }
-    console.log("correct " + correct);
     setIsCorrect(correct);
   };
 
   return (
     <div>
       <p>{}.</p>
-      <h2 className="text-base ">{currentQuestionIndex + 1 + ". " + text}</h2>
+      <div className="text-base ">
+        {}
+        <p>{currentQuestionIndex + 1 + ". "}</p>
+        {text[0] === "<" ? (
+          <div className="text-sm pl-2 -mt-4 max-h-[18rem] prose">
+            <div
+              className="ql-editor"
+              dangerouslySetInnerHTML={{
+                __html: capitalizeFirstChar(text),
+              }}
+            />
+          </div>
+        ) : (
+          <p className="pl-2"> {text}</p>
+        )}
+      </div>
       {image && (
         <div className="flex justify-center p-2">
           <Image
