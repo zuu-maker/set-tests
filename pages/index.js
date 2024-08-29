@@ -14,7 +14,24 @@ export default function Home() {
       <Head>
         <title>Sirius Educational Trust</title>
         <link rel="icon" href="/favicon.ico" />
+
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_ANALYTICS}`}
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            _html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_ANALYTICS}, {
+            page_path:window.location.pathname,
+          });`,
+          }}
+        />
       </Head>
+
       <Banner show={true} />
 
       <div className="container mx-auto">
