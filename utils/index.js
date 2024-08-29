@@ -22,3 +22,16 @@ export function containsHtmlTags(str) {
   const regex = /<\/?[\w\s="/.':;#-\/]+>/gi;
   return regex.test(str);
 }
+
+export function capitalizeFirstChar(str) {
+  if (!str) return str;
+  return `${str[3].toUpperCase()}${str.slice(4)}`;
+}
+
+export function checkStringInArray(array, searchString) {
+  // Check if the searchString exists in this array
+  var exists = array.includes(searchString);
+
+  // Return the result
+  return exists;
+}

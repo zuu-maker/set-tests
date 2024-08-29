@@ -1,29 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Option from "@/components/Option";
 import TextEditor from "@/components/TextEditor";
-
-const options = [
-  {
-    name: "Input",
-    value: "input",
-  },
-  {
-    name: "Range",
-    value: "range",
-  },
-  {
-    name: "Text",
-    value: "text",
-  },
-  {
-    name: "Multiple Choice",
-    value: "multiple",
-  },
-  {
-    name: "Multiselect Choice",
-    value: "multiselect",
-  },
-];
+import { options } from "@/utils/formUtils";
 
 function QuesitionForm({
   values,
@@ -41,13 +19,9 @@ function QuesitionForm({
   setQuestion,
   correctAnswer,
   setCorrectAnswer,
-  // handleQuestionChange
 }) {
-  const [value, setValue] = useState("");
   const [answer, setAnswer] = useState("");
   const [option, setOption] = useState("");
-
-  console.log("ques-->", question);
 
   const addOption = () => {
     let _options = [...new Set(values.options)];
@@ -60,29 +34,23 @@ function QuesitionForm({
     let _answers = [];
 
     if (Array.isArray(values.correctAnswer)) {
-      console.log("IN here one");
-      console.log("The variable is an array.");
       _answers = [...new Set(values.correctAnswer)];
       _answers.push(answer.toLowerCase());
     } else {
-      console.log("in here 2");
       _answers.push(answer);
     }
-    console.log(_answers);
     setValues((prev) => ({ ...prev, correctAnswer: _answers }));
     setAnswer("");
   };
 
   const removeOption = (option) => {
     let _options = values.options;
-
     _options = _options.filter((item) => item !== option);
     setValues((prev) => ({ ...prev, options: _options }));
   };
 
   const removeAnswer = (answer) => {
     let _answers = values.correctAnswer;
-
     _answers = _answers.filter((item) => item !== answer);
     setValues((prev) => ({ ...prev, correctAnswer: _answers }));
   };
@@ -111,15 +79,6 @@ function QuesitionForm({
               ))}
             </select>
           </div>
-
-          {/* <textarea
-            name="text"
-            value={values.text}
-            onChange={handleChange}
-            rows={6}
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Question"
-          ></textarea> */}
 
           <TextEditor
             value={question}
@@ -209,15 +168,7 @@ function QuesitionForm({
                 />
               </svg>
 
-              <div className="flex w-full space-x-3 items-center bg-red-200">
-                {/* <input
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  type="text"
-                  className="bg-gray-50 mt-6 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Option"
-                /> */}
-              </div>
+              <div className="flex w-full space-x-3 items-center bg-red-200"></div>
               <div className="p-2 ">
                 <p className="text-base text-gray-600">Options</p>
                 <div className="p-2">
@@ -265,12 +216,3 @@ function QuesitionForm({
 }
 
 export default QuesitionForm;
-
-// <input
-//   name="correctAnswer"
-//   value={values.correctAnswer}
-//   onChange={handleChange}
-//   type="text"
-//   className="bg-gray-50 border capitalize border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-//   placeholder="Correct Answer"
-// />

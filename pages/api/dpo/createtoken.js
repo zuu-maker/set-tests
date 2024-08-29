@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   //set redirect url for success page
   //we are sending the reftoken to query transsasctions
-  let uri = "https://set-tests.vercel.app/payment/success/" + refToken;
+  let uri = "https://set.edu.zm/payment/success/" + refToken;
   console.log(uri);
 
   // console.log(process.env.NEXT_PUBLIC_API_KEY);

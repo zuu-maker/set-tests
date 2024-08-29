@@ -22,14 +22,11 @@ function Payment() {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
-  const [hidden, setHidden] = useState(false);
-  const [info, setInfo] = useState(null);
   let router = useRouter();
 
   let { id } = useParams();
 
   useEffect(() => {
-    //  make thi data pull cleaner
     db.collection("Sessions")
       .doc(id)
       .get()
@@ -48,10 +45,6 @@ function Payment() {
           name: user.name,
           _id: user._id,
         });
-        setInfo({
-          title: doc.data().title,
-          amount: doc.data().amount,
-        });
       })
       .catch((error) => {
         console.log(error);
@@ -61,14 +54,11 @@ function Payment() {
       });
   }, []);
 
-  console.log(token);
-
   const handleOnChange = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleOnClick = () => {
-    console.table(data.firstName, data.lastName, data.email, data.phone);
     let toastId = toast.loading("loading...");
     setLoading(true);
 
@@ -77,8 +67,6 @@ function Payment() {
       toast.error("Please fill in all information");
       return;
     }
-
-    console.log(info);
 
     // 1.setup ref-token - done
     let date = new Date();
@@ -100,7 +88,6 @@ function Payment() {
     axios
       .post("/api/dpo/createtoken", {
         //do not forget to upddate amount
-        // amount: info.amount,
         amount: "25",
         email: email,
         phone: phone,
@@ -195,18 +182,8 @@ function Payment() {
     // 6. the allow user to pay and delete the session
   };
 
-  if (hidden)
-    return (
-      <div className="min-h-screen w-full flex justify-center items-center">
-        <p className="text-2xl text-red-500 font-bold">
-          You do not have a payment session please go back and follow the
-          instructions.
-        </p>
-      </div>
-    );
-
   return (
-    <div className="bg-gray-50 ">
+    <div className="bg-gray-50 min-h-screen">
       <Head>
         <title>Secure Payment </title>
         <link rel="icon" href="/favicon.ico" />

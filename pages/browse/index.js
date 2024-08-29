@@ -5,23 +5,24 @@ import Head from "next/head";
 import { db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
 import Banner from "@/components/Banner";
+import AllCourses from "@/components/browse/AllCourses";
 
 function Browse() {
-  const [tests, setTests] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     let unsubscribe = db
       .collection("Courses")
       .where("publish", "==", true)
-      .orderBy("timeStamp", "desc")
+      .orderBy("title", "asc")
       .onSnapshot((querySnapshot) => {
-        let _tests = [];
+        let _courses = [];
         querySnapshot.forEach((doc) => {
-          _tests.push(doc.data());
+          _courses.push(doc.data());
         });
-        console.log(_tests);
-        setTests(_tests);
+
+        setCourses(_courses);
         setLoader(false);
       });
 
@@ -46,44 +47,7 @@ function Browse() {
         <div className="container mx-auto">
           <div className="h-8 w-full "></div>
           <Header />
-          <div className="bg-white">
-            <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-                All Courses
-              </h2>
-              <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                {tests &&
-                  tests.length > 0 &&
-                  tests.map((item) => (
-                    <Link key={item.id} href={`/browse/${item.id}`}>
-                      <div className="group relative">
-                        <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-                          <img
-                            src={item.image.url}
-                            alt={item.image.ref}
-                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                          />
-                        </div>
-                        <div className="mt-4 flex justify-between">
-                          <div>
-                            <h3 className="text-sm text-gray-700">
-                              <span
-                                aria-hidden="true"
-                                className="absolute inset-0"
-                              />
-                              {item.title}
-                            </h3>
-                          </div>
-                          <p className="text-sm font-medium text-gray-900">
-                            {item?.numberOfQuestions} questions
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-              </div>
-            </div>
-          </div>
+          <AllCourses courses={courses} />
         </div>
       )}
     </div>

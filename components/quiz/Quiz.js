@@ -5,6 +5,8 @@ import { db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
 import Overlay from "@/components/quiz/Overlay";
 import toast from "react-hot-toast";
+import QuizActions from "./QuizActions";
+import QuizTop from "./QuizTop";
 
 //make results look better
 //add results record
@@ -22,8 +24,6 @@ function Quiz({ id }) {
   const [loader, setLoader] = useState(true);
   const [visible, setVisible] = useState(false);
 
-  console.log("answes", answers);
-
   useEffect(() => {
     db.collection("Courses")
       .doc(id.split("-")[0])
@@ -33,8 +33,6 @@ function Quiz({ id }) {
       .then((doc) => {
         console.log(doc.data().questions);
         if (doc.data().questions) {
-          // let _questions = doc.data().questions
-          // _questions.sort((a, b) => a.year - b.year);
           setQuestions(doc.data().questions);
         }
         setTest(doc.data());
@@ -101,13 +99,11 @@ function Quiz({ id }) {
       toast.error("Please answer the question");
       return;
     }
-    console.log(answers[questions[currentQuestionIndex].id]);
     setShowFeedback(true);
     setSubmitted(true);
   };
 
   const currentQuestion = questions[currentQuestionIndex];
-  console.log(currentQuestion);
   if (showResult) {
     return (
       <Result
@@ -128,19 +124,8 @@ function Quiz({ id }) {
       ) : (
         <div className="min-h-screen  bg-gray-100 flex justify-center items-center ">
           <div className="bg-white relative min-h-[32rem] flex flex-col justify-between w-[42rem]  rounded-lg shadow-lg p-5">
-            <div className="basis-1 flex justify-between">
-              <h4 className="text-xl capitalize font-bold text-cyan-500">
-                {test.title}
-              </h4>
-              <button
-                onClick={() => setVisible(true)}
-                className="py-1 px-4 rounded-xl bg-gray-100"
-              >
-                Question List
-              </button>
-            </div>
+            <QuizTop title={test.title} setVisible={setVisible} />
             <hr className="mt-4 mb-4 bg-gray-100" />
-
             <div className="border basis-5 flex-1 border-gray-100 p-6">
               {test.questions.length > 0 && (
                 <Question
@@ -156,31 +141,14 @@ function Quiz({ id }) {
                 />
               )}
             </div>
-
             <hr className="mt-4 mb-4" />
-            <div className="basis-1">
-              <div className="flex items-center justify-between">
-                <p>
-                  Question{" "}
-                  {Number(currentQuestionIndex) + 1 + " of " + questions.length}
-                </p>
-                {submitted ? (
-                  <button
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80"
-                    onClick={handleNext}
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
-                )}
-              </div>
-            </div>
+            <QuizActions
+              submitted={submitted}
+              currentQuestionIndex={currentQuestionIndex}
+              questions={questions}
+              handleNext={handleNext}
+              handleSubmit={handleSubmit}
+            />
             <Overlay
               answers={answers}
               currentQuestionIndex={currentQuestionIndex}

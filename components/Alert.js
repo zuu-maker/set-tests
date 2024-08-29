@@ -27,7 +27,6 @@ function Alert({ isCorrect, explanation, answer, type }) {
       </div>
 
       <div className="text-sm font-medium px-2 w-full overflow-y-scroll max-h-[18rem]">
-        {answer === newAnswer ? "Correct" : "wrong"}
         <div className="capitalize flex items-center space-x-2">
           <span className="font-extrabold">Expected Answer:</span>
           <div className="text-sm  prose">

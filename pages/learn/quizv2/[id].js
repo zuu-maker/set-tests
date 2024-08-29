@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 function QuizPage() {
   const { id } = useParams();
-
+  // TODO: do not forget to add the user here
   const { user } = useSelector((state) => state);
 
   return (

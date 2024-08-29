@@ -6,7 +6,12 @@ import MultipleChoice from "./MultipleChoice";
 import MultiSelect from "./MultiSelect";
 import AlertComponent from "../Alert";
 import Image from "next/image";
-import { containsHtmlTags, stripHtmlTags } from "@/utils";
+import {
+  capitalizeFirstChar,
+  checkStringInArray,
+  containsHtmlTags,
+  stripHtmlTags,
+} from "@/utils";
 
 function Question({
   question,
@@ -20,8 +25,6 @@ function Question({
   const { id, type, text, image, options, correctAnswer, explanation } =
     question;
 
-  console.log("options -->", options);
-  console.log("ans -->", correctAnswer);
   const [userAnswer, setUserAnswer] = useState(answer);
   // const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -29,11 +32,6 @@ function Question({
   // useEffect(() => {
   //   if (answer) setShowFeedback(false);
   // }, []);
-
-  function capitalizeFirstChar(str) {
-    if (!str) return str;
-    return `${str[3].toUpperCase()}${str.slice(4)}`;
-  }
 
   useEffect(() => {
     if (showFeedback) {
@@ -44,17 +42,8 @@ function Question({
   }, [showFeedback]);
 
   useEffect(() => {
-    console.table(id, answer);
     setUserAnswer(answer);
   }, [id]);
-
-  function checkStringInArray(array, searchString) {
-    // Check if the searchString exists in this array
-    var exists = array.includes(searchString);
-
-    // Return the result
-    return exists;
-  }
 
   const handleAnswerChange = (answer) => {
     if (typeof answer === "string") {
@@ -93,7 +82,6 @@ function Question({
     <div>
       <p>{}.</p>
       <div className="text-base ">
-        {}
         <p>{currentQuestionIndex + 1 + ". "}</p>
         {text[0] === "<" ? (
           <div className="text-sm pl-2 -mt-4 max-h-[18rem] prose">
@@ -110,11 +98,10 @@ function Question({
       </div>
       {image && (
         <div className="flex justify-center p-2">
-          <Image
+          <img
             src={image.url}
             alt={image.ref}
-            width={400}
-            height={400}
+            height={300}
             style={{ objectFit: "cover" }}
           />
         </div>

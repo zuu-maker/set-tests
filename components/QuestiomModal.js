@@ -50,6 +50,16 @@ const QuestionModal = ({
     }
   }, [current && current.text]);
 
+  useEffect(() => {
+    if (
+      current &&
+      current.correctAnswer &&
+      typeof current.correctAnswer === "string"
+    ) {
+      setCorrectAnswer(current.correctAnswer);
+    }
+  }, [current && current.correctAnswer]);
+
   return (
     <Transition.Root show={visible} as={Fragment}>
       <Dialog
