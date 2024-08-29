@@ -1,3 +1,4 @@
+import { stripHtmlTags } from "@/utils";
 import React from "react";
 
 function Range({ questionId, options, onAnswerChange, answer }) {
@@ -15,7 +16,7 @@ function Range({ questionId, options, onAnswerChange, answer }) {
             checked={answer === option}
             onChange={handleChange}
           />
-          <span>{option}</span>
+          <span>{stripHtmlTags(option)}</span>
         </label>
       ))}
     </div>

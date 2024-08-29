@@ -1,23 +1,41 @@
+import { capitalizeFirstChar } from "@/utils";
 import React from "react";
 
 function ResultCard({ answers, question, index }) {
   return (
     <div className="shadow-lg p-2 rounded-md">
-      <p>
-        <strong>Question {index + 1}:</strong> {question.text}
+      <p className="flex items-center space-x-1">
+        <strong>Question {index + 1}:</strong>{" "}
+        <span
+          className="prose text-base h-fit"
+          dangerouslySetInnerHTML={{
+            __html: capitalizeFirstChar(question.text),
+          }}
+        />
       </p>
-      <p>
+      <p className="flex items-center space-x-1">
         <strong>Your Answer:</strong>{" "}
-        {Array.isArray(answers[question.id])
-          ? answers[question.id].join(", ")
-          : answers[question.id]}
+        <span
+          className="text-base flex items-center"
+          dangerouslySetInnerHTML={{
+            __html: Array.isArray(answers[question.id])
+              ? capitalizeFirstChar(answers[question.id].join(", "))
+              : capitalizeFirstChar(answers[question.id]),
+          }}
+        />
+        {/* {} */}
       </p>
-      {question && question.type == +"text" && (
-        <p>
+      {question && question.type !== "text" && (
+        <p className="flex items-center  space-x-1">
           <strong>Correct Answer:</strong>{" "}
-          {Array.isArray(question.correctAnswer)
-            ? question.correctAnswer.join(", ")
-            : question.correctAnswer}
+          <span
+            className="text-base h-4  flex items-center"
+            dangerouslySetInnerHTML={{
+              __html: Array.isArray(question.correctAnswer)
+                ? capitalizeFirstChar(question.correctAnswer.join(","))
+                : capitalizeFirstChar(question.correctAnswer),
+            }}
+          />
         </p>
       )}
       <div>
@@ -25,9 +43,9 @@ function ResultCard({ answers, question, index }) {
           <strong>Explanation:</strong>
         </p>
         <div
-          className="prose text-sm p-2 h-fit"
+          className="prose text-sm  h-fit"
           dangerouslySetInnerHTML={{
-            __html: question.explanation,
+            __html: capitalizeFirstChar(question.explanation),
           }}
         />
       </div>
