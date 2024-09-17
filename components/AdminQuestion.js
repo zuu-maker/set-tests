@@ -6,7 +6,7 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
   const [answersText, setAnswersText] = useState("");
 
   useEffect(() => {
-    console.log(question);
+    console.log("ques-->", question);
     if (
       (question && question.type === "range") ||
       question.type === "multiple" ||
@@ -70,7 +70,7 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
           </svg>
         </div>
       </div>
-      <p>
+      <p className="capitalize">
         <strong className="mr-1">Question Type:</strong>
         {question.type}
       </p>
@@ -96,7 +96,7 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
         </p>
       )}
 
-      {question.type !== "multiselect" && (
+      {question.type !== "multiselect" && question.type !== "text" && (
         <p>
           <strong className="mr-1">Correct Answer:</strong>
           {stripHtmlTags(question.correctAnswer)}

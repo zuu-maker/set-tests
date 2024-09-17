@@ -1,5 +1,9 @@
 export const options = [
   {
+    name: "Select Question Type",
+    value: "",
+  },
+  {
     name: "Input",
     value: "input",
   },

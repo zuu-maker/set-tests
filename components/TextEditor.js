@@ -41,6 +41,9 @@ function TextEditor({ value, onChange, placeholder, isInput = true }) {
     }
   }, []);
 
+  const generateId = () =>
+    Date.now().toString(36) + Math.random().toString(36).substr(2);
+
   // useEffect(() => {
   //   loadMathJax(() => {
   //     if (window.MathJax) {
@@ -70,7 +73,8 @@ function TextEditor({ value, onChange, placeholder, isInput = true }) {
     let toastId = toast.loading("Uploading...");
     try {
       const storageRef = storageBucket.ref();
-      const fileRef = storageRef.child(file.name);
+      const id = generateId();
+      const fileRef = storageRef.child(file.name + id);
       await fileRef.put(file);
       const fileUrl = await fileRef.getDownloadURL();
 

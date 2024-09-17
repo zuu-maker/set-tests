@@ -66,7 +66,14 @@ const QuestionModal = ({
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setVisible}
+        onClose={() => {
+          setVisible(false);
+          setButtonText("Upload Image");
+          setPreview("");
+          setExplanation("");
+          setQuestion("");
+          setCorrectAnswer("");
+        }}
       >
         <Transition.Child
           as={Fragment}
@@ -139,6 +146,7 @@ const QuestionModal = ({
                       setVisible(false);
                       setButtonText("Upload Image");
                       setPreview("");
+                      setExplanation("");
                       setQuestion("");
                       setCorrectAnswer("");
                     }}

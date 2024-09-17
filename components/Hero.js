@@ -33,9 +33,7 @@ export default function Hero() {
           </svg>
         </div>
         <div className="px-6 pt-6 lg:px-8">
-          <div>
-            <Header />
-          </div>
+          <Header />
         </div>
         <main>
           <div className="relative px-6 lg:px-8">

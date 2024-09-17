@@ -16,7 +16,7 @@ const navigation = [
 
 const navigationPhone = [{ name: "Courses", href: "/browse" }];
 
-const Header = () => {
+const Header = ({ isHome = true }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   let user = useSelector((state) => state.user);
@@ -40,7 +40,7 @@ const Header = () => {
   return (
     <React.Fragment>
       <nav
-        className="flex px-2 h-9 w-full items-center justify-between"
+        className="flex px-2 h-14 w-full items-center justify-between "
         aria-label="Global"
       >
         <div className=" lg:min-w-0 lg:flex-1" aria-label="Global">
@@ -58,20 +58,37 @@ const Header = () => {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-center lg:gap-x-12">
+        <div
+          className={`hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-center lg:gap-x-12 ${
+            isHome
+              ? "text-gray-900 hover:text-gray-900"
+              : "text-white hover:text-white"
+          } `}
+        >
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="font-semibold text-gray-900 hover:text-gray-900"
+              className={`font-semibold  ${
+                item.name !== "Courses" && !isHome && "hidden"
+              }`}
             >
               {item.name}
             </Link>
           ))}
+          {!isHome && (
+            <Link href="/" className="font-semibold">
+              Home
+            </Link>
+          )}
           {user && user.role === "admin" && (
             <Link
               href="/admin"
-              className="font-semibold text-gray-900 hover:text-gray-900"
+              className={`font-semibold text-gray-900 hover:text-gray-900 ${
+                isHome
+                  ? "text-gray-900 hover:text-gray-900"
+                  : "text-white hover:text-white"
+              } `}
             >
               Dashboard
             </Link>
@@ -97,7 +114,11 @@ const Header = () => {
           ) : (
             <Link
               href="/login"
-              className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+              className={`inline-block rounded-lg px-3 py-1.5 text-sm  leading-6 ${
+                isHome
+                  ? "text-gray-900 font-semibold shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+                  : "text-cyan-600 font-medium shadow-md ring-1 ring-gray-50 bg-white hover:ring-gray-50"
+              }  `}
             >
               Sign In
             </Link>
@@ -134,7 +155,9 @@ const Header = () => {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="-mx-3 block rounded-lg px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10"
+                    className={`-mx-3  rounded-lg px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10  ${
+                      item.name !== "Courses" && !isHome ? "hidden" : "Block"
+                    }`}
                   >
                     {item.name}
                   </Link>
@@ -152,7 +175,7 @@ const Header = () => {
                 {user && user._id.length > 0 ? (
                   <button
                     onClick={handleLogout}
-                    className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+                    className={`inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20`}
                   >
                     Sign Out
                   </button>

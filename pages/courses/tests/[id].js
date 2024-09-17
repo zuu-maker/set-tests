@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import Resizer from "react-image-file-resizer";
 
 const initialValues = {
-  type: "input",
+  type: "",
   text: "",
   image: null,
   correctAnswer: "",
@@ -37,6 +37,8 @@ function TestView() {
   const [explanation, setExplanation] = useState("");
   const [question, setQuestion] = useState("");
   const [editExplanation, setEditExplanation] = useState("");
+  const [editQuestionV, setEditQuestion] = useState("");
+  const [editCorrectAnswer, setEditCorrectAnswer] = useState("");
   const [current, setCurrent] = useState(null);
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState(-1);
@@ -72,6 +74,11 @@ function TestView() {
 
   function addQuestion() {
     console.log(values);
+
+    if (values && !values.type) {
+      toast.error("Please add question type");
+      return;
+    }
     let _values = {};
     if (values.type === "multiselect") {
       _values = {
@@ -91,23 +98,23 @@ function TestView() {
     _values.id = uuidv4();
 
     setQuestions((prev) => [...prev, _values]);
-    setValues(() => ({
-      type: "input",
-      text: "",
-      image: null,
-      correctAnswer: "" || [],
-      explanation: "",
-      options: [],
-    }));
+
     setPreview("");
     setButtonText("Upload Image");
     setExplanation("");
     setQuestion("");
     setCorrectAnswer("");
+    setValues(initialValues);
     if (!isChanges) setIsChanegs(true);
   }
 
   function removeQuestion(valueToRemove) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete? You can not undo this action."
+      )
+    )
+      return;
     let _questions = questions;
     _questions = _questions.filter((item) => item !== valueToRemove);
 
@@ -133,21 +140,20 @@ function TestView() {
       _questions[index] = {
         ..._editedQuestion,
         explanation: editExplanation,
-        text: question,
+        text: editQuestion,
       };
     } else {
       _questions[index] = {
         ..._editedQuestion,
         explanation: editExplanation,
-        text: question,
-        correctAnswer,
+        text: editQuestionV,
+        correctAnswer: editCorrectAnswer,
       };
     }
     setQuestions(_questions);
-    setExplanation("");
-    setExplanation("");
-    setQuestion("");
-    setCorrectAnswer("");
+    setEditExplanation("");
+    setEditQuestion("");
+    setEditCorrectAnswer("");
     setPreview("");
     setButtonText("Upload Image");
     setVisible(false);
@@ -314,7 +320,7 @@ function TestView() {
               <hr />
 
               <div className="flex flex-col">
-                <div className="w-1/2">
+                <div className="w-full lg:w-1/2">
                   <QuesitionForm
                     fileInputRef={fileInputRef}
                     correctAnswer={correctAnswer}
@@ -367,7 +373,7 @@ function TestView() {
                   </button>
                 </div>
                 <hr />
-                <div className="space-y-4">
+                <div className="space-y-4 py-8">
                   {questions.map((question, i) => (
                     <AdminQuestion
                       key={i}
@@ -385,11 +391,11 @@ function TestView() {
       </div>
       <QuestionModal
         fileInputRef={fileInputRef}
-        correctAnswer={correctAnswer}
-        setCorrectAnswer={setCorrectAnswer}
-        setQuestion={setQuestion}
+        correctAnswer={editCorrectAnswer}
+        setCorrectAnswer={setEditCorrectAnswer}
+        setQuestion={setEditQuestion}
         handleQuestionChange={handleQuestionChange}
-        question={question}
+        question={editQuestionV}
         current={current}
         setCurrent={setCurrent}
         index={index}
@@ -399,7 +405,6 @@ function TestView() {
         editQuestion={editQuestion}
         setVisible={setVisible}
         handleChange={handleChange}
-        handleExplanationChange={handleExplanationChange}
         handleImage={handleImage}
         preview={preview}
         buttonText={buttonText}

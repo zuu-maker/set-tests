@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
 import toast from "react-hot-toast";
+import Header from "@/components/Header";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -52,15 +53,18 @@ function Login() {
         // ...
       })
       .catch((error) => {
-        let errorMessage = error.message;
-        toast.error(errorMessage);
+        let errorMessage = JSON.parse(error.message);
         setLoading(false);
+        toast.error(errorMessage.error.message);
       });
   };
 
   return (
-    <div>
+    <div className="mx-auto">
       {" "}
+      <div className="px-6 py-2 lg:px-8 bg-gradient-to-r from-cyan-500 to-cyan-600 shadow-lg">
+        <Header isHome={false} />
+      </div>
       <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img

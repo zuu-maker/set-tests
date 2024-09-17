@@ -228,7 +228,7 @@ function Payment() {
               </h1>
               <h4 className="text-center font-bold text-lg "></h4>
               <h4 className="text-center font-normal text-lg ">
-                Amount: <span className="font-bold">ZK25</span>
+                Amount: <span className="font-bold">25 ZMW</span>
               </h4>
               <h5 className="text-center text-base ">
                 Access to all courses, valid for 7 days.

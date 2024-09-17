@@ -1,6 +1,11 @@
 import React from "react";
 
 function CourseInfo({ course, handleSubscribe, user, loading, date }) {
+  let kwachaFormatter = new Intl.NumberFormat("en-ZM", {
+    style: "currency",
+    currency: "ZMW",
+  });
+
   return (
     <div className="mx-auto max-w-2xl px-4 pt-10 pb-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16">
       <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
@@ -13,9 +18,7 @@ function CourseInfo({ course, handleSubscribe, user, loading, date }) {
       <div className="sm:mt-4 lg:row-span-3 lg:mt-0">
         <p className="text-xl tracking-tight text-gray-900">
           Price:
-          <span className="font-extrabold ">
-            {` ZK ${new Intl.NumberFormat().format(25)}`}
-          </span>
+          <span className="font-extrabold ">{` 25 ZMW`}</span>
         </p>
 
         <div className=" mt-5 sm:mt-5 ">
@@ -28,7 +31,7 @@ function CourseInfo({ course, handleSubscribe, user, loading, date }) {
               className="disabled:opacity-75 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-3 px-8 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               {user && user._id.length === 0
-                ? "Please login to subscribe"
+                ? "Please sign in to subscribe"
                 : "Purchase Subscription"}
             </button>
           </div>
