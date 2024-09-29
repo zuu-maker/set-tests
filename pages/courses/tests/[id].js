@@ -268,9 +268,9 @@ function TestView() {
 
   useEffect(() => {
     db.collection("Courses")
-      .doc(id.split("-")[0])
+      .doc(id.toString().split("-")[0])
       .collection("Tests")
-      .doc(id.split("-")[1])
+      .doc(id.toString().split("-")[1])
       .get()
       .then((doc) => {
         if (doc.data().questions) {

@@ -15,7 +15,7 @@ export function capitalize(str, lc, all) {
 }
 
 export function stripHtmlTags(str) {
-  return str.replace(/<\/?[^>]+(>|$)/g, "");
+  return str.toString().replace(/<\/?[^>]+(>|$)/g, "");
 }
 
 export function containsHtmlTags(str) {
