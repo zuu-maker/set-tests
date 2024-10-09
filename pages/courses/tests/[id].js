@@ -50,7 +50,6 @@ function TestView() {
   const [progress, setProgress] = useState("");
   const [buttonText, setButtonText] = useState("Upload Image");
 
-  console.log(questions);
   const { id } = useParams();
 
   const handleChange = (e) => {
@@ -123,6 +122,8 @@ function TestView() {
   }
 
   function editQuestionModal(_question, _index) {
+    console.log("current->", current);
+    console.log(question);
     setCurrent(_question);
     if (_question.image) {
       setPreview(_question.image.url);
@@ -158,7 +159,7 @@ function TestView() {
     setButtonText("Upload Image");
     setVisible(false);
     setIndex(-1);
-    // setCurrent(null);
+    setCurrent({});
     setIsChanegs(true);
   }
 

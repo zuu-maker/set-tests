@@ -68,6 +68,7 @@ const QuestionModal = ({
         initialFocus={cancelButtonRef}
         onClose={() => {
           setVisible(false);
+          setCurrent({});
           setButtonText("Upload Image");
           setPreview("");
           setExplanation("");
@@ -149,6 +150,7 @@ const QuestionModal = ({
                       setExplanation("");
                       setQuestion("");
                       setCorrectAnswer("");
+                      setCurrent({});
                     }}
                     ref={cancelButtonRef}
                   >
