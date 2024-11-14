@@ -183,6 +183,9 @@ function TestView() {
       });
   }
 
+  const generateId = () =>
+    Date.now().toString(36) + Math.random().toString(36).substr(2);
+
   const handleImage = (e, edit) => {
     setButtonText("Uploading...");
     let toastId = toast.loading("uploading image...");
@@ -191,10 +194,11 @@ function TestView() {
     console.log(edit);
 
     setPreview(window.URL.createObjectURL(file));
+    const id = generateId();
     setButtonText(file.name);
 
     console.log(preview);
-    const storageRef = storageBucket.ref(file.name);
+    const storageRef = storageBucket.ref(file.name + id);
     Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
       storageRef.putString(uri, "data_url").on(
         "state_changed",
@@ -217,7 +221,7 @@ function TestView() {
               ...prev,
               image: {
                 public_id: file.name.split(".")[0],
-                ref: file.name,
+                ref: file.name + id,
                 url,
               },
             }));
@@ -227,7 +231,7 @@ function TestView() {
               ...prev,
               image: {
                 public_id: file.name.split(".")[0],
-                ref: file.name,
+                ref: file.name + id,
                 url,
               },
             }));
