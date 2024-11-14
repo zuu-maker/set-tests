@@ -7,7 +7,7 @@ function ResultCard({ answers, question, index }) {
       <p className="flex items-center space-x-1">
         <strong>Question {index + 1}:</strong>{" "}
         <span
-          className="prose text-base h-fit"
+          className="prose text-base !max-w-none h-fit"
           dangerouslySetInnerHTML={{
             __html: capitalizeFirstChar(question.text),
           }}
@@ -38,12 +38,9 @@ function ResultCard({ answers, question, index }) {
           />
         </p>
       )}
-      <div>
-        <p>
-          <strong>Explanation:</strong>
-        </p>
+      <div className="">
         <div
-          className="prose text-sm  h-fit"
+          className=" text-sm  w-full !max-w-none prose "
           dangerouslySetInnerHTML={{
             __html: capitalizeFirstChar(question.explanation),
           }}

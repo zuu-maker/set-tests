@@ -56,7 +56,6 @@ function Quiz({ id }) {
     const updatedAnswers = { ...answers, [questionId]: answer };
     console.log(updatedAnswers);
     setAnswers(updatedAnswers);
-    localStorage.setItem("quiz-answers", JSON.stringify(updatedAnswers));
   };
 
   // useEffect(() => {
@@ -95,7 +94,10 @@ function Quiz({ id }) {
   };
 
   const handleSubmit = () => {
-    if (answers[questions[currentQuestionIndex].id] == undefined) {
+    if (
+      answers[questions[currentQuestionIndex].id] == undefined ||
+      answers[questions[currentQuestionIndex].id] == ""
+    ) {
       toast.error("Please answer the question");
       return;
     }

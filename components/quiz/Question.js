@@ -25,7 +25,7 @@ function Question({
   const { id, type, text, image, options, correctAnswer, explanation } =
     question;
 
-  const [userAnswer, setUserAnswer] = useState(answer);
+  const [userAnswer, setUserAnswer] = useState("ii");
   // const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
 

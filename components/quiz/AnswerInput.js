@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import TextEditor from "@/components/TextEditor";
 
 function AnswerInput({ questionId, onAnswerChange, answer }) {
-  const handleChange = (e) => {
-    onAnswerChange(e);
+  const handleChange = (item) => {
+    onAnswerChange(item);
   };
 
   const [value, setValue] = useState("");
+
   useEffect(() => {
     if (value !== "") {
       handleChange(value);
     }
   }, [value]);
+
+  useEffect(() => {
+    setValue("");
+  }, [questionId]);
 
   return (
     <div className="p-2">

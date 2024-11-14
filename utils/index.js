@@ -25,7 +25,7 @@ export function containsHtmlTags(str) {
 
 export function capitalizeFirstChar(str) {
   if (!str) return str;
-  return `${str[3].toUpperCase()}${str.slice(4)}`;
+  return str;
 }
 
 export function checkStringInArray(array, searchString) {
