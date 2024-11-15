@@ -22,33 +22,34 @@ const initialValues = {
 };
 
 // TODO:
-// -fix id issue
-// -add image upload
-// -add graph analysis
+// Can not edit question type
 
 function TestView() {
   const [loader, setLoader] = useState(true);
   const [test, setTest] = useState(null);
-  const [values, setValues] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
-  const [correctAnswer, setCorrectAnswer] = useState("");
   const [isChanges, setIsChanegs] = useState(false);
-  const [explanation, setExplanation] = useState("");
   const [question, setQuestion] = useState("");
-  const [editExplanation, setEditExplanation] = useState("");
-  const [editQuestionV, setEditQuestion] = useState("");
-  const [editCorrectAnswer, setEditCorrectAnswer] = useState("");
+
   const [current, setCurrent] = useState(null);
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState(-1);
   const fileInputRef = useRef(null);
 
-  // const [image, setImage] = useState("");
-  const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState("");
-  const [progress, setProgress] = useState("");
   const [buttonText, setButtonText] = useState("Upload Image");
+
+  // For create
+  const [values, setValues] = useState(initialValues);
+  const [explanation, setExplanation] = useState("");
+  const [correctAnswer, setCorrectAnswer] = useState("");
+
+  // For edit
+  const [editExplanation, setEditExplanation] = useState("");
+  const [editQuestion, setEditQuestion] = useState("");
+  const [editCorrectAnswer, setEditCorrectAnswer] = useState("");
+  const [image, setImage] = useState(null);
 
   const { id } = useParams();
 
@@ -126,6 +127,7 @@ function TestView() {
     console.log(question);
     setCurrent(_question);
     if (_question.image) {
+      setImage(_question.image);
       setPreview(_question.image.url);
       setButtonText(_question.image.ref);
     }
@@ -133,7 +135,7 @@ function TestView() {
     setVisible(true);
   }
 
-  function editQuestion(_editedQuestion) {
+  function updateQuestion(_editedQuestion) {
     console.log(_editedQuestion);
 
     let _questions = questions;
@@ -142,15 +144,19 @@ function TestView() {
         ..._editedQuestion,
         explanation: editExplanation,
         text: editQuestion,
+        image: image,
       };
     } else {
       _questions[index] = {
         ..._editedQuestion,
         explanation: editExplanation,
-        text: editQuestionV,
+        text: editQuestion,
         correctAnswer: editCorrectAnswer,
+        image: image,
       };
     }
+    console.log(_editedQuestion);
+    // return;
     setQuestions(_questions);
     setEditExplanation("");
     setEditQuestion("");
@@ -189,7 +195,6 @@ function TestView() {
   const handleImage = (e, edit) => {
     setButtonText("Uploading...");
     let toastId = toast.loading("uploading image...");
-    setUploading(true);
     let file = e.target.files[0];
     console.log(edit);
 
@@ -204,13 +209,11 @@ function TestView() {
         "state_changed",
         (snap) => {
           let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
-          setProgress(percentage);
         },
         (err) => {
           console.log(err);
           toast.dismiss(toastId);
           toast.error("upload Error");
-          setUploading(false);
         },
         async () => {
           const url = await storageRef.getDownloadURL();
@@ -237,7 +240,6 @@ function TestView() {
             }));
             fileInputRef.current.value = "";
           }
-          setUploading(false);
         }
       );
     });
@@ -246,10 +248,9 @@ function TestView() {
   const handleRemove = (image) => {
     console.log(image);
     setButtonText("Processing...");
-    setUploading(true);
 
     const storageRef = storageBucket.ref(image.ref);
-
+    console.log("here -->>", storageRef);
     storageRef
       .delete()
       .then(() => {
@@ -257,17 +258,28 @@ function TestView() {
           ...prev,
           image: null,
         }));
+        setImage(null);
         setPreview("");
         setButtonText("Upload Another Image");
         toast.success("Image Deleted");
-        setUploading(false);
-        // setValues({ ...values, uploading: false });
       })
       .catch((error) => {
-        setButtonText("Try again");
-        setUploading(false);
-        toast.error("failed to delete");
-        console.log(error);
+        console.log("obj -->", error.code);
+
+        if (error.code == "storage/object-not-found") {
+          setValues((prev) => ({
+            ...prev,
+            image: null,
+          }));
+          setImage(null);
+          setPreview("");
+          setButtonText("Upload Another Image");
+          toast("Please save to ensure consistency");
+          console.log("values", values);
+        } else {
+          setButtonText("Try again");
+          toast.error("failed to delete");
+        }
       });
   };
 
@@ -281,14 +293,10 @@ function TestView() {
         if (doc.data().questions) {
           setQuestions(doc.data().questions);
         }
-        // setPreview(doc.data().image.url);
-        // setButtonText(doc.data().image.ref);
-        // setImage(doc.data().image);
         setTest(doc.data());
         setLoader(false);
       })
       .catch((error) => {
-        console.log(error);
         setLoader(false);
       });
   }, [id]);
@@ -400,14 +408,14 @@ function TestView() {
         setCorrectAnswer={setEditCorrectAnswer}
         setQuestion={setEditQuestion}
         handleQuestionChange={handleQuestionChange}
-        question={editQuestionV}
+        question={editQuestion}
         current={current}
         setCurrent={setCurrent}
         index={index}
         visible={visible}
         explanation={editExplanation}
         setExplanation={setEditExplanation}
-        editQuestion={editQuestion}
+        editQuestion={updateQuestion}
         setVisible={setVisible}
         handleChange={handleChange}
         handleImage={handleImage}

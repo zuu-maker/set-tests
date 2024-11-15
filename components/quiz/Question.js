@@ -98,6 +98,7 @@ function Question({
       </div>
       {image && (
         <div className="flex justify-center p-2">
+          {image.url}
           <img
             src={image.url}
             alt={image.ref}
