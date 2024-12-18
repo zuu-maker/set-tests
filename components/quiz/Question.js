@@ -54,11 +54,32 @@ function Question({
       });
     }
 
+    const normalizeHtmlString = (htmlString) => {
+      // Create a temporary div element
+      const temp = document.createElement("div");
+
+      // Set the HTML content
+      temp.innerHTML = htmlString;
+
+      // Get text content (this converts HTML entities to their actual characters)
+      let text = temp.textContent || temp.innerText;
+
+      // Normalize spaces
+      text = text.replace(/\s+/g, " ").trim();
+
+      // Re-wrap in paragraph if original had paragraphs
+      if (htmlString.toLowerCase().includes("<p")) {
+        return `<p>${text}</p>`;
+      }
+
+      return text;
+    };
+
     setUserAnswer(answer);
     onAnswerChange(id, answer);
     let correct;
-    console.log("My Ans --> ", answer);
-    console.log("Ans --> ", correctAnswer);
+    console.log("My Ans --> ", normalizeHtmlString(answer));
+    console.log("Ans --> ", normalizeHtmlString(correctAnswer));
     if (Array.isArray(correctAnswer) && correctAnswer.length > 1) {
       correct = correctAnswer.sort().join() === answer.sort().join();
     } else {
@@ -70,8 +91,9 @@ function Question({
         correct = checkStringInArray(correctAnswer.split("/"), answer);
       } else if (typeof correctAnswer === "string") {
         correct =
-          stripHtmlTags(correctAnswer.trim().toLowerCase()) ===
-          stripHtmlTags(answer.trim().toLowerCase());
+          stripHtmlTags(
+            normalizeHtmlString(correctAnswer).trim().toLowerCase()
+          ) === stripHtmlTags(normalizeHtmlString(answer).trim().toLowerCase());
         console.log(correct);
       }
     }
