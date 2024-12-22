@@ -94,7 +94,7 @@ function LearnPage() {
             </div>
           ) : (
             <div>
-              {true ? (
+              {user && user._id && user.activeSubscription ? (
                 <MyCourses courses={courses} />
               ) : (
                 <PleaseSubscribe
