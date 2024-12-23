@@ -12,7 +12,7 @@ function AdminAuth({ children }) {
 
   useEffect(() => {
     if (user && user._id) {
-      if (user.role === "admin") {
+      if (user.role === "admin" || user.role === "partner") {
         setHidden(false);
       } else {
         setLoader(false);

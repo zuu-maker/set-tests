@@ -17,7 +17,6 @@ const WhyUs = () => {
               <li>Full solutions and explanations</li>
               <li>24/7 online access</li>
               <li>Affordable fee stricture</li>
-              <li>Easy payment options </li>
             </ol>
           </div>
 

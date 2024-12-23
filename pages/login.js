@@ -39,7 +39,7 @@ function Login() {
                   phone: snap.docs[0].data().phone,
                 })
               );
-              if (snap.docs[0].data().role === "admin") {
+              if (snap.docs[0].data().role !== "student") {
                 router.push("/admin");
               } else {
                 router.push("/learn");

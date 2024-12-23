@@ -81,18 +81,19 @@ const Header = ({ isHome = true }) => {
               Home
             </Link>
           )}
-          {user && user.role === "admin" && (
-            <Link
-              href="/admin"
-              className={`font-semibold text-gray-900 hover:text-gray-900 ${
-                isHome
-                  ? "text-gray-900 hover:text-gray-900"
-                  : "text-white hover:text-white"
-              } `}
-            >
-              Dashboard
-            </Link>
-          )}
+          {(user && user.role === "admin") ||
+            (user.role === "partner" && (
+              <Link
+                href="/admin"
+                className={`font-semibold text-gray-900 hover:text-gray-900 ${
+                  isHome
+                    ? "text-gray-900 hover:text-gray-900"
+                    : "text-white hover:text-white"
+                } `}
+              >
+                Dashboard
+              </Link>
+            ))}
           {user && user.role === "student" && (
             <Link
               href="/learn"
