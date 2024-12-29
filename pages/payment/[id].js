@@ -22,6 +22,8 @@ function Payment() {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
+  const [amount, setAmount] = useState("25");
+  const [promoCode, setPromoCode] = useState("");
   let router = useRouter();
 
   let { id } = useParams();
@@ -32,6 +34,8 @@ function Payment() {
       .get()
       .then((doc) => {
         if (!doc.exists) router.replace("/browse");
+        setAmount(doc.data().amount);
+        setPromoCode(doc.data().promoCode);
         let user = doc.data();
         let lastName = "";
         if (user.name.split(" ").length > 0) {
@@ -88,7 +92,7 @@ function Payment() {
     axios
       .post("/api/dpo/createtoken", {
         //do not forget to upddate amount
-        amount: "25",
+        amount: amount.toString(),
         email: email,
         phone: phone,
         date: _date,
@@ -129,7 +133,8 @@ function Payment() {
               userId: _id,
               status: "Pending",
               transactionToken,
-              amount: 100,
+              amount,
+              promoCodeUsed: promoCode,
               tokenCreatedAt: date.getTime(),
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             })
@@ -228,7 +233,7 @@ function Payment() {
               </h1>
               <h4 className="text-center font-bold text-lg "></h4>
               <h4 className="text-center font-normal text-lg ">
-                Amount: <span className="font-bold">25 ZMW</span>
+                Amount: <span className="font-bold">{amount} ZMW</span>
               </h4>
               <h5 className="text-center text-base ">
                 Access to all courses, valid for 7 days.

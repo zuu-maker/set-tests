@@ -20,6 +20,9 @@ function BrowseItem() {
   const [loading, setLoading] = useState(false);
   const [course, setCourse] = useState(null);
   const [tests, setTests] = useState([]);
+  const [promoCode, setPromoCode] = useState("");
+  const [validating, setValidating] = useState(false);
+  const [amount, setAmount] = useState("25");
 
   let user = useSelector((state) => state.user);
   let { id } = useParams();
@@ -66,6 +69,8 @@ function BrowseItem() {
         phone: user.phone,
         _id: user._id,
         name: user.name,
+        amount,
+        promoCode,
       })
       .then((docRef) => {
         db.collection("Sessions")
@@ -83,6 +88,36 @@ function BrowseItem() {
         toast.dismiss(toastId);
         toast.error("Can not process");
         console.log(error);
+      });
+  };
+
+  let kwachaFormatter = new Intl.NumberFormat("en-ZM", {
+    style: "currency",
+    currency: "ZMW",
+  });
+
+  const validatePromoCode = () => {
+    setValidating(true);
+    let toastId = toast.loading("Validating...");
+    db.collection("Users")
+      .where("promoCode", "==", promoCode)
+      .get()
+      .then((snap) => {
+        if (snap.empty) {
+          toast.dismiss(toastId);
+          toast.error("Invalid promo code");
+          return;
+        }
+
+        const partner = snap.docs[0].data();
+        setAmount(Number(amount) - Number(partner.discount));
+        toast.dismiss(toastId);
+        toast.success("Valid promo code");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.dismiss(toastId);
+        toast.error("Failed to validate promo code");
       });
   };
 
@@ -115,6 +150,11 @@ function BrowseItem() {
                 user={user}
                 loading={loading}
                 date={date}
+                promoCode={promoCode}
+                setPromoCode={setPromoCode}
+                validating={validating}
+                amount={amount}
+                validatePromoCode={validatePromoCode}
               />
             </div>
           </div>
