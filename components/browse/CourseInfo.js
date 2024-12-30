@@ -33,8 +33,7 @@ function CourseInfo({
           <p>Purchase subscription for all courses valid for 7 days.</p>
 
           <div className="mt-1">
-            {user & (user._id.length === 0) &
-            (
+            {user && user._id.length > 0 && (
               <div>
                 <div>
                   <label
@@ -69,7 +68,7 @@ function CourseInfo({
             <button
               disabled={(user && user._id.length === 0) || loading}
               onClick={handleSubscribe}
-              className="disabled:opacity-75 mt-2 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-2 px-8 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              className="disabled:opacity-75 mt-2 flex w-full items-center justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-8 text-base font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               {user && user._id.length === 0
                 ? "Please sign in to subscribe"

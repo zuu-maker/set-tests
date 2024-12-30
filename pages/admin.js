@@ -153,8 +153,12 @@ function Admin() {
       .where("createdAt", ">", firebase.firestore.Timestamp.fromDate(date))
       .get()
       .then((transactions) => {
+        let amounts = [];
+        transactions.docs.forEach((transaction) => {
+          amounts.push(transaction.data().amount);
+        });
         setCompletedTransactions(transactions.docs.length);
-        setAmount(transactions.docs.length * 100);
+        setAmount(amounts.reduce((acc, cv) => acc + cv));
       })
       .catch((error) => {
         toast.error("Unable to complete task");
