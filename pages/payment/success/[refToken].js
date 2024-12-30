@@ -73,18 +73,16 @@ const VerifyToken = () => {
                       status: "Paid",
                     })
                     .then(() => {
-                      let date = new Date();
-                      let future = new Date(); // get today date
-                      future.setDate(date.getDate() + 7);
-                      console.log(future.toISOString());
+                      let expiresOn = new Date();
+                      expiresOn.setDate(expiresOn.getDate() + 7);
+                      console.log(expiresOn);
 
                       db.collection("Users")
                         .doc(userId)
                         .update({
                           activeSubscription: true,
                           subscribedBefore: true,
-                          renewDate: future.getTime(),
-                          paidOn: date.getTime(),
+                          expiresOn: expiresOn.getTime(),
                         })
                         .then(() => {
                           setIsVerified(true);

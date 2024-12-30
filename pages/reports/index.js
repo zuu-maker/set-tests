@@ -10,8 +10,10 @@ import toast from "react-hot-toast";
 import firebase from "firebase";
 import { FadeLoader } from "react-spinners";
 
-function Admin() {
+function ReportsPage() {
   const [transactions, setTransactions] = useState([]);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [loader, setLoader] = useState(true);
   const [loading, setLoading] = useState(false);
   const [last, setLast] = useState({});
@@ -27,56 +29,45 @@ function Admin() {
   }, []);
 
   const fetchTransactions = () => {
-    db.collection("Transactions")
-      .orderBy("createdAt", "desc")
-      .limit(25)
-      .get()
-      .then((querySnapshot) => {
-        let _transactions = [];
-        querySnapshot.forEach((doc) => {
-          _transactions.push(doc.data());
-        });
-        var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-        setLast(lastVisible);
-        setTransactions(_transactions);
-        setLoader(false);
-      });
-  };
-
-  //TODO: change verify function
-  const verify = (userId, transId) => {
-    let toastId = toast.loading("Processing...");
-    let expiresOn = new Date();
-    expiresOn.setDate(expiresOn.getDate() + 7);
-    setLoading(true);
-    db.collection("Transactions")
-      .doc(transId)
-      .update({
-        status: "Paid",
-      })
-      .then(() => {
-        db.collection("Users")
-          .doc(userId)
-          .update({
-            expiresOn: expiresOn.getTime(),
-            activeSubscription: true,
-          })
-          .then(() => {
-            toast.dismiss(toastId);
-            toast.success("Subscription activated");
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            toast.dismiss(toastId);
-            toast.error("Error updating user");
+    if (startDate === "" || endDate === "") {
+      db.collection("Transactions")
+        .orderBy("createdAt", "desc")
+        .where("status", "==", "Paid")
+        .limit(25)
+        .get()
+        .then((querySnapshot) => {
+          let _transactions = [];
+          querySnapshot.forEach((doc) => {
+            _transactions.push(doc.data());
           });
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.dismiss(toastId);
-        toast.error("Error updating transaction");
-      });
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          setTransactions(_transactions);
+          setLoader(false);
+        });
+    } else {
+      const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
+      const end = firebase.firestore.Timestamp.fromDate(
+        new Date(endDate + "T23:59:59")
+      );
+      db.collection("Transactions")
+        .where("status", "==", "Paid")
+        .where("timestamp", ">=", start)
+        .where("timestamp", "<=", end)
+        // .orderBy("createdAt", "desc")
+        .limit(25)
+        .get()
+        .then((querySnapshot) => {
+          let _transactions = [];
+          querySnapshot.forEach((doc) => {
+            _transactions.push(doc.data());
+          });
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          setTransactions(_transactions);
+          setLoader(false);
+        });
+    }
   };
 
   const next = () => {
@@ -173,16 +164,43 @@ function Admin() {
             </div>
           ) : (
             <div>
-              <AdminStats
-                transactions={completedTransactions}
-                amount={amount}
-                courses={courses}
-                users={users}
-              />
               <div className="relative overflow-x-auto">
-                <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
-                  Transcations
-                </h6>
+                <div>
+                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                    Transcations
+                  </h6>
+                  <div className="mb-6 flex gap-4 items-end">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Start Date
+                      </label>
+                      <input
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="p-2 border rounded"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        End Date
+                      </label>
+                      <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="p-2 border rounded"
+                      />
+                    </div>
+                    <button
+                      onClick={fetchTransactions}
+                      disabled={loading}
+                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300"
+                    >
+                      {loading ? "Loading..." : "Filter"}
+                    </button>
+                  </div>
+                </div>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
                     <tr>
@@ -203,9 +221,6 @@ function Admin() {
                       </th>
                       <th scope="col" className="px-6 py-3">
                         Status
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Actions
                       </th>
                     </tr>
                   </thead>
@@ -238,15 +253,6 @@ function Admin() {
                             {item.status}
                           </div>
                         </td>
-                        <td className="px-6 py-4">
-                          <button
-                            onClick={() => verify(item.user._id, item.id)}
-                            disabled={item.status === "Paid" || loading}
-                            className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
-                          >
-                            Verify
-                          </button>
-                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -261,4 +267,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default ReportsPage;
