@@ -9,9 +9,9 @@ import { logOutUser } from "@/slices/userSlice";
 import { useRouter } from "next/router";
 
 const navigation = [
+  { name: "Courses", href: "/browse" },
   { name: "About", href: "/#about" },
   { name: "FAQs", href: "/#faq" },
-  { name: "Courses", href: "/browse" },
 ];
 
 const navigationPhone = [{ name: "Courses", href: "/browse" }];

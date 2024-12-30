@@ -14,15 +14,26 @@ function LearnPage() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(true);
+  const [amount, setAmount] = useState("25");
+  const [validating, setValidating] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+
   let router = useRouter();
 
   const user = useSelector((state) => state.user);
 
   const handleSubscribe = () => {
     setLoading(true);
-
+    let toastId = toast.loading("Processing...");
     db.collection("Sessions")
-      .add(user)
+      .add({
+        email: user.email,
+        phone: user.phone,
+        _id: user._id,
+        name: user.name,
+        amount,
+        promoCode,
+      })
       .then((docRef) => {
         db.collection("Sessions")
           .doc(docRef.id)
@@ -30,12 +41,42 @@ function LearnPage() {
             id: docRef.id,
           })
           .then(() => {
+            toast.dismiss(toastId);
+            toast.success("Proceed to payment");
+            setLoading(false);
             router.push(`/payment/${docRef.id}`);
           });
       })
       .catch((error) => {
-        toast.error("Could not subscribe");
+        toast.dismiss(toastId);
+        toast.error("Can not process");
+        setLoading(false);
         console.log(error);
+      });
+  };
+
+  const validatePromoCode = () => {
+    setValidating(true);
+    let toastId = toast.loading("Validating...");
+    db.collection("Users")
+      .where("promoCode", "==", promoCode)
+      .get()
+      .then((snap) => {
+        if (snap.empty) {
+          toast.dismiss(toastId);
+          toast.error("Invalid promo code");
+          return;
+        }
+
+        const partner = snap.docs[0].data();
+        setAmount(Number(amount) - Number(partner.discount));
+        toast.dismiss(toastId);
+        toast.success("Valid promo code");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.dismiss(toastId);
+        toast.error("Failed to validate promo code");
       });
   };
 
@@ -98,6 +139,12 @@ function LearnPage() {
                 <MyCourses courses={courses} />
               ) : (
                 <PleaseSubscribe
+                  validating={validating}
+                  validatePromoCode={validatePromoCode}
+                  promoCode={promoCode}
+                  setPromoCode={setPromoCode}
+                  amount={amount}
+                  setAmount={setAmount}
                   handleSubscribe={handleSubscribe}
                   user={user}
                   loading={loading}
