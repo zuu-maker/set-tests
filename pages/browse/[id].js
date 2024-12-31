@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Head from "next/head";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { db } from "@/firebase";
 import { useSelector } from "react-redux";
@@ -9,10 +8,10 @@ import { useRouter } from "next/router";
 import { FadeLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import Banner from "@/components/Banner";
-import LessonList from "@/components/LessonList";
 import CourseTests from "@/components/browse/CourseTests";
 import BreadCrumb from "@/components/browse/BreadCrumb";
 import CourseInfo from "@/components/browse/CourseInfo";
+import firebase from "firebase";
 
 function BrowseItem() {
   const [date, setDate] = useState(null);
@@ -22,7 +21,8 @@ function BrowseItem() {
   const [tests, setTests] = useState([]);
   const [promoCode, setPromoCode] = useState("");
   const [validating, setValidating] = useState(false);
-  const [amount, setAmount] = useState("25");
+  const [amount, setAmount] = useState("30");
+  const [discount, setDiscount] = useState(0);
 
   let user = useSelector((state) => state.user);
   let { id } = useParams();
@@ -69,8 +69,11 @@ function BrowseItem() {
         phone: user.phone,
         _id: user._id,
         name: user.name,
+        originalAmount: discount + amount,
+        discountAmount: discount,
         amount,
         promoCode,
+        createdAt: firebase.default.firestore.FieldValue.serverTimestamp(),
       })
       .then((docRef) => {
         db.collection("Sessions")
@@ -110,6 +113,7 @@ function BrowseItem() {
         }
 
         const partner = snap.docs[0].data();
+        setDiscount(Number(partner.discount));
         setAmount(Number(amount) - Number(partner.discount));
         toast.dismiss(toastId);
         toast.success("Valid promo code");

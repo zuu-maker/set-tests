@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { FadeLoader } from "react-spinners";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { original } from "@reduxjs/toolkit";
 
 function Payment() {
   const [data, setData] = useState({
@@ -24,6 +25,7 @@ function Payment() {
   const [token, setToken] = useState("");
   const [amount, setAmount] = useState("25");
   const [promoCode, setPromoCode] = useState("");
+  const [discount, setDiscount] = useState("");
   let router = useRouter();
 
   let { id } = useParams();
@@ -36,6 +38,8 @@ function Payment() {
         if (!doc.exists) router.replace("/browse");
         setAmount(doc.data().amount);
         setPromoCode(doc.data().promoCode);
+        setDiscount(doc.data().discountAmount);
+        console.log(doc.data().discountAmount);
         let user = doc.data();
         let lastName = "";
         if (user.name.split(" ").length > 0) {
@@ -133,6 +137,8 @@ function Payment() {
               userId: _id,
               status: "Pending",
               transactionToken,
+              discountAmount: discount,
+              originalAmount: amount + discount,
               amount,
               promoCodeUsed: promoCode,
               tokenCreatedAt: date.getTime(),
@@ -231,10 +237,15 @@ function Payment() {
               <h1 className="text-center font-bold text-xl uppercase">
                 Secure payment info
               </h1>
-              <h4 className="text-center font-bold text-lg "></h4>
+              {/* <h4 className="text-center font-bold text-lg "></h4> */}
               <h4 className="text-center font-normal text-lg ">
                 Amount: <span className="font-bold">{amount} ZMW</span>
               </h4>
+              {discount != "undefined" && discount > 0 && (
+                <h4 className="text-center font-normal text-lg ">
+                  Discount: <span className="font-bold">{discount} ZMW</span>
+                </h4>
+              )}
               <h5 className="text-center text-base ">
                 Access to all courses, valid for 7 days.
               </h5>

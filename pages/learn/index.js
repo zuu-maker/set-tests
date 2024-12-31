@@ -9,14 +9,16 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import PleaseSubscribe from "@/components/learn/PleaseSubscribe";
 import MyCourses from "@/components/learn/MyCourses";
+import firebase from "firebase";
 
 function LearnPage() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(true);
-  const [amount, setAmount] = useState("25");
+  const [amount, setAmount] = useState("30");
   const [validating, setValidating] = useState(false);
   const [promoCode, setPromoCode] = useState("");
+  const [discount, setDiscount] = useState(0);
 
   let router = useRouter();
 
@@ -31,8 +33,11 @@ function LearnPage() {
         phone: user.phone,
         _id: user._id,
         name: user.name,
+        originalAmount: discount + amount,
+        discountAmount: discount,
         amount,
         promoCode,
+        createdAt: firebase.default.firestore.FieldValue.serverTimestamp(),
       })
       .then((docRef) => {
         db.collection("Sessions")
@@ -69,6 +74,7 @@ function LearnPage() {
         }
 
         const partner = snap.docs[0].data();
+        setDiscount(Number(partner.discount));
         setAmount(Number(amount) - Number(partner.discount));
         toast.dismiss(toastId);
         toast.success("Valid promo code");

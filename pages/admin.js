@@ -158,9 +158,14 @@ function Admin() {
           amounts.push(transaction.data().amount);
         });
         setCompletedTransactions(transactions.docs.length);
-        setAmount(amounts.reduce((acc, cv) => acc + cv));
+        if (amounts.length === 0) {
+          setAmount(0);
+        } else {
+          setAmount(amounts.reduce((acc, cv) => acc + cv));
+        }
       })
       .catch((error) => {
+        console.log(error);
         toast.error("Unable to complete task");
       });
   }, []);

@@ -12,7 +12,8 @@ function PleaseSubscribe({
 }) {
   return (
     <div className="flex h-full w-full items-center justify-center">
-      {user && user._id && user._id.length > 0 && user.subscribedBefore ? (
+      {/* user && user._id && user._id.length > 0 && user.subscribedBefore  */}
+      {true ? (
         <div className="text-lg">
           <p>Your subcription has expired click here to renew.</p>
           <EnterPromoCode
@@ -36,7 +37,13 @@ function PleaseSubscribe({
             You are not subscribed, please purchase a subscription to start
             learning.
           </p>
-          {/* <EnterPromoCode amount={amount}/> */}
+          <EnterPromoCode
+            amount={amount}
+            promoCode={promoCode}
+            validatePromoCode={validatePromoCode}
+            setPromoCode={setPromoCode}
+            validating={validating}
+          />
 
           <button
             disabled={(user && user._id.length > 0 === null) || loading}

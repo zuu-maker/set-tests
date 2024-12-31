@@ -21,10 +21,7 @@ function ReportsPage() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [last, setLast] = useState({});
-  const [users, setUsers] = useState(0);
-  const [courses, setCourses] = useState(0);
-  const [completedTransactions, setCompletedTransactions] = useState(0);
-  const [amount, setAmount] = useState(0);
+  const [searchCode, setSearchCode] = useState("");
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -33,18 +30,24 @@ function ReportsPage() {
   }, []);
 
   const generatePDF = () => {
+    setLoading(true);
     const doc = new jsPDF();
 
     // Add title
     doc.setFontSize(18);
     doc.text("Transaction Report", 14, 20);
+    if (searchCode !== "") {
+      doc.text(`Promo code used: ${searchCode}`, 14, 30);
+    }
 
+    if (startDate !== "" && endDate !== "") {
+      doc.text(`Period: ${startDate} to ${endDate}`, 14, 40);
+    }
     // Add date range
     doc.setFontSize(12);
-    doc.text(`Period: ${startDate} to ${endDate}`, 14, 30);
 
     // Add total
-    doc.text(`Total Amount: ZMK ${totalAmount.toFixed(2)}`, 14, 40);
+    doc.text(`Total Amount: ZMK ${totalAmount.toFixed(2)}`, 14, 50);
 
     // Create table
     const tableColumn = ["Date", "Student", "Amount", "Status"];
@@ -62,7 +65,7 @@ function ReportsPage() {
     });
 
     doc.autoTable({
-      startY: 45,
+      startY: 55,
       head: [tableColumn],
       body: tableRows,
       theme: "grid",
@@ -97,12 +100,69 @@ function ReportsPage() {
 
     // Save the PDF
     doc.save(`transaction-report-${startDate}-to-${endDate}.pdf`);
+    setLoading(false);
   };
 
   const fetchTransactions = () => {
-    if (startDate === "" || endDate === "") {
+    if (startDate !== "" && endDate !== "" && searchCode !== "") {
+      const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
+      const end = firebase.firestore.Timestamp.fromDate(
+        new Date(endDate + "T23:59:59")
+      );
+
+      db.collection("Transactions")
+        .where("status", "==", "Paid")
+        .where("createdAt", ">=", start)
+        .where("createdAt", "<=", end)
+        .where("promoCodeUsed", "==", searchCode)
+        .limit(25)
+        .get()
+        .then((querySnapshot) => {
+          console.log(start);
+          console.log(end);
+          let _transactions = [];
+          let total = 0;
+          querySnapshot.forEach((doc) => {
+            _transactions.push(doc.data());
+            total += Number(doc.data().amount);
+          });
+          setTotalAmount(total);
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          setTransactions(_transactions);
+          setLoader(false);
+        });
+    } else if (startDate !== "" && endDate !== "" && searchCode === "") {
+      const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
+      const end = firebase.firestore.Timestamp.fromDate(
+        new Date(endDate + "T23:59:59")
+      );
+
+      db.collection("Transactions")
+        .where("status", "==", "Paid")
+        .where("createdAt", ">=", start)
+        .where("createdAt", "<=", end)
+        .limit(25)
+        .get()
+        .then((querySnapshot) => {
+          console.log(start);
+          console.log(end);
+          let _transactions = [];
+          let total = 0;
+          querySnapshot.forEach((doc) => {
+            _transactions.push(doc.data());
+            total += Number(doc.data().amount);
+          });
+          setTotalAmount(total);
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          setTransactions(_transactions);
+          setLoader(false);
+        });
+    } else if (startDate === "" && endDate === "" && searchCode !== "") {
       db.collection("Transactions")
         .orderBy("createdAt", "desc")
+        .where("promoCodeUsed", "==", searchCode)
         .where("status", "==", "Paid")
         .limit(25)
         .get()
@@ -120,20 +180,12 @@ function ReportsPage() {
           setLoader(false);
         });
     } else {
-      const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
-      const end = firebase.firestore.Timestamp.fromDate(
-        new Date(endDate + "T23:59:59")
-      );
-
       db.collection("Transactions")
+        .orderBy("createdAt", "desc")
         .where("status", "==", "Paid")
-        .where("createdAt", ">=", start)
-        .where("createdAt", "<=", end)
         .limit(25)
         .get()
         .then((querySnapshot) => {
-          console.log(start);
-          console.log(end);
           let _transactions = [];
           let total = 0;
           querySnapshot.forEach((doc) => {
@@ -193,44 +245,6 @@ function ReportsPage() {
     }
   };
 
-  useEffect(() => {
-    db.collection("Users")
-      .get()
-      .then((users) => {
-        setUsers(users.docs.length);
-      })
-      .catch((error) => {
-        toast.error("failed to get users");
-      });
-  }, []);
-
-  useEffect(() => {
-    db.collection("Courses")
-      .get()
-      .then((courses) => {
-        setCourses(courses.docs.length);
-      })
-      .catch((error) => {
-        toast.error("failed to get courses");
-      });
-  }, []);
-
-  useEffect(() => {
-    let date = new Date();
-    date.setUTCHours(0, 0, 0, 0);
-    db.collection("Transactions")
-      .where("status", "==", "Paid")
-      .where("createdAt", ">", firebase.firestore.Timestamp.fromDate(date))
-      .get()
-      .then((transactions) => {
-        setCompletedTransactions(transactions.docs.length);
-        setAmount(transactions.docs.length * 100);
-      })
-      .catch((error) => {
-        toast.error("Unable to complete task");
-      });
-  }, []);
-
   return (
     <AdminAuth className="min-h-screen bg-gray-50/50">
       <Sidebar />
@@ -249,36 +263,52 @@ function ReportsPage() {
                     Transcation reports
                   </h6>
                   <div className="mb-6 flex justify-between items-center w-full">
-                    <div className="mb-6 flex gap-4 items-end">
-                      <div>
-                        <label className="block text-sm font-medium mb-1">
-                          Start Date
-                        </label>
-                        <input
-                          type="date"
-                          value={startDate}
-                          onChange={(e) => setStartDate(e.target.value)}
-                          className="p-2 border rounded"
-                        />
+                    <div>
+                      <div className="mb-6 flex gap-4 items-end">
+                        <div>
+                          <label className="block text-sm font-medium mb-1">
+                            Start Date
+                          </label>
+                          <input
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            className="p-2 border rounded"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">
+                            End Date
+                          </label>
+                          <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            className="p-2 border rounded"
+                          />
+                        </div>
+                        <button
+                          onClick={fetchTransactions}
+                          disabled={loading}
+                          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300"
+                        >
+                          {loading ? "Loading..." : "Filter"}
+                        </button>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-1">
-                          End Date
-                        </label>
-                        <input
-                          type="date"
-                          value={endDate}
-                          onChange={(e) => setEndDate(e.target.value)}
-                          className="p-2 border rounded"
-                        />
+                        <div className="flex-1">
+                          <label className="block text-sm font-medium mb-1">
+                            Promo Code
+                          </label>
+                          <input
+                            type="text"
+                            value={searchCode}
+                            onChange={(e) => setSearchCode(e.target.value)}
+                            placeholder="Enter promo code"
+                            className="w-full p-2 border rounded"
+                          />
+                        </div>
                       </div>
-                      <button
-                        onClick={fetchTransactions}
-                        disabled={loading}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300"
-                      >
-                        {loading ? "Loading..." : "Filter"}
-                      </button>
                     </div>
                     <button
                       onClick={generatePDF}
@@ -311,6 +341,9 @@ function ReportsPage() {
                         Amount
                       </th>
                       <th scope="col" className="px-6 py-3">
+                        Promo code
+                      </th>
+                      <th scope="col" className="px-6 py-3">
                         Status
                       </th>
                     </tr>
@@ -332,6 +365,11 @@ function ReportsPage() {
                         </td>
                         <td className="px-6 py-4">
                           {`ZMW ${new Intl.NumberFormat().format(item.amount)}`}
+                        </td>
+                        <td className="px-6 py-4">
+                          {item && item.promoCodeUsed
+                            ? item.promoCodeUsed
+                            : "None"}
                         </td>
                         <td className="px-6 py-4">
                           <div
