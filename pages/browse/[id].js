@@ -47,6 +47,7 @@ function BrowseItem() {
             setTests(_tests);
             console.log(doc.data());
             setCourse(doc.data());
+
             setDate(doc.data().timeStamp.toDate().toISOString().split("T")[0]);
             setLoader(false);
           });
@@ -65,7 +66,6 @@ function BrowseItem() {
         if (!snap.empty) {
           setAmount(snap.docs[0].data().price);
         }
-        setLoader(false);
       })
       .catch((err) => {
         console.log(err);
@@ -155,26 +155,28 @@ function BrowseItem() {
         ) : (
           <div className="bg-white">
             <div className="pt-6">
-              <BreadCrumb title={course.title} />
+              <BreadCrumb title={course?.title} />
 
               {/* Product info */}
-              <CourseInfo
-                course={course}
-                handleSubscribe={handleSubscribe}
-                user={user}
-                loading={loading}
-                date={date}
-                promoCode={promoCode}
-                setPromoCode={setPromoCode}
-                validating={validating}
-                amount={amount}
-                validatePromoCode={validatePromoCode}
-              />
+              {course && course.id && (
+                <CourseInfo
+                  course={course}
+                  handleSubscribe={handleSubscribe}
+                  user={user}
+                  loading={loading}
+                  date={date}
+                  promoCode={promoCode}
+                  setPromoCode={setPromoCode}
+                  validating={validating}
+                  amount={amount}
+                  validatePromoCode={validatePromoCode}
+                />
+              )}
             </div>
           </div>
         )}
         <hr />
-        <CourseTests tests={tests} />
+        {tests.length > 0 && <CourseTests tests={tests} />}
       </div>
     </div>
   );
