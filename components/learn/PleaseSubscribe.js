@@ -12,8 +12,7 @@ function PleaseSubscribe({
 }) {
   return (
     <div className="flex h-full w-full items-center justify-center">
-      {/* user && user._id && user._id.length > 0 && user.subscribedBefore  */}
-      {true ? (
+      {user && user._id && user._id.length > 0 && user.subscribedBefore ? (
         <div className="text-lg">
           <p>Your subcription has expired click here to renew.</p>
           <EnterPromoCode

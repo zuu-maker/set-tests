@@ -21,7 +21,7 @@ function BrowseItem() {
   const [tests, setTests] = useState([]);
   const [promoCode, setPromoCode] = useState("");
   const [validating, setValidating] = useState(false);
-  const [amount, setAmount] = useState("30");
+  const [amount, setAmount] = useState();
   const [discount, setDiscount] = useState(0);
 
   let user = useSelector((state) => state.user);
@@ -58,6 +58,21 @@ function BrowseItem() {
       });
   }, []);
 
+  useEffect(() => {
+    db.collection("Rates")
+      .get()
+      .then((snap) => {
+        if (!snap.empty) {
+          setAmount(snap.docs[0].data().price);
+        }
+        setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Failed to get Rate");
+      });
+  }, []);
+
   const handleSubscribe = () => {
     setLoading(true);
     let toastId = toast.loading("Processing...");
@@ -73,7 +88,7 @@ function BrowseItem() {
         discountAmount: discount,
         amount,
         promoCode,
-        createdAt: firebase.default.firestore.FieldValue.serverTimestamp(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((docRef) => {
         db.collection("Sessions")
@@ -93,11 +108,6 @@ function BrowseItem() {
         console.log(error);
       });
   };
-
-  let kwachaFormatter = new Intl.NumberFormat("en-ZM", {
-    style: "currency",
-    currency: "ZMW",
-  });
 
   const validatePromoCode = () => {
     setValidating(true);

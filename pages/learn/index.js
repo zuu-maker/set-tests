@@ -15,7 +15,7 @@ function LearnPage() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(true);
-  const [amount, setAmount] = useState("30");
+  const [amount, setAmount] = useState(0);
   const [validating, setValidating] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -37,7 +37,7 @@ function LearnPage() {
         discountAmount: discount,
         amount,
         promoCode,
-        createdAt: firebase.default.firestore.FieldValue.serverTimestamp(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((docRef) => {
         db.collection("Sessions")
@@ -85,6 +85,21 @@ function LearnPage() {
         toast.error("Failed to validate promo code");
       });
   };
+
+  useEffect(() => {
+    db.collection("Rates")
+      .get()
+      .then((snap) => {
+        if (!snap.empty) {
+          setAmount(snap.docs[0].data().price);
+        }
+        setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Failed to get Rate");
+      });
+  }, []);
 
   useEffect(() => {
     let unsubscribe = db

@@ -4,7 +4,7 @@ import FaqListItem from "./FaqListItem";
 const faqs = [
   {
     q: "Pricing",
-    a: "3.99 ZMW per day Billed 25 ZMW /week",
+    a: "4.29 ZMW per day Billed 30 ZMW /week",
   },
   {
     q: "Getting started",
