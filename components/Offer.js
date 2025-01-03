@@ -10,9 +10,9 @@ const Offer = () => {
       </div>
       <div className="flex-1 flex justify-center items-center">
         <div className="w-2/3 text-center">
-          <h4 className="text-4xl text-cyan-700 font-semibold tracking-tight sm:text-center">
+          <h2 className="text-4xl text-cyan-700 font-semibold tracking-tight sm:text-center">
             Our Value to Society
-          </h4>
+          </h2>
           <p className="text-gray-500">
             We offer comprehensive tests that provide essential practice
             tailored to help candidates build up their confidence, knowledge and

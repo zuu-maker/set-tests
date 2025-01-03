@@ -13,6 +13,11 @@ export default function Home() {
     <AuthCheck>
       <Head>
         <title>Sirius Educational Trust</title>
+        <meta>
+          Providing quality education and exam preparation services. Access
+          affordable online courses and exam practice materials for Grade 12 &
+          GCE students.
+        </meta>
         <link rel="icon" href="/favicon.ico" />
 
         <script

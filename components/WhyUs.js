@@ -5,9 +5,9 @@ const WhyUs = () => {
     <React.Fragment>
       <div className="bg-gray-50 py-10 px-5 ">
         <div className="text-center">
-          <h4 className="text-2xl text-cyan-500 font-semibold tracking-tight sm:text-center sm:text-4xl">
+          <h2 className="text-2xl text-cyan-500 font-semibold tracking-tight sm:text-center sm:text-4xl">
             Why Choose Us?
-          </h4>
+          </h2>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-1 lg:grid-cols-2 xl:mt-12 xl:gap-12">
           <div className="w-full space-y-6 shadow-md border border-gray-100 p-8 flex flex-col justify-center items-center bg-white">

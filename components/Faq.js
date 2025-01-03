@@ -37,9 +37,9 @@ const Faq = () => {
     <React.Fragment>
       <div id="faq" className="bg-white">
         <div className="container mx-auto max-w-4xl px-6 py-10">
-          <h1 className="text-2xl text-cyan-500 font-semibold tracking-tight sm:text-center sm:text-4xl ">
+          <h2 className="text-2xl text-cyan-500 font-semibold tracking-tight sm:text-center sm:text-4xl ">
             FAQs
-          </h1>
+          </h2>
           {faqs.map((item, i) => (
             <FaqListItem key={i} q={item.q} a={item.a} />
           ))}

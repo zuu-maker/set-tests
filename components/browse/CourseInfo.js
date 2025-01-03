@@ -81,7 +81,7 @@ function CourseInfo({
       <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-4 lg:pr-8">
         {/* Description and details */}
         <div>
-          <h3 className="sr-only">Description</h3>
+          <h2 className="sr-only">Description</h2>
 
           <div className="space-y-6">
             <p className="text-base text-gray-900">{course?.description}</p>
@@ -89,7 +89,7 @@ function CourseInfo({
         </div>
 
         <div className="mt-10">
-          <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
+          <h2 className="text-sm font-medium text-gray-900">Highlights</h2>
 
           <div className="mt-4">
             <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
