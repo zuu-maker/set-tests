@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { auth } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
 import { useRouter } from "next/router";
+import { SessionManger } from "@/utils/sessionManager";
 
 const navigation = [
   { name: "Courses", href: "/browse" },
@@ -23,7 +24,8 @@ const Header = ({ isHome = true }) => {
   let dispatch = useDispatch();
   let router = useRouter();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await SessionManger.endSession(user._id);
     auth
       .signOut()
       .then(() => {

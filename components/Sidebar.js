@@ -1,5 +1,6 @@
 import { auth } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
+import { SessionManger } from "@/utils/sessionManager";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -131,7 +132,9 @@ function Sidebar() {
   let dispatch = useDispatch();
   let user = useSelector((state) => state.user);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await SessionManger.endSession(user._id);
+
     auth
       .signOut()
       .then(() => {

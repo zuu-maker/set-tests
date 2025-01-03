@@ -4,6 +4,7 @@ import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
+import StudentAuth from "@/components/auth/StudentAuth";
 
 function QuizPage() {
   const { id } = useParams();
@@ -11,7 +12,7 @@ function QuizPage() {
   const { user } = useSelector((state) => state);
 
   return (
-    <div>
+    <StudentAuth>
       <Sidebar />
       <div className="p-4 xl:ml-80">
         <AdminNav />
@@ -25,7 +26,7 @@ function QuizPage() {
           )}
         </div>
       </div>
-    </div>
+    </StudentAuth>
   );
 }
 

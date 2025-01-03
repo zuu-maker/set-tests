@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
 import toast from "react-hot-toast";
-import Header from "@/components/Header";
+import { SessionManger } from "@/utils/sessionManager";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -27,28 +27,38 @@ function Login() {
         db.collection("Users")
           .where("email", "==", user.email)
           .get()
-          .then((snap) => {
+          .then(async (snap) => {
             if (snap.docs[0].exists) {
-              dispatch(
-                setUser({
-                  _id: snap.docs[0].data()._id,
-                  email: snap.docs[0].data().email,
-                  name: snap.docs[0].data().name,
-                  role: snap.docs[0].data().role,
-                  verified: user.emailVerified,
-                  phone: snap.docs[0].data().phone,
-                })
-              );
-              if (snap.docs[0].data().role !== "student") {
-                router.push("/admin");
+              let res = await SessionManger.createSession(snap.docs[0].id);
+              console.log("res ->", res);
+              if (!res) {
+                auth.signOut();
+                toast.error("You are logged in on another device");
+                setLoading(false);
               } else {
-                router.push("/learn");
+                dispatch(
+                  setUser({
+                    _id: snap.docs[0].data()._id,
+                    email: snap.docs[0].data().email,
+                    name: snap.docs[0].data().name,
+                    role: snap.docs[0].data().role,
+                    verified: user.emailVerified,
+                    phone: snap.docs[0].data().phone,
+                  })
+                );
+                if (snap.docs[0].data().role !== "student") {
+                  router.push("/admin");
+                } else {
+                  router.push("/learn");
+                }
               }
             }
           })
           .catch((error) => {
             setLoading(false);
+            auth.signOut();
             toast.error("failed to get");
+            console.log(error);
           });
         // ...
       })
@@ -62,16 +72,15 @@ function Login() {
   return (
     <div className="mx-auto">
       {" "}
-      <div className="px-6 py-2 lg:px-8 bg-gradient-to-r from-cyan-500 to-cyan-600 shadow-lg">
-        <Header isHome={false} />
-      </div>
       <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-16 w-auto"
-            src="logo.png"
-            alt="Sirus Educational Trust"
-          />
+          <Link href="/">
+            <img
+              className="mx-auto h-16 w-auto"
+              src="logo.png"
+              alt="Sirus Educational Trust"
+            />
+          </Link>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
@@ -134,7 +143,7 @@ function Login() {
             <div>
               <button
                 onClick={handleLogin}
-                disabled={!email || !password}
+                // disabled={!email || !password}
                 className="flex w-full justify-center disabled:opacity-60 rounded-md bg-cyan-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {loading ? "processing..." : "Sign In"}

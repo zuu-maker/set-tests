@@ -2,10 +2,11 @@ import React from "react";
 import Quiz from "../../../components/quiz/Quiz";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
+import StudentAuth from "@/components/auth/StudentAuth";
 
 function QuizPage() {
   return (
-    <div>
+    <StudentAuth>
       <Sidebar />
 
       <div className="p-4 xl:ml-80">
@@ -14,7 +15,7 @@ function QuizPage() {
           <Quiz />
         </div>
       </div>
-    </div>
+    </StudentAuth>
   );
 }
 

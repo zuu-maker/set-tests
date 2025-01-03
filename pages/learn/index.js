@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
-import { db } from "@/firebase";
+import { auth, db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
 import StudentAuth from "@/components/auth/StudentAuth";
 import { useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import PleaseSubscribe from "@/components/learn/PleaseSubscribe";
 import MyCourses from "@/components/learn/MyCourses";
 import firebase from "firebase";
+import Link from "next/link";
 
 function LearnPage() {
   const [courses, setCourses] = useState([]);
@@ -19,6 +20,7 @@ function LearnPage() {
   const [validating, setValidating] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [hidden, setHidden] = useState(true);
 
   let router = useRouter();
 
@@ -112,6 +114,10 @@ function LearnPage() {
           _courses.push(snap.data());
         });
         setCourses(_courses);
+        console.log(user.verified);
+        if (user && user.verified) {
+          setHidden(false);
+        }
         setLoader(false);
       });
 
@@ -143,6 +149,44 @@ function LearnPage() {
         console.log(error);
       });
   };
+
+  const verifyEmail = () => {
+    setLoading(true);
+    let toastId = toast.loading("Processing...");
+    auth.currentUser
+      .sendEmailVerification()
+      .then(() => {
+        toast.dismiss(toastId);
+        toast.success(`An email has been sent to ${auth.currentUser.email}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.dismiss(toastId);
+        toast.error("Could not send verification link");
+      });
+  };
+
+  if (!auth.currentUser.emailVerified) {
+    return (
+      <div className="h-screen flex flex-col space-y-4 justify-center items-center">
+        <Link href="/">
+          <img
+            className="mx-auto h-16 w-auto"
+            src="logo.png"
+            alt="Sirus Educational Trust"
+          />
+        </Link>
+        <p className="text-lg font-sans">You have not verfied your email.</p>
+        <button
+          disabled={loading}
+          className="flex w-1/6 justify-center rounded-md bg-sky-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          onClick={verifyEmail}
+        >
+          Resend
+        </button>
+      </div>
+    );
+  }
 
   return (
     <StudentAuth className="min-h-screen bg-gray-50/50">
