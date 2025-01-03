@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
+
 import AnswerInput from "./AnswerInput";
 import Range from "./Range";
 import AnswerText from "./AnswerText";
 import MultipleChoice from "./MultipleChoice";
 import MultiSelect from "./MultiSelect";
 import AlertComponent from "../Alert";
-import Image from "next/image";
 import {
   capitalizeFirstChar,
   checkStringInArray,
@@ -13,114 +14,158 @@ import {
   stripHtmlTags,
 } from "@/utils";
 
-function Question({
+const QUESTION_TYPES = {
+  INPUT: "input",
+  MULTIPLE: "multiple",
+  MULTISELECT: "multiselect",
+  RANGE: "range",
+  TEXT: "text",
+};
+
+const normalizeAnswer = (answer) => {
+  if (typeof answer === "string") {
+    return answer.toLowerCase();
+  }
+
+  if (Array.isArray(answer)) {
+    return answer.map((item) => item.toLowerCase());
+  }
+
+  return answer;
+};
+
+const normalizeHtmlString = (htmlString) => {
+  const temp = document.createElement("div");
+  temp.innerHTML = htmlString;
+
+  let text = temp.textContent || temp.innerText;
+  text = text.replace(/\s+/g, " ").trim();
+
+  return htmlString.toLowerCase().includes("<p") ? `<p>${text}</p>` : text;
+};
+
+const Question = ({
   question,
   onAnswerChange,
   answer,
-  // handleSubmit,
   setScore,
   showFeedback,
   currentQuestionIndex,
-}) {
+}) => {
   const { id, type, text, image, options, correctAnswer, explanation } =
     question;
 
-  const [userAnswer, setUserAnswer] = useState("ii");
-  // const [showFeedback, setShowFeedback] = useState(false);
+  const [userAnswer, setUserAnswer] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
 
-  // useEffect(() => {
-  //   if (answer) setShowFeedback(false);
-  // }, []);
-
   useEffect(() => {
-    if (showFeedback) {
-      if (isCorrect) {
-        setScore((score) => score + 1);
-      }
+    if (showFeedback && isCorrect) {
+      setScore((score) => score + 1);
     }
-  }, [showFeedback]);
+  }, [showFeedback, isCorrect, setScore]);
 
   useEffect(() => {
     setUserAnswer(answer);
-  }, [id]);
+  }, [id, answer]);
 
-  const handleAnswerChange = (answer) => {
-    if (typeof answer === "string") {
-      answer = answer.toLowerCase();
-    } else if (Array.isArray(answer)) {
-      answer.forEach((item, index) => {
-        answer[index] = item.toLowerCase();
-      });
+  const validateAnswer = (normalizedUserAnswer, normalizedCorrectAnswer) => {
+    if (Array.isArray(correctAnswer) && correctAnswer.length > 1) {
+      return (
+        normalizedCorrectAnswer.sort().join() ===
+        normalizedUserAnswer.sort().join()
+      );
     }
 
-    const normalizeHtmlString = (htmlString) => {
-      // Create a temporary div element
-      const temp = document.createElement("div");
+    if (
+      !Array.isArray(correctAnswer) &&
+      correctAnswer.includes("/") &&
+      !containsHtmlTags(correctAnswer)
+    ) {
+      return checkStringInArray(correctAnswer.split("/"), normalizedUserAnswer);
+    }
 
-      // Set the HTML content
-      temp.innerHTML = htmlString;
+    if (typeof correctAnswer === "string") {
+      const strippedUserAnswer = stripHtmlTags(
+        normalizeHtmlString(normalizedUserAnswer).trim().toLowerCase()
+      );
+      const strippedCorrectAnswer = stripHtmlTags(
+        normalizeHtmlString(normalizedCorrectAnswer).trim().toLowerCase()
+      );
+      return strippedUserAnswer === strippedCorrectAnswer;
+    }
 
-      // Get text content (this converts HTML entities to their actual characters)
-      let text = temp.textContent || temp.innerText;
+    return false;
+  };
 
-      // Normalize spaces
-      text = text.replace(/\s+/g, " ").trim();
+  const handleAnswerChange = (newAnswer) => {
+    const normalizedAnswer = normalizeAnswer(newAnswer);
+    setUserAnswer(normalizedAnswer);
+    onAnswerChange(id, normalizedAnswer);
 
-      // Re-wrap in paragraph if original had paragraphs
-      if (htmlString.toLowerCase().includes("<p")) {
-        return `<p>${text}</p>`;
-      }
+    const isAnswerCorrect = validateAnswer(normalizedAnswer, correctAnswer);
+    setIsCorrect(isAnswerCorrect);
+  };
 
-      return text;
+  const renderQuestionInput = () => {
+    const props = {
+      questionId: id,
+      onAnswerChange: handleAnswerChange,
+      answer: userAnswer,
     };
 
-    setUserAnswer(answer);
-    onAnswerChange(id, answer);
-    let correct;
-    console.log("My Ans --> ", normalizeHtmlString(answer));
-    console.log("Ans --> ", normalizeHtmlString(correctAnswer));
-    if (Array.isArray(correctAnswer) && correctAnswer.length > 1) {
-      correct = correctAnswer.sort().join() === answer.sort().join();
-    } else {
-      if (
-        !Array.isArray(correctAnswer) &&
-        correctAnswer.split("/").length > 1 &&
-        !containsHtmlTags(correctAnswer)
-      ) {
-        correct = checkStringInArray(correctAnswer.split("/"), answer);
-      } else if (typeof correctAnswer === "string") {
-        correct =
-          stripHtmlTags(
-            normalizeHtmlString(correctAnswer).trim().toLowerCase()
-          ) === stripHtmlTags(normalizeHtmlString(answer).trim().toLowerCase());
-        console.log(correct);
-      }
+    switch (type) {
+      case QUESTION_TYPES.INPUT:
+        return <AnswerInput {...props} />;
+
+      case QUESTION_TYPES.MULTIPLE:
+        return <MultipleChoice {...props} options={options} />;
+
+      case QUESTION_TYPES.MULTISELECT:
+        return (
+          <MultiSelect
+            {...props}
+            options={options}
+            correctAnswer={correctAnswer}
+            selectedOptions={userAnswer || []}
+          />
+        );
+
+      case QUESTION_TYPES.RANGE:
+        return <Range {...props} options={options} />;
+
+      case QUESTION_TYPES.TEXT:
+        return <AnswerText {...props} />;
+
+      default:
+        return null;
     }
-    setIsCorrect(correct);
+  };
+
+  const renderQuestionText = () => {
+    if (text[0] === "<") {
+      return (
+        <div className="text-sm pl-2 -mt-4 max-h-[18rem] prose">
+          <div
+            className="ql-editor"
+            dangerouslySetInnerHTML={{
+              __html: capitalizeFirstChar(text),
+            }}
+          />
+        </div>
+      );
+    }
+    return <p className="pl-2">{text}</p>;
   };
 
   return (
     <div>
-      <p>{}.</p>
-      <div className="text-base ">
-        <p>{currentQuestionIndex + 1 + ". "}</p>
-        {text[0] === "<" ? (
-          <div className="text-sm pl-2 -mt-4 max-h-[18rem] prose">
-            <div
-              className="ql-editor"
-              dangerouslySetInnerHTML={{
-                __html: capitalizeFirstChar(text),
-              }}
-            />
-          </div>
-        ) : (
-          <p className="pl-2"> {text}</p>
-        )}
+      <div className="text-base">
+        <p>{currentQuestionIndex + 1}.</p>
+        {renderQuestionText()}
       </div>
+
       {image && (
         <div className="flex justify-center p-2">
-          {image.url}
           <img
             src={image.url}
             alt={image.ref}
@@ -129,56 +174,19 @@ function Question({
           />
         </div>
       )}
-      {type === "input" && (
-        <AnswerInput
-          questionId={id}
-          onAnswerChange={handleAnswerChange}
-          answer={userAnswer}
-        />
-      )}
-      {type === "multiple" && (
-        <MultipleChoice
-          questionId={id}
-          options={options}
-          onAnswerChange={handleAnswerChange}
-          answer={userAnswer}
-        />
-      )}
-      {type === "multiselect" && (
-        <MultiSelect
-          questionId={id}
-          options={options}
-          correctAnswer={correctAnswer}
-          onAnswerChange={handleAnswerChange}
-          selectedOptions={userAnswer || []}
-        />
-      )}
-      {type === "range" && (
-        <Range
-          questionId={id}
-          options={options}
-          onAnswerChange={handleAnswerChange}
-          answer={userAnswer}
-        />
-      )}
-      {type === "text" && (
-        <AnswerText
-          questionId={id}
-          onAnswerChange={handleAnswerChange}
-          answer={userAnswer}
-        />
-      )}
+
+      {renderQuestionInput()}
 
       {showFeedback && (
         <AlertComponent
           type={type}
-          answer={question.correctAnswer}
+          answer={correctAnswer}
           isCorrect={isCorrect}
           explanation={explanation}
         />
       )}
     </div>
   );
-}
+};
 
 export default Question;

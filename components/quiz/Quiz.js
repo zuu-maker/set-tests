@@ -1,111 +1,124 @@
 import React, { useState, useEffect } from "react";
+import { FadeLoader } from "react-spinners";
+import toast from "react-hot-toast";
+
+import { db } from "@/firebase";
 import Question from "./Question";
 import Result from "./Result";
-import { db } from "@/firebase";
-import { FadeLoader } from "react-spinners";
 import Overlay from "@/components/quiz/Overlay";
-import toast from "react-hot-toast";
 import QuizActions from "./QuizActions";
 import QuizTop from "./QuizTop";
 
-//make results look better
-//add results record
-//student charts
+const INITIAL_STATE = {
+  test: null,
+  questions: [],
+  currentQuestionIndex: 0,
+  answers: {},
+  score: 0,
+};
 
-function Quiz({ id }) {
-  const [test, setTest] = useState(null);
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [showResult, setShowResult] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [score, setScore] = useState(0);
-  const [loader, setLoader] = useState(true);
-  const [visible, setVisible] = useState(false);
+const Quiz = ({ id }) => {
+  const [state, setState] = useState(INITIAL_STATE);
+  const [ui, setUi] = useState({
+    isLoading: true,
+    showResult: false,
+    showFeedback: false,
+    isSubmitted: false,
+    isOverlayVisible: false,
+  });
+
+  const { test, questions, currentQuestionIndex, answers, score } = state;
+  const { isLoading, showResult, showFeedback, isSubmitted, isOverlayVisible } =
+    ui;
 
   useEffect(() => {
-    db.collection("Courses")
-      .doc(id.split("-")[0])
-      .collection("Tests")
-      .doc(id.split("-")[1])
-      .get()
-      .then((doc) => {
-        console.log(doc.data().questions);
-        if (doc.data().questions) {
-          setQuestions(doc.data().questions);
-        }
-        setTest(doc.data());
-        setLoader(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    fetchQuizData();
   }, [id]);
 
-  // useEffect(() => {
-  //   // TODO: uncomment this
-  //   if (id && user && user._id && user.activeSubscription) {
-  //     setShowQuestions(true);
-  //   } else {
-  //     setShowQuestions(false);
-  //   }
-  // }, [id]);
+  const fetchQuizData = async () => {
+    try {
+      const [courseId, testId] = id.split("-");
+      const docRef = db
+        .collection("Courses")
+        .doc(courseId)
+        .collection("Tests")
+        .doc(testId);
 
-  const handleAnswerChange = (questionId, answer) => {
-    const updatedAnswers = { ...answers, [questionId]: answer };
-    console.log(updatedAnswers);
-    setAnswers(updatedAnswers);
-  };
+      const doc = await docRef.get();
+      const testData = doc.data();
 
-  // useEffect(() => {
-  //   const storedAnswers = JSON.parse(localStorage.getItem("quiz-answers"));
-  //   const currentIndex = localStorage.getItem("current-index");
-  //   if (storedAnswers || currentIndex) {
-  //     if (window.confirm("Do you with to continue from where you left off?")) {
-  //       if (storedAnswers) {
-  //         setAnswers(storedAnswers);
-  //       }
-  //       if (currentIndex) {
-  //         setCurrentQuestionIndex(Number(currentIndex));
-  //       }
-  //     }
-  //   }
-  // }, []);
-
-  const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      // localStorage.setItem("current-index", currentQuestionIndex);
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setShowFeedback(false);
-      setSubmitted(false);
-    } else {
-      // localStorage.setItem("current-index", currentQuestionIndex);
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setShowResult(true);
+      setState((prev) => ({
+        ...prev,
+        test: testData,
+        questions: testData.questions || [],
+      }));
+    } catch (error) {
+      console.error("Error fetching quiz data:", error);
+      toast.error("Failed to load quiz");
+    } finally {
+      setUi((prev) => ({ ...prev, isLoading: false }));
     }
   };
 
-  const gotoQuestion = (index) => {
-    setCurrentQuestionIndex(index);
-    setShowFeedback(false);
-    setSubmitted(false);
-    setVisible(false);
+  const handleAnswerChange = (questionId, answer) => {
+    setState((prev) => ({
+      ...prev,
+      answers: { ...prev.answers, [questionId]: answer },
+    }));
+  };
+
+  const handleNext = () => {
+    const isLastQuestion = currentQuestionIndex === questions.length - 1;
+
+    if (isLastQuestion) {
+      setUi((prev) => ({ ...prev, showResult: true }));
+    } else {
+      setState((prev) => ({
+        ...prev,
+        currentQuestionIndex: prev.currentQuestionIndex + 1,
+      }));
+      setUi((prev) => ({
+        ...prev,
+        showFeedback: false,
+        isSubmitted: false,
+      }));
+    }
   };
 
   const handleSubmit = () => {
-    if (
-      answers[questions[currentQuestionIndex].id] == undefined ||
-      answers[questions[currentQuestionIndex].id] == ""
-    ) {
+    const currentQuestion = questions[currentQuestionIndex];
+    const currentAnswer = answers[currentQuestion.id];
+
+    if (!currentAnswer) {
       toast.error("Please answer the question");
       return;
     }
-    setShowFeedback(true);
-    setSubmitted(true);
+
+    setUi((prev) => ({
+      ...prev,
+      showFeedback: true,
+      isSubmitted: true,
+    }));
   };
 
-  const currentQuestion = questions[currentQuestionIndex];
+  const handleQuestionNavigation = (index) => {
+    setState((prev) => ({ ...prev, currentQuestionIndex: index }));
+    setUi((prev) => ({
+      ...prev,
+      showFeedback: false,
+      isSubmitted: false,
+      isOverlayVisible: false,
+    }));
+  };
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <FadeLoader color="#00FFFF" />
+      </div>
+    );
+  }
+
   if (showResult) {
     return (
       <Result
@@ -117,53 +130,65 @@ function Quiz({ id }) {
     );
   }
 
+  const currentQuestion = questions[currentQuestionIndex];
+
   return (
     <div className="w-full h-full">
-      {loader ? (
-        <div className="h-screen w-full flex items-center justify-center">
-          <FadeLoader color="#00FFFF" />
-        </div>
-      ) : (
-        <div className="min-h-screen  bg-gray-100 flex justify-center items-center ">
-          <div className="bg-white relative min-h-[32rem] flex flex-col justify-between w-[42rem]  rounded-lg shadow-lg p-5">
-            <QuizTop title={test.title} setVisible={setVisible} />
-            <hr className="mt-4 mb-4 bg-gray-100" />
-            <div className="border basis-5 flex-1 border-gray-100 p-6">
-              {test.questions.length > 0 && (
-                <Question
-                  setScore={setScore}
-                  submitted={submitted}
-                  showFeedback={showFeedback}
-                  setShowFeedback={setShowFeedback}
-                  currentQuestionIndex={currentQuestionIndex}
-                  question={currentQuestion}
-                  onAnswerChange={handleAnswerChange}
-                  answer={answers[currentQuestion.id]}
-                  handleSubmit={handleSubmit}
-                />
-              )}
-            </div>
-            <hr className="mt-4 mb-4" />
-            <QuizActions
-              submitted={submitted}
-              currentQuestionIndex={currentQuestionIndex}
-              questions={questions}
-              handleNext={handleNext}
-              handleSubmit={handleSubmit}
-            />
-            <Overlay
-              answers={answers}
-              currentQuestionIndex={currentQuestionIndex}
-              visible={visible}
-              setVisible={setVisible}
-              questions={questions}
-              gotoQuestion={gotoQuestion}
-            />
+      <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+        <div className="bg-white relative min-h-[32rem] flex flex-col justify-between w-[42rem] rounded-lg shadow-lg p-5">
+          <QuizTop
+            title={test?.title}
+            setVisible={(value) =>
+              setUi((prev) => ({ ...prev, isOverlayVisible: value }))
+            }
+          />
+
+          <hr className="mt-4 mb-4 bg-gray-100" />
+
+          <div className="border basis-5 flex-1 border-gray-100 p-6">
+            {questions.length > 0 && (
+              <Question
+                setScore={(newScore) =>
+                  setState((prev) => ({ ...prev, score: newScore }))
+                }
+                submitted={isSubmitted}
+                showFeedback={showFeedback}
+                setShowFeedback={(value) =>
+                  setUi((prev) => ({ ...prev, showFeedback: value }))
+                }
+                currentQuestionIndex={currentQuestionIndex}
+                question={currentQuestion}
+                onAnswerChange={handleAnswerChange}
+                answer={answers[currentQuestion.id]}
+                handleSubmit={handleSubmit}
+              />
+            )}
           </div>
+
+          <hr className="mt-4 mb-4" />
+
+          <QuizActions
+            submitted={isSubmitted}
+            currentQuestionIndex={currentQuestionIndex}
+            questions={questions}
+            handleNext={handleNext}
+            handleSubmit={handleSubmit}
+          />
+
+          <Overlay
+            answers={answers}
+            currentQuestionIndex={currentQuestionIndex}
+            visible={isOverlayVisible}
+            setVisible={(value) =>
+              setUi((prev) => ({ ...prev, isOverlayVisible: value }))
+            }
+            questions={questions}
+            gotoQuestion={handleQuestionNavigation}
+          />
         </div>
-      )}
+      </div>
     </div>
   );
-}
+};
 
 export default Quiz;
