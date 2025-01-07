@@ -16,7 +16,6 @@ const WhyUs = () => {
               <li>Complete revision guide</li>
               <li>Full solutions and explanations</li>
               <li>24/7 online access</li>
-              <li>Affordable fee stricture</li>
             </ol>
           </div>
 
