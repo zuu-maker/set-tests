@@ -44,6 +44,8 @@ function Login() {
                     role: snap.docs[0].data().role,
                     verified: user.emailVerified,
                     phone: snap.docs[0].data().phone,
+                    activeSubscription: snap.docs[0].data().activeSubscription,
+                    subscribedBefore: snap.docs[0].data().subscribedBefore,
                   })
                 );
                 if (snap.docs[0].data().role !== "student") {
