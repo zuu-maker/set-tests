@@ -166,7 +166,7 @@ function LearnPage() {
       });
   };
 
-  if (auth && auth.currentUser && !auth.currentUser.emailVerified) {
+  if (user && user._id && !user.verified) {
     return (
       <div className="h-screen flex flex-col space-y-4 justify-center items-center">
         <Link href="/">

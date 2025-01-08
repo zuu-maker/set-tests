@@ -97,16 +97,15 @@ function Register() {
   return (
     <div className="mx-auto">
       {" "}
-      <div className="px-6 py-2 lg:px-8 bg-gradient-to-r from-cyan-500 to-cyan-600 shadow-lg">
-        <Header isHome={false} />
-      </div>
       <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-6 lg:px-4 relative">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="logo.png"
-            alt="Sirus Educational Trust"
-          />
+          <Link href="/">
+            <img
+              className="mx-auto h-12 w-auto"
+              src="logo.png"
+              alt="Sirus Educational Trust"
+            />
+          </Link>
           <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>

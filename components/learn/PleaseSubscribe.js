@@ -45,11 +45,13 @@ function PleaseSubscribe({
           />
 
           <button
-            disabled={(user && user._id.length > 0 === null) || loading}
+            disabled={
+              (user && user._id && user._id.length > 0 === null) || loading
+            }
             onClick={handleSubscribe}
             className="disabled:opacity-75 mt-2 flex w-full items-center justify-center rounded-md border border-transparent bg-cyan-600 py-3 px-8 text-base font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
           >
-            {user && user._id.length > 0 === null
+            {user && user._id && user._id.length > 0 === null
               ? "Please login to subscribe"
               : "Purchase subscription"}
           </button>

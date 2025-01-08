@@ -37,7 +37,7 @@ export default function Home() {
         />
       </Head>
 
-      <Banner show={true} />
+      <Banner show={false} />
 
       <div className="container mx-auto">
         <Hero />
