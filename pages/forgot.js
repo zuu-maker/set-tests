@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 function ForgotPassword() {
-  const [email, setEmail] = useState("zulumkhuzo@gmail.com");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   let router = useRouter();
 

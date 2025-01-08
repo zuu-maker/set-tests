@@ -161,7 +161,7 @@ function Admin() {
         if (amounts.length === 0) {
           setAmount(0);
         } else {
-          setAmount(amounts.reduce((acc, cv) => acc + cv));
+          setAmount(amounts.reduce((acc, cv) => Number(acc) + Number(cv)));
         }
       })
       .catch((error) => {
