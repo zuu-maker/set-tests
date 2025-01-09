@@ -1,0 +1,252 @@
+[debug] [2025-01-09T05:51:36.980Z] ----------------------------------------------------------------------
+[debug] [2025-01-09T05:51:36.991Z] Command:       /usr/local/bin/node /usr/local/bin/firebase apphosting:secrets:set LIVE_COMPANY_TOKEN
+[debug] [2025-01-09T05:51:36.991Z] CLI Version:   13.29.1
+[debug] [2025-01-09T05:51:36.991Z] Platform:      darwin
+[debug] [2025-01-09T05:51:36.991Z] Node Version:  v20.18.0
+[debug] [2025-01-09T05:51:36.992Z] Time:          Thu Jan 09 2025 13:51:36 GMT+0800 (China Standard Time)
+[debug] [2025-01-09T05:51:36.992Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-01-09T05:51:37.072Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-01-09T05:51:37.073Z] > authorizing via signed-in user (zulumkhuzo@gmail.com)
+[debug] [2025-01-09T05:51:37.074Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:37.075Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:37.076Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com [none]
+[debug] [2025-01-09T05:51:37.076Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:51:41.934Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com 200
+[debug] [2025-01-09T05:51:41.934Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com [omitted]
+[debug] [2025-01-09T05:51:41.934Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:41.935Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:41.935Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-01-09T05:51:41.935Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:51:42.845Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com 200
+[debug] [2025-01-09T05:51:42.845Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-01-09T05:51:42.845Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-01-09T05:51:42.845Z] > authorizing via signed-in user (zulumkhuzo@gmail.com)
+[debug] [2025-01-09T05:51:42.845Z] [iam] checking project village-bank-ed839 for permissions ["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]
+[debug] [2025-01-09T05:51:42.846Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:42.846Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:42.846Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions [none]
+[debug] [2025-01-09T05:51:42.846Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:51:42.846Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-01-09T05:51:46.243Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions 200
+[debug] [2025-01-09T05:51:46.244Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-01-09T05:51:46.244Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:46.244Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:46.244Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 [none]
+[debug] [2025-01-09T05:51:46.960Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 200
+[debug] [2025-01-09T05:51:46.960Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 {"projectNumber":"951388586973","projectId":"village-bank-ed839","lifecycleState":"ACTIVE","name":"Sirius Educational Trust","labels":{"firebase":"enabled"},"createTime":"2023-10-15T11:16:32.368019Z"}
+[debug] [2025-01-09T05:51:46.961Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:46.961Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:46.961Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN [none]
+[debug] [2025-01-09T05:51:50.055Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN 404
+[debug] [2025-01-09T05:51:50.055Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN {"error":{"code":404,"message":"Secret [projects/951388586973/secrets/LIVE_COMPANY_TOKEN] not found.","status":"NOT_FOUND"}}
+[debug] [2025-01-09T05:51:50.056Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:50.056Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:50.063Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets secretId=LIVE_COMPANY_TOKEN
+[debug] [2025-01-09T05:51:50.063Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets {"name":"LIVE_COMPANY_TOKEN","replication":{"automatic":{}},"labels":{"firebase-managed":"apphosting"}}
+[debug] [2025-01-09T05:51:51.772Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets 200
+[debug] [2025-01-09T05:51:51.772Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets {"name":"projects/951388586973/secrets/LIVE_COMPANY_TOKEN","replication":{"automatic":{}},"createTime":"2025-01-09T05:51:51.536294Z","labels":{"firebase-managed":"apphosting"},"etag":"\"162b3f931fdaa6\""}
+[info] ✔  Created new secret projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN 
+[debug] [2025-01-09T05:51:55.720Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:55.720Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:55.720Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:addVersion [none]
+[debug] [2025-01-09T05:51:55.720Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:addVersion {"payload":{"data":"NTI3RERBMTAtMDZCNS00MkMwLTk5REEtRERCRkNBNjgwRjJC"}}
+[debug] [2025-01-09T05:51:58.509Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:addVersion 200
+[debug] [2025-01-09T05:51:58.509Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:addVersion {"name":"projects/951388586973/secrets/LIVE_COMPANY_TOKEN/versions/1","createTime":"2025-01-09T05:51:58.278118Z","state":"ENABLED","replicationStatus":{"automatic":{}},"etag":"\"162b3f9386b9e6\""}
+[info] ✔  Created new secret version projects/951388586973/secrets/LIVE_COMPANY_TOKEN/versions/1 
+[info] i  You can access the contents of the secret's latest value with firebase apphosting:secrets:access LIVE_COMPANY_TOKEN
+ 
+[debug] [2025-01-09T05:51:58.510Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:58.510Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:51:58.511Z] >>> [apiv2][query] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends 
+[debug] [2025-01-09T05:52:02.148Z] <<< [apiv2][status] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends 200
+[debug] [2025-01-09T05:52:02.148Z] <<< [apiv2][body] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends {"backends":[{"name":"projects/village-bank-ed839/locations/europe-west4/backends/set-tests","createTime":"2025-01-09T02:12:00.104832885Z","updateTime":"2025-01-09T02:13:25.539508Z","uri":"set-tests--village-bank-ed839.europe-west4.hosted.app","managedResources":[{"runService":{"service":"projects/951388586973/locations/europe-west4/services/set-tests"}}],"codebase":{"repository":"projects/village-bank-ed839/locations/europe-west4/connections/apphosting-github-conn-pxz0rys/gitRepositoryLinks/zuu-maker-set-tests","rootDirectory":"/"},"uid":"8420c187-5e99-4d81-a4b4-a6abda2e503f","etag":"Gd57FZjIK-MtyCSq6HHDo6zarcpJCBi8Wi27etLQHiM","reconciling":false,"servingLocality":"GLOBAL_ACCESS","serviceAccount":"firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com","appId":"1:951388586973:web:c04f08d7e3dd1a57a82c34"}]}
+[debug] [2025-01-09T05:52:04.225Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:04.226Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:04.226Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:getIamPolicy [none]
+[debug] [2025-01-09T05:52:06.725Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:getIamPolicy 200
+[debug] [2025-01-09T05:52:06.725Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:getIamPolicy {"etag":"ACAB"}
+[debug] [2025-01-09T05:52:06.725Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:06.725Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:06.725Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:setIamPolicy [none]
+[debug] [2025-01-09T05:52:06.725Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:setIamPolicy {"policy":{"bindings":[{"role":"roles/secretmanager.secretAccessor","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.viewer","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.secretVersionManager","members":["serviceAccount:service-951388586973@gcp-sa-firebaseapphosting.iam.gserviceaccount.com"]}]},"updateMask":"bindings"}
+[debug] [2025-01-09T05:52:07.826Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:setIamPolicy 200
+[debug] [2025-01-09T05:52:07.826Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/LIVE_COMPANY_TOKEN:setIamPolicy {"version":1,"etag":"BwYrP5QWQSk=","bindings":[{"role":"roles/secretmanager.secretAccessor","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.secretVersionManager","members":["serviceAccount:service-951388586973@gcp-sa-firebaseapphosting.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.viewer","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]}]}
+[info] ✔  Successfully set IAM bindings on secret LIVE_COMPANY_TOKEN.
+ 
+[debug] [2025-01-09T05:52:15.404Z] Error: Document with errors cannot be stringified
+    at Document.toString (/usr/local/share/.config/yarn/global/node_modules/yaml/dist/doc/Document.js:322:19)
+    at Object.store (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/apphosting/config.js:50:48)
+    at Object.maybeAddSecretToYaml (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/apphosting/config.js:116:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Command.actionFn (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/commands/apphosting-secrets-set.js:55:5)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2025-01-09T05:52:29.026Z] ----------------------------------------------------------------------
+[debug] [2025-01-09T05:52:29.030Z] Command:       /usr/local/bin/node /usr/local/bin/firebase apphosting:secrets:set COMPANY_REF
+[debug] [2025-01-09T05:52:29.030Z] CLI Version:   13.29.1
+[debug] [2025-01-09T05:52:29.030Z] Platform:      darwin
+[debug] [2025-01-09T05:52:29.030Z] Node Version:  v20.18.0
+[debug] [2025-01-09T05:52:29.031Z] Time:          Thu Jan 09 2025 13:52:29 GMT+0800 (China Standard Time)
+[debug] [2025-01-09T05:52:29.031Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-01-09T05:52:29.107Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-01-09T05:52:29.107Z] > authorizing via signed-in user (zulumkhuzo@gmail.com)
+[debug] [2025-01-09T05:52:29.108Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:29.109Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:29.109Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com [none]
+[debug] [2025-01-09T05:52:29.110Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:52:32.843Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com 200
+[debug] [2025-01-09T05:52:32.843Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com [omitted]
+[debug] [2025-01-09T05:52:32.843Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:32.843Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:32.844Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-01-09T05:52:32.844Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:52:34.451Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com 200
+[debug] [2025-01-09T05:52:34.452Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-01-09T05:52:34.452Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-01-09T05:52:34.452Z] > authorizing via signed-in user (zulumkhuzo@gmail.com)
+[debug] [2025-01-09T05:52:34.452Z] [iam] checking project village-bank-ed839 for permissions ["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]
+[debug] [2025-01-09T05:52:34.453Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:34.453Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:34.453Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions [none]
+[debug] [2025-01-09T05:52:34.453Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:52:34.453Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-01-09T05:52:37.443Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions 200
+[debug] [2025-01-09T05:52:37.443Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-01-09T05:52:37.444Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:37.444Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:37.444Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 [none]
+[debug] [2025-01-09T05:52:38.240Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 200
+[debug] [2025-01-09T05:52:38.241Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 {"projectNumber":"951388586973","projectId":"village-bank-ed839","lifecycleState":"ACTIVE","name":"Sirius Educational Trust","labels":{"firebase":"enabled"},"createTime":"2023-10-15T11:16:32.368019Z"}
+[debug] [2025-01-09T05:52:38.241Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:38.241Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:38.241Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF [none]
+[debug] [2025-01-09T05:52:40.535Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF 404
+[debug] [2025-01-09T05:52:40.535Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF {"error":{"code":404,"message":"Secret [projects/951388586973/secrets/COMPANY_REF] not found.","status":"NOT_FOUND"}}
+[debug] [2025-01-09T05:52:40.536Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:40.537Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:40.537Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets secretId=COMPANY_REF
+[debug] [2025-01-09T05:52:40.537Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets {"name":"COMPANY_REF","replication":{"automatic":{}},"labels":{"firebase-managed":"apphosting"}}
+[debug] [2025-01-09T05:52:42.540Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets 200
+[debug] [2025-01-09T05:52:42.540Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets {"name":"projects/951388586973/secrets/COMPANY_REF","replication":{"automatic":{}},"createTime":"2025-01-09T05:52:42.446220Z","labels":{"firebase-managed":"apphosting"},"etag":"\"162b3f9628ad8c\""}
+[info] ✔  Created new secret projects/village-bank-ed839/secrets/COMPANY_REF 
+[debug] [2025-01-09T05:52:48.406Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:48.406Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:48.406Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:addVersion [none]
+[debug] [2025-01-09T05:52:48.406Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:addVersion {"payload":{"data":"NDlGS0VPQQ=="}}
+[debug] [2025-01-09T05:52:52.243Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:addVersion 200
+[debug] [2025-01-09T05:52:52.243Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:addVersion {"name":"projects/951388586973/secrets/COMPANY_REF/versions/1","createTime":"2025-01-09T05:52:52.311020Z","state":"ENABLED","replicationStatus":{"automatic":{}},"etag":"\"162b3f96bf33ec\""}
+[info] ✔  Created new secret version projects/951388586973/secrets/COMPANY_REF/versions/1 
+[info] i  You can access the contents of the secret's latest value with firebase apphosting:secrets:access COMPANY_REF
+ 
+[debug] [2025-01-09T05:52:52.245Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:52.245Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:52.245Z] >>> [apiv2][query] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends 
+[debug] [2025-01-09T05:52:55.116Z] <<< [apiv2][status] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends 200
+[debug] [2025-01-09T05:52:55.116Z] <<< [apiv2][body] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends {"backends":[{"name":"projects/village-bank-ed839/locations/europe-west4/backends/set-tests","createTime":"2025-01-09T02:12:00.104832885Z","updateTime":"2025-01-09T02:13:25.539508Z","uri":"set-tests--village-bank-ed839.europe-west4.hosted.app","managedResources":[{"runService":{"service":"projects/951388586973/locations/europe-west4/services/set-tests"}}],"codebase":{"repository":"projects/village-bank-ed839/locations/europe-west4/connections/apphosting-github-conn-pxz0rys/gitRepositoryLinks/zuu-maker-set-tests","rootDirectory":"/"},"uid":"8420c187-5e99-4d81-a4b4-a6abda2e503f","etag":"Gd57FZjIK-MtyCSq6HHDo6zarcpJCBi8Wi27etLQHiM","reconciling":false,"servingLocality":"GLOBAL_ACCESS","serviceAccount":"firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com","appId":"1:951388586973:web:c04f08d7e3dd1a57a82c34"}]}
+[debug] [2025-01-09T05:52:56.297Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:56.297Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:56.298Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:getIamPolicy [none]
+[debug] [2025-01-09T05:52:57.388Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:getIamPolicy 200
+[debug] [2025-01-09T05:52:57.388Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:getIamPolicy {"etag":"ACAB"}
+[debug] [2025-01-09T05:52:57.388Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:57.389Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:52:57.389Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:setIamPolicy [none]
+[debug] [2025-01-09T05:52:57.389Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:setIamPolicy {"policy":{"bindings":[{"role":"roles/secretmanager.secretAccessor","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.viewer","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.secretVersionManager","members":["serviceAccount:service-951388586973@gcp-sa-firebaseapphosting.iam.gserviceaccount.com"]}]},"updateMask":"bindings"}
+[debug] [2025-01-09T05:52:58.412Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:setIamPolicy 200
+[debug] [2025-01-09T05:52:58.413Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF:setIamPolicy {"version":1,"etag":"BwYrP5ccbSs=","bindings":[{"role":"roles/secretmanager.secretAccessor","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.secretVersionManager","members":["serviceAccount:service-951388586973@gcp-sa-firebaseapphosting.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.viewer","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]}]}
+[info] ✔  Successfully set IAM bindings on secret COMPANY_REF.
+ 
+[debug] [2025-01-09T05:53:02.223Z] Error: Document with errors cannot be stringified
+    at Document.toString (/usr/local/share/.config/yarn/global/node_modules/yaml/dist/doc/Document.js:322:19)
+    at Object.store (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/apphosting/config.js:50:48)
+    at Object.maybeAddSecretToYaml (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/apphosting/config.js:116:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Command.actionFn (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/commands/apphosting-secrets-set.js:55:5)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2025-01-09T05:53:20.594Z] ----------------------------------------------------------------------
+[debug] [2025-01-09T05:53:20.597Z] Command:       /usr/local/bin/node /usr/local/bin/firebase apphosting:secrets:set COMPANY_REF_UNIQUE
+[debug] [2025-01-09T05:53:20.597Z] CLI Version:   13.29.1
+[debug] [2025-01-09T05:53:20.597Z] Platform:      darwin
+[debug] [2025-01-09T05:53:20.598Z] Node Version:  v20.18.0
+[debug] [2025-01-09T05:53:20.598Z] Time:          Thu Jan 09 2025 13:53:20 GMT+0800 (China Standard Time)
+[debug] [2025-01-09T05:53:20.598Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-01-09T05:53:20.669Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-01-09T05:53:20.669Z] > authorizing via signed-in user (zulumkhuzo@gmail.com)
+[debug] [2025-01-09T05:53:20.670Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:20.671Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:20.672Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com [none]
+[debug] [2025-01-09T05:53:20.672Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:53:24.020Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com 200
+[debug] [2025-01-09T05:53:24.020Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/secretmanager.googleapis.com [omitted]
+[debug] [2025-01-09T05:53:24.021Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:24.021Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:24.021Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-01-09T05:53:24.021Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:53:25.085Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com 200
+[debug] [2025-01-09T05:53:25.085Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/village-bank-ed839/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-01-09T05:53:25.085Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-01-09T05:53:25.085Z] > authorizing via signed-in user (zulumkhuzo@gmail.com)
+[debug] [2025-01-09T05:53:25.085Z] [iam] checking project village-bank-ed839 for permissions ["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]
+[debug] [2025-01-09T05:53:25.086Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:25.086Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:25.086Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions [none]
+[debug] [2025-01-09T05:53:25.086Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions x-goog-quota-user=projects/village-bank-ed839
+[debug] [2025-01-09T05:53:25.086Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-01-09T05:53:28.274Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions 200
+[debug] [2025-01-09T05:53:28.274Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-01-09T05:53:28.274Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:28.275Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:28.275Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 [none]
+[debug] [2025-01-09T05:53:28.930Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 200
+[debug] [2025-01-09T05:53:28.930Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/village-bank-ed839 {"projectNumber":"951388586973","projectId":"village-bank-ed839","lifecycleState":"ACTIVE","name":"Sirius Educational Trust","labels":{"firebase":"enabled"},"createTime":"2023-10-15T11:16:32.368019Z"}
+[debug] [2025-01-09T05:53:28.931Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:28.931Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:28.931Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE [none]
+[debug] [2025-01-09T05:53:31.297Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE 404
+[debug] [2025-01-09T05:53:31.298Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE {"error":{"code":404,"message":"Secret [projects/951388586973/secrets/COMPANY_REF_UNIQUE] not found.","status":"NOT_FOUND"}}
+[debug] [2025-01-09T05:53:31.299Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:31.299Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:31.299Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets secretId=COMPANY_REF_UNIQUE
+[debug] [2025-01-09T05:53:31.300Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets {"name":"COMPANY_REF_UNIQUE","replication":{"automatic":{}},"labels":{"firebase-managed":"apphosting"}}
+[debug] [2025-01-09T05:53:33.318Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets 200
+[debug] [2025-01-09T05:53:33.318Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets {"name":"projects/951388586973/secrets/COMPANY_REF_UNIQUE","replication":{"automatic":{}},"createTime":"2025-01-09T05:53:33.108542Z","labels":{"firebase-managed":"apphosting"},"etag":"\"162b3f992db93e\""}
+[info] ✔  Created new secret projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE 
+[debug] [2025-01-09T05:53:46.041Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:46.041Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:46.041Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:addVersion [none]
+[debug] [2025-01-09T05:53:46.041Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:addVersion {"payload":{"data":"MA=="}}
+[debug] [2025-01-09T05:53:50.561Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:addVersion 200
+[debug] [2025-01-09T05:53:50.562Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:addVersion {"name":"projects/951388586973/secrets/COMPANY_REF_UNIQUE/versions/1","createTime":"2025-01-09T05:53:50.328464Z","state":"ENABLED","replicationStatus":{"automatic":{}},"etag":"\"162b3f9a347a90\""}
+[info] ✔  Created new secret version projects/951388586973/secrets/COMPANY_REF_UNIQUE/versions/1 
+[info] i  You can access the contents of the secret's latest value with firebase apphosting:secrets:access COMPANY_REF_UNIQUE
+ 
+[debug] [2025-01-09T05:53:50.564Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:50.564Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:50.564Z] >>> [apiv2][query] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends 
+[debug] [2025-01-09T05:53:52.970Z] <<< [apiv2][status] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends 200
+[debug] [2025-01-09T05:53:52.970Z] <<< [apiv2][body] GET https://firebaseapphosting.googleapis.com/v1beta/projects/village-bank-ed839/locations/-/backends {"backends":[{"name":"projects/village-bank-ed839/locations/europe-west4/backends/set-tests","createTime":"2025-01-09T02:12:00.104832885Z","updateTime":"2025-01-09T02:13:25.539508Z","uri":"set-tests--village-bank-ed839.europe-west4.hosted.app","managedResources":[{"runService":{"service":"projects/951388586973/locations/europe-west4/services/set-tests"}}],"codebase":{"repository":"projects/village-bank-ed839/locations/europe-west4/connections/apphosting-github-conn-pxz0rys/gitRepositoryLinks/zuu-maker-set-tests","rootDirectory":"/"},"uid":"8420c187-5e99-4d81-a4b4-a6abda2e503f","etag":"Gd57FZjIK-MtyCSq6HHDo6zarcpJCBi8Wi27etLQHiM","reconciling":false,"servingLocality":"GLOBAL_ACCESS","serviceAccount":"firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com","appId":"1:951388586973:web:c04f08d7e3dd1a57a82c34"}]}
+[debug] [2025-01-09T05:53:56.091Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:56.091Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:56.091Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:getIamPolicy [none]
+[debug] [2025-01-09T05:53:58.544Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:getIamPolicy 200
+[debug] [2025-01-09T05:53:58.545Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:getIamPolicy {"etag":"ACAB"}
+[debug] [2025-01-09T05:53:58.545Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:58.545Z] Checked if tokens are valid: true, expires at: 1736403637233
+[debug] [2025-01-09T05:53:58.545Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:setIamPolicy [none]
+[debug] [2025-01-09T05:53:58.546Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:setIamPolicy {"policy":{"bindings":[{"role":"roles/secretmanager.secretAccessor","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.viewer","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.secretVersionManager","members":["serviceAccount:service-951388586973@gcp-sa-firebaseapphosting.iam.gserviceaccount.com"]}]},"updateMask":"bindings"}
+[debug] [2025-01-09T05:54:01.660Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:setIamPolicy 200
+[debug] [2025-01-09T05:54:01.660Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/village-bank-ed839/secrets/COMPANY_REF_UNIQUE:setIamPolicy {"version":1,"etag":"BwYrP5rCHZA=","bindings":[{"role":"roles/secretmanager.secretAccessor","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.secretVersionManager","members":["serviceAccount:service-951388586973@gcp-sa-firebaseapphosting.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.viewer","members":["serviceAccount:firebase-app-hosting-compute@village-bank-ed839.iam.gserviceaccount.com"]}]}
+[info] ✔  Successfully set IAM bindings on secret COMPANY_REF_UNIQUE.
+ 
+[debug] [2025-01-09T05:54:04.906Z] Error: Document with errors cannot be stringified
+    at Document.toString (/usr/local/share/.config/yarn/global/node_modules/yaml/dist/doc/Document.js:322:19)
+    at Object.store (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/apphosting/config.js:50:48)
+    at Object.maybeAddSecretToYaml (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/apphosting/config.js:116:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Command.actionFn (/usr/local/share/.config/yarn/global/node_modules/firebase-tools/lib/commands/apphosting-secrets-set.js:55:5)
+[error] 
+[error] Error: An unexpected error has occurred.
