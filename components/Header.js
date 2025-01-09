@@ -25,7 +25,7 @@ const Header = ({ isHome = true }) => {
   let router = useRouter();
 
   const handleLogout = async () => {
-    await SessionManger.endSession(user._id);
+    // await SessionManger.endSession(user._id);
     auth
       .signOut()
       .then(() => {

@@ -133,7 +133,7 @@ function Sidebar() {
   let user = useSelector((state) => state.user);
 
   const handleLogout = async () => {
-    await SessionManger.endSession(user._id);
+    // await SessionManger.endSession(user._id);
 
     auth
       .signOut()

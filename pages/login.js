@@ -29,31 +29,32 @@ function Login() {
           .get()
           .then(async (snap) => {
             if (snap.docs[0].exists) {
-              let res = await SessionManger.createSession(snap.docs[0].id);
-              console.log("res ->", res);
-              if (!res) {
-                auth.signOut();
-                toast.error("You are logged in on another device");
-                setLoading(false);
+              // let res = await SessionManger.createSession(snap.docs[0].id);
+              // console.log("res ->", res);
+              // if (!res) {
+              //   auth.signOut();
+              //   toast.error("You are logged in on another device");
+              //   setLoading(false);
+              // } else {
+              dispatch(
+                setUser({
+                  _id: snap.docs[0].data()._id,
+                  email: snap.docs[0].data().email,
+                  name: snap.docs[0].data().name,
+                  role: snap.docs[0].data().role,
+                  verified: user.emailVerified,
+                  phone: snap.docs[0].data().phone,
+                  activeSubscription: snap.docs[0].data().activeSubscription,
+                  subscribedBefore: snap.docs[0].data().subscribedBefore,
+                })
+              );
+
+              if (snap.docs[0].data().role !== "student") {
+                router.push("/admin");
               } else {
-                dispatch(
-                  setUser({
-                    _id: snap.docs[0].data()._id,
-                    email: snap.docs[0].data().email,
-                    name: snap.docs[0].data().name,
-                    role: snap.docs[0].data().role,
-                    verified: user.emailVerified,
-                    phone: snap.docs[0].data().phone,
-                    activeSubscription: snap.docs[0].data().activeSubscription,
-                    subscribedBefore: snap.docs[0].data().subscribedBefore,
-                  })
-                );
-                if (snap.docs[0].data().role !== "student") {
-                  router.push("/admin");
-                } else {
-                  router.push("/learn");
-                }
+                router.push("/learn");
               }
+              // }
             }
           })
           .catch((error) => {
