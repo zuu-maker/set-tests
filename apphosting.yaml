@@ -33,7 +33,7 @@ runConfig:
 # Environment variables and secrets
 env:
   - variable: NEXT_PUBLIC_AUTH_DOMAIN
-    secret: projects/951388586973/secrets/NEXT_PUBLIC_AUTH_DOMAIN/versions/2
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_AUTH_DOMAIN/versions/4
     availability:
       - BUILD
       - RUNTIME
