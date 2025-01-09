@@ -40,21 +40,21 @@ env:
 
     # Same as API_KEY above but with a pinned version.
   - variable: NEXT_PUBLIC_APP_ID
-    secret: projects/951388586973/secrets/NEXT_PUBLIC_APP_ID/versions/2
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_APP_ID/versions/4
     availability:
       - BUILD
       - RUNTIME
 
     # Same as API_KEY above but with the long form secret reference as defined by Cloud Secret Manager.
   - variable: NEXT_PUBLIC_API_KEY
-    secret: projects/951388586973/secrets/NEXT_PUBLIC_API_KEY/versions/3
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_API_KEY/versions/4
     availability:
       - BUILD
       - RUNTIME
 
     # Same as API_KEY above but with the long form secret reference with pinned version.
   - variable: NEXT_PUBLIC_ANALYTICS
-    secret: projects/951388586973/secrets/NEXT_PUBLIC_ANALYTICS/versions/2
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_ANALYTICS/versions/3
     availability:
       - BUILD
       - RUNTIME
@@ -71,8 +71,26 @@ env:
       - BUILD
       - RUNTIME
 
-  - variable: NEXT_PUBLIC_MESSAGE_SENDER
-    secret: projects/951388586973/secrets/NEXT_PUBLIC_MESSAGE_SENDER/versions/1
+  - variable: COMPANY_TOKEN
+    secret: projects/951388586973/secrets/COMPANY_TOKEN/versions/1
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: LIVE_COMPANY_TOKEN
+    secret: projects/951388586973/secrets/LIVE_COMPANY_TOKEN/versions/1
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: COMPANY_REF
+    secret: projects/951388586973/secrets/COMPANY_REF/versions/1
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: COMPANY_REF_UNIQUE
+    secret: projects/951388586973/secrets/COMPANY_REF_UNIQUE/versions/1
     availability:
       - BUILD
       - RUNTIME
