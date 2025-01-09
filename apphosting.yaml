@@ -34,25 +34,45 @@ runConfig:
 env:
   - variable: NEXT_PUBLIC_AUTH_DOMAIN
     secret: projects/951388586973/secrets/NEXT_PUBLIC_AUTH_DOMAIN/versions/2
+    availability:
+      - BUILD
+      - RUNTIME
 
     # Same as API_KEY above but with a pinned version.
   - variable: NEXT_PUBLIC_APP_ID
     secret: projects/951388586973/secrets/NEXT_PUBLIC_APP_ID/versions/2
+    availability:
+      - BUILD
+      - RUNTIME
 
     # Same as API_KEY above but with the long form secret reference as defined by Cloud Secret Manager.
   - variable: NEXT_PUBLIC_API_KEY
     secret: projects/951388586973/secrets/NEXT_PUBLIC_API_KEY
+    availability:
+      - BUILD
+      - RUNTIME
 
     # Same as API_KEY above but with the long form secret reference with pinned version.
   - variable: NEXT_PUBLIC_ANALYTICS
     secret: projects/951388586973/secrets/NEXT_PUBLIC_ANALYTICS/versions/2
+    availability:
+      - BUILD
+      - RUNTIME
 
   - variable: NEXT_PUBLIC_PROJECT_ID
     secret: projects/951388586973/secrets/NEXT_PUBLIC_PROJECT_ID/versions/1
+    availability:
+      - BUILD
+      - RUNTIME
 
   - variable: NEXT_PUBLIC_STORAGE
     secret: projects/951388586973/secrets/NEXT_PUBLIC_STORAGE/versions/1
+    availability:
+      - BUILD
+      - RUNTIME
 
   - variable: NEXT_PUBLIC_MESSAGE_SENDER
     secret: projects/951388586973/secrets/NEXT_PUBLIC_MESSAGE_SENDER/versions/1
-
+    availability:
+      - BUILD
+      - RUNTIME
