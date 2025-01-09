@@ -8,12 +8,6 @@ runConfig:
 
 # Environment variables and secrets
 env:
-  - variable: STORAGE_BUCKET
-    value: mybucket.firebasestorage.app
-    availability:
-      - BUILD
-      - RUNTIME
-
   - variable: NEXT_PUBLIC_AUTH_DOMAIN
     secret: projects/951388586973/secrets/NEXT_PUBLIC_AUTH_DOMAIN
 
