@@ -1,0 +1,39 @@
+# Settings for Cloud Run
+runConfig:
+  minInstances: 2
+  maxInstances: 100
+  concurrency: 100
+  cpu: 2
+  memoryMiB: 1024
+
+# Environment variables and secrets
+env:
+  - variable: STORAGE_BUCKET
+    value: mybucket.firebasestorage.app
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_AUTH_DOMAIN
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_AUTH_DOMAIN
+
+    # Same as API_KEY above but with a pinned version.
+  - variable: NEXT_PUBLIC_APP_ID
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_APP_ID
+
+    # Same as API_KEY above but with the long form secret reference as defined by Cloud Secret Manager.
+  - variable: NEXT_PUBLIC_API_KEY
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_API_KEY
+
+    # Same as API_KEY above but with the long form secret reference with pinned version.
+  - variable: NEXT_PUBLIC_ANALYTICS
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_ANALYTICS
+
+  - variable: NEXT_PUBLIC_PROJECT_ID
+    secret: projects/951388586973/secrets/ NEXT_PUBLIC_PROJECT_ID
+
+  - variable: NEXT_PUBLIC_STORAGE
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_STORAGE
+
+  - variable: NEXT_PUBLIC_MESSAGE_SENDER
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_MESSAGE_SENDER
