@@ -47,7 +47,7 @@ env:
 
     # Same as API_KEY above but with the long form secret reference as defined by Cloud Secret Manager.
   - variable: NEXT_PUBLIC_API_KEY
-    secret: projects/951388586973/secrets/NEXT_PUBLIC_API_KEY
+    secret: projects/951388586973/secrets/NEXT_PUBLIC_API_KEY/versions/3
     availability:
       - BUILD
       - RUNTIME
