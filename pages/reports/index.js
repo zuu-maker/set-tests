@@ -1,12 +1,9 @@
 import AdminNav from "@/components/AdminNav";
-import AdminStats from "@/components/AdminStats";
 import Paginate from "@/components/Paginate";
 import Sidebar from "@/components/Sidebar";
 import AdminAuth from "@/components/auth/AdminPage";
 import { db } from "@/firebase";
-import { getTestInVerify } from "@/utils/test";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import firebase from "firebase";
 import { FadeLoader } from "react-spinners";
 import { format } from "date-fns";
