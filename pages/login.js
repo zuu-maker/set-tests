@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
 import toast from "react-hot-toast";
-import { SessionManger } from "@/utils/sessionManager";
+import { setRegister, unSetRegister } from "@/slices/registeringSlice";
+import { createNewSession } from "@/utils/sessions";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,61 +16,151 @@ function Login() {
   let dispatch = useDispatch();
   let router = useRouter();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+    dispatch(setRegister());
 
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // Signed in
-        let user = userCredential.user;
-        db.collection("Users")
-          .where("email", "==", user.email)
-          .get()
-          .then(async (snap) => {
-            if (snap.docs[0].exists) {
-              // let res = await SessionManger.createSession(snap.docs[0].id);
-              // console.log("res ->", res);
-              // if (!res) {
-              //   auth.signOut();
-              //   toast.error("You are logged in on another device");
-              //   setLoading(false);
-              // } else {
-              dispatch(
-                setUser({
-                  _id: snap.docs[0].data()._id,
-                  email: snap.docs[0].data().email,
-                  name: snap.docs[0].data().name,
-                  role: snap.docs[0].data().role,
-                  verified: user.emailVerified,
-                  phone: snap.docs[0].data().phone,
-                  activeSubscription: snap.docs[0].data().activeSubscription,
-                  subscribedBefore: snap.docs[0].data().subscribedBefore,
-                })
-              );
+    try {
+      const userCredential = await auth.signInWithEmailAndPassword(
+        email,
+        password
+      );
+      const user = userCredential.user;
 
-              if (snap.docs[0].data().role !== "student") {
-                router.push("/admin");
-              } else {
-                router.push("/learn");
-              }
-              // }
-            }
-          })
-          .catch((error) => {
-            setLoading(false);
-            auth.signOut();
-            toast.error("failed to get");
-            console.log(error);
-          });
-        // ...
-      })
-      .catch((error) => {
-        let errorMessage = JSON.parse(error.message);
+      const deviceId = localStorage.getItem("deviceId") || uuidv4();
+      localStorage.setItem("deviceId", deviceId);
+
+      // const idToken = await user.getIdToken();
+
+      // const sessionResponse = await fetch("/api/auth/createsession", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${idToken}`,
+      //   },
+      //   body: JSON.stringify({
+      //     deviceId,
+      //   }),
+      // });
+
+      // const res = await sessionResponse.json();
+
+      // console.log("res", res);
+      console.log("trying too create");
+      const isCreated = await createNewSession(
+        user.uid,
+        deviceId,
+        navigator.userAgent
+      );
+
+      console.log("done creating");
+      if (!isCreated) {
+        // Session creation failed (probably logged in elsewhere)
+        await auth.signOut();
+        toast.error("Failed login");
         setLoading(false);
-        toast.error(errorMessage.error.message);
-      });
+        return;
+      }
+
+      console.log("all good");
+
+      const snap = await db
+        .collection("Users")
+        .where("email", "==", user.email)
+        .get();
+
+      if (snap.docs[0].exists) {
+        dispatch(
+          setUser({
+            _id: snap.docs[0].data()._id,
+            email: snap.docs[0].data().email,
+            name: snap.docs[0].data().name,
+            role: snap.docs[0].data().role,
+            verified: user.emailVerified,
+            phone: snap.docs[0].data().phone,
+            activeSubscription: snap.docs[0].data().activeSubscription,
+            subscribedBefore: snap.docs[0].data().subscribedBefore,
+          })
+        );
+
+        // Navigate based on role
+        if (snap.docs[0].data().role !== "student") {
+          router.push("/admin");
+        } else {
+          router.push("/learn");
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+      await auth.signOut();
+
+      // Handle different types of errors
+      if (error.response) {
+        toast.error("Session error: Already logged in on another device");
+      } else if (
+        error.code === "auth/wrong-password" ||
+        error.code === "auth/user-not-found"
+      ) {
+        toast.error("Invalid email or password");
+      } else {
+        toast.error("Invalid credentials");
+        console.error("Login error:", error);
+      }
+    }
+
+    // auth
+    //   .signInWithEmailAndPassword(email, password)
+    //   .then((userCredential) => {
+    //     // Signed in
+    //     let user = userCredential.user;
+    //     db.collection("Users")
+    //       .where("email", "==", user.email)
+    //       .get()
+    //       .then(async (snap) => {
+    //         if (snap.docs[0].exists) {
+    //           // let res = await SessionManger.createSession(snap.docs[0].id);
+    //           // console.log("res ->", res);
+    //           // if (!res) {
+    //           //   auth.signOut();
+    //           //   toast.error("You are logged in on another device");
+    //           //   setLoading(false);
+    //           // } else {
+    //           dispatch(
+    //             setUser({
+    //               _id: snap.docs[0].data()._id,
+    //               email: snap.docs[0].data().email,
+    //               name: snap.docs[0].data().name,
+    //               role: snap.docs[0].data().role,
+    //               verified: user.emailVerified,
+    //               phone: snap.docs[0].data().phone,
+    //               activeSubscription: snap.docs[0].data().activeSubscription,
+    //               subscribedBefore: snap.docs[0].data().subscribedBefore,
+    //             })
+    //           );
+
+    //           if (snap.docs[0].data().role !== "student") {
+    //             router.push("/admin");
+    //           } else {
+    //             router.push("/learn");
+    //           }
+    //           // }
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         setLoading(false);
+    //         auth.signOut();
+    //         toast.error("failed to get");
+    //         console.log(error);
+    //       });
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     let errorMessage = JSON.parse(error.message);
+    //     setLoading(false);
+    //     toast.error(errorMessage.error.message);
+    //   });
+    dispatch(unSetRegister());
   };
 
   return (

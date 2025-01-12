@@ -114,7 +114,6 @@ function LearnPage() {
           _courses.push(snap.data());
         });
         setCourses(_courses);
-        console.log(user.verified);
         if (user && user.verified) {
           setHidden(false);
         }
@@ -123,7 +122,7 @@ function LearnPage() {
 
     return () => unsubscribe();
   }, []);
-  console.log(user);
+
   const handleRenew = (test) => {
     if (!test.id || !user._id) return;
 

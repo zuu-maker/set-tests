@@ -60,11 +60,13 @@ function Admin() {
           .update({
             expiresOn: expiresOn.getTime(),
             activeSubscription: true,
+            subscribedBefore: true,
           })
           .then(() => {
             toast.dismiss(toastId);
             toast.success("Subscription activated");
             setLoading(false);
+            fetchTransactions();
           })
           .catch((err) => {
             console.log(err);
