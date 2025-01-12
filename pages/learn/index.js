@@ -28,6 +28,14 @@ function LearnPage() {
 
   const handleSubscribe = () => {
     setLoading(true);
+
+    if (user && user.activeSubscription) {
+      toast.success(
+        "Apologies you already havee a subscription please refresh the page"
+      );
+      return;
+    }
+
     let toastId = toast.loading("Processing...");
     db.collection("Sessions")
       .add({

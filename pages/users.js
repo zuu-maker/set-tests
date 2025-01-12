@@ -45,6 +45,9 @@ function ListUsers() {
   };
 
   const getusers = () => {
+    setLoading(true);
+    let toastId = toast.loading("Processing...");
+
     let queryRef = null;
     if (startDate !== "" && endDate !== "" && filter !== "") {
       const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
@@ -76,17 +79,28 @@ function ListUsers() {
     }
 
     if (queryRef) {
-      queryRef.get().then((querySnapshot) => {
-        let _users = [];
-        querySnapshot.forEach((doc) => {
-          _users.push(doc.data());
+      queryRef
+        .get()
+        .then((querySnapshot) => {
+          let _users = [];
+          querySnapshot.forEach((doc) => {
+            _users.push(doc.data());
+          });
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          setUsers(_users);
+
+          toast.dismiss(toastId);
+          toast.success("Done");
+        })
+        .catch(() => {
+          toast.dismiss(toastId);
+          toast.error("Failed to get");
         });
-        var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-        setLast(lastVisible);
-        setUsers(_users);
-      });
     }
     setLoader(false);
+
+    setLoading(false);
   };
 
   const makePartner = (id) => {
