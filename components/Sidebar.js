@@ -1,6 +1,5 @@
 import { auth } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
-import { SessionManger } from "@/utils/sessionManager";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -134,18 +133,10 @@ function Sidebar() {
 
   const handleLogout = async () => {
     // await SessionManger.endSession(user._id);
-
-    auth
-      .signOut()
-      .then(() => {
-        router.push("/");
-      })
-      .then(() => {
-        dispatch(logOutUser());
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // await deleteSession()
+    await auth.signOut();
+    router.push("/");
+    dispatch(logOutUser());
   };
 
   return (

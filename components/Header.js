@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { auth } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
 import { useRouter } from "next/router";
-import { SessionManger } from "@/utils/sessionManager";
 
 const navigation = [
   { name: "Courses", href: "/browse" },

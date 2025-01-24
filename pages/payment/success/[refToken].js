@@ -7,7 +7,6 @@ import Head from "next/head";
 import { db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
 import { useParams } from "next/navigation";
-import { getTestInVerify } from "@/utils/test";
 import axios from "axios";
 import toast from "react-hot-toast";
 

@@ -6,10 +6,14 @@ import { auth, db } from "@/firebase";
 import { FadeLoader } from "react-spinners";
 import Paginate from "@/components/Paginate";
 import toast from "react-hot-toast";
+import firebase from "firebase";
 
 function ListUsers() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filter, setFilter] = useState("");
   const [loader, setLoader] = useState(true);
   const [page, setPage] = useState(1);
   const [last, setLast] = useState(null);
@@ -36,21 +40,67 @@ function ListUsers() {
       });
   };
 
+  const handleSelectChange = (e) => {
+    setFilter(e.target.value);
+  };
+
   const getusers = () => {
-    db.collection("Users")
-      .orderBy("createdAt", "desc")
-      .limit(25)
-      .get()
-      .then((querySnapshot) => {
-        let _users = [];
-        querySnapshot.forEach((doc) => {
-          _users.push(doc.data());
+    setLoading(true);
+    let toastId = toast.loading("Processing...");
+
+    let queryRef = null;
+    if (startDate !== "" && endDate !== "" && filter !== "") {
+      const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
+      const end = firebase.firestore.Timestamp.fromDate(
+        new Date(endDate + "T23:59:59")
+      );
+
+      queryRef = db
+        .collection("Users")
+        .where("createdAt", ">=", start)
+        .where("createdAt", "<=", end)
+        .where(filter, "==", true)
+        .limit(25);
+    } else if (startDate !== "" && endDate !== "" && filter === "") {
+      const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
+      const end = firebase.firestore.Timestamp.fromDate(
+        new Date(endDate + "T23:59:59")
+      );
+      queryRef = db
+        .collection("Users")
+        .where("createdAt", ">=", start)
+        .where("createdAt", "<=", end)
+        .orderBy("createdAt")
+        .limit(25);
+    } else if (startDate === "" && endDate === "" && filter !== "") {
+      queryRef = db.collection("Users").where(filter, "==", true).limit(25);
+    } else {
+      queryRef = db.collection("Users").orderBy("createdAt", "desc").limit(25);
+    }
+
+    if (queryRef) {
+      queryRef
+        .get()
+        .then((querySnapshot) => {
+          let _users = [];
+          querySnapshot.forEach((doc) => {
+            _users.push(doc.data());
+          });
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          setUsers(_users);
+
+          toast.dismiss(toastId);
+          toast.success("Done");
+        })
+        .catch(() => {
+          toast.dismiss(toastId);
+          toast.error("Failed to get");
         });
-        var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-        setLast(lastVisible);
-        setUsers(_users);
-        setLoader(false);
-      });
+    }
+    setLoader(false);
+
+    setLoading(false);
   };
 
   const makePartner = (id) => {
@@ -158,6 +208,57 @@ function ListUsers() {
     }
   };
 
+  const generateCsv = () => {
+    if (users.length === 0) return;
+
+    // Get headers from first data object
+    const headers = ["name", "city", "email", "phone", "role"];
+
+    console.log(headers);
+    console.log(users[0]);
+    // Create CSV content
+    let csv = headers.join(",") + "\n";
+
+    // Add data rows
+    users.forEach((row) => {
+      const values = headers.map((header) => {
+        const value = row[header];
+        if (value === null || value === undefined) return "";
+        const stringValue = String(value);
+
+        if (!isNaN(Number(stringValue)) && stringValue.length > 1) {
+          // Add tab prefix to force text format
+          return `\t${stringValue}`;
+        }
+
+        // Handle objects
+        if (typeof value === "object") {
+          return JSON.stringify(value).replace(/"/g, '""');
+        }
+
+        // Return the value as is
+        return stringValue;
+      });
+      csv += values.join(",") + "\n";
+    });
+
+    let date = new Date();
+    const filename =
+      "Downloaded_users_on" + date.toISOString().split("T")[0] + ".csv";
+    // Create and trigger download
+    const BOM = "\uFEFF";
+    const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8;" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  console.log(filter);
+
   return (
     <AdminAuth className="min-h-screen bg-gray-50/50">
       <Sidebar />
@@ -173,6 +274,66 @@ function ListUsers() {
               <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                 Users
               </h6>
+              <div className="mb-6 flex justify-between items-center w-full">
+                <div>
+                  <div className="mb-6 flex gap-4 items-end">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Start Date
+                      </label>
+                      <input
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="p-2 border rounded"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        End Date
+                      </label>
+                      <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="p-2 border rounded"
+                      />
+                    </div>
+                    <button
+                      onClick={getusers}
+                      disabled={loading}
+                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300"
+                    >
+                      {loading ? "Loading..." : "Filter"}
+                    </button>
+                  </div>
+                  <div>
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium mb-1">
+                        Filter
+                      </label>
+                      <select
+                        value={filter}
+                        onChange={handleSelectChange}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      >
+                        <option value="">None</option>
+                        <option value="activeSubscription">Subscribed</option>
+                        <option value="subscribedBefore">
+                          Subscribed before
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={generateCsv}
+                  disabled={loading}
+                  className="px-4 py-2 bg-cyan-500 text-white rounded hover:bg-cyan-600 disabled:bg-gray-300"
+                >
+                  {loading ? "Loading..." : "Generate csv"}
+                </button>
+              </div>
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
                   <tr>

@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@/slices/userSlice";
 import toast from "react-hot-toast";
 import Header from "@/components/Header";
+import { setRegister, unSetRegister } from "@/slices/registeringSlice";
+import { createNewSession } from "@/utils/sessions";
 
 function Register() {
   const [name, setName] = useState("");
@@ -20,78 +22,163 @@ function Register() {
   let router = useRouter();
   let dispatch = useDispatch();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
+    dispatch(setRegister());
 
     if (!validator.validate(email)) {
       toast.error("invalid email");
       return;
     }
 
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        db.collection("Users")
-          .add({
-            name,
-            email,
-            city,
-            phone,
-            role: "student",
-            subscribedBefore: false,
-            expiresOn: 0,
-            verified: false,
-            activeSubscription: false,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          })
-          .then((docRef) => {
-            db.collection("Users")
-              .doc(docRef.id)
-              .update({
-                _id: docRef.id,
-              })
-              .then(() => {
-                auth.currentUser.sendEmailVerification().then(() => {
-                  dispatch(
-                    setUser({
-                      _id: docRef.id,
-                      name,
-                      email,
-                      role: "student",
-                      phone,
-                      activeSubscription: false,
-                      subscribedBefore: false,
-                      verified: false,
-                    })
-                  );
-                  router.push("/learn");
+    try {
+      const userCredential = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      const user = userCredential.user;
 
-                  // make if statement for pushing
+      const deviceId = localStorage.getItem("deviceId") || uuidv4();
+      localStorage.setItem("deviceId", deviceId);
 
-                  toast.success(
-                    `A Verification email has been sent to ${email}, please verify your email.`,
-                    {
-                      duration: 5000,
-                    }
-                  );
-                });
-              })
-              .catch((err) => {
-                setLoading(false);
-              });
-          })
-          .catch((error) => {
-            setLoading(false);
-          });
-      })
-      .catch((error) => {
+      // const idToken = await user.getIdToken();
+
+      // const sessionResponse = await fetch("/api/auth/createsession", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${idToken}`,
+      //   },
+      //   body: JSON.stringify({
+      //     deviceId,
+      //   }),
+      // });
+
+      // const res = await sessionResponse.json();
+      // console.log("res", res);
+      const isCreated = await createNewSession(
+        user.uid,
+        deviceId,
+        navigator.userAgent
+      );
+
+      if (!isCreated) {
+        // Session creation failed (probably logged in elsewhere)
+        await auth.signOut();
+        toast.error("Failed sign up");
         setLoading(false);
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        toast.error(errorMessage);
-        // ..
+        return;
+      }
+
+      const docRef = await db.collection("Users").add({
+        name,
+        email,
+        city,
+        phone,
+        role: "student",
+        subscribedBefore: false,
+        expiresOn: 0,
+        verified: false,
+        activeSubscription: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
+      await db.collection("Users").doc(docRef.id).update({
+        _id: docRef.id,
+      });
+      await auth.currentUser.sendEmailVerification();
+      toast.success(
+        `A Verification email has been sent to ${email}, please verify your email.`,
+        {
+          duration: 7000,
+        }
+      );
+      dispatch(
+        setUser({
+          _id: docRef.id,
+          name,
+          email,
+          role: "student",
+          phone,
+          activeSubscription: false,
+          subscribedBefore: false,
+          verified: false,
+        })
+      );
+      router.push("/learn");
+
+      // make if statement for pushing
+    } catch (error) {
+      setLoading(false);
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      toast.error(errorMessage);
+    }
+
+    // auth
+    //   .createUserWithEmailAndPassword(email, password)
+    //   .then(() => {
+    //     db.collection("Users")
+    //       .add({
+    //         name,
+    //         email,
+    //         city,
+    //         phone,
+    //         role: "student",
+    //         subscribedBefore: false,
+    //         expiresOn: 0,
+    //         verified: false,
+    //         activeSubscription: false,
+    //         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    //       })
+    //       .then((docRef) => {
+    //         db.collection("Users")
+    //           .doc(docRef.id)
+    //           .update({
+    //             _id: docRef.id,
+    //           })
+    //           .then(() => {
+    //             auth.currentUser.sendEmailVerification().then(() => {
+    //               dispatch(
+    //                 setUser({
+    //                   _id: docRef.id,
+    //                   name,
+    //                   email,
+    //                   role: "student",
+    //                   phone,
+    //                   activeSubscription: false,
+    //                   subscribedBefore: false,
+    //                   verified: false,
+    //                 })
+    //               );
+    //               router.push("/learn");
+
+    //               // make if statement for pushing
+
+    //               toast.success(
+    //                 `A Verification email has been sent to ${email}, please verify your email.`,
+    //                 {
+    //                   duration: 5000,
+    //                 }
+    //               );
+    //             });
+    //           })
+    //           .catch((err) => {
+    //             setLoading(false);
+    //           });
+    //       })
+    //       .catch((error) => {
+    //         setLoading(false);
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     setLoading(false);
+    //     var errorCode = error.code;
+    //     var errorMessage = error.message;
+    //     toast.error(errorMessage);
+    //     // ..
+    //   });
+    dispatch(unSetRegister());
   };
 
   return (
