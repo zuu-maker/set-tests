@@ -21,6 +21,11 @@ function AdminNav() {
       });
   };
 
+  const formatExpiresOn = (_) => {
+    let date = new Date(_);
+    return date.toLocaleDateString();
+  };
+
   return (
     <nav className="block w-full max-w-full bg-transparent text-white shadow-none rounded-xl transition-all px-0 py-1">
       <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
@@ -52,9 +57,9 @@ function AdminNav() {
               : router.pathname.split("/")[1]}
           </h6>
         </div>
-        <div className="flex items-center justify-between xl:justify-normal">
-          <button
-            className="middle none font-sans font-bold center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 hidden items-center gap-1 px-4 xl:flex"
+        <div className="flex flex-col items-end xl:justify-normal">
+          <div
+            className="middle none font-sans font-bold center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm pt-3 rounded-lg text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 hidden items-center gap-1 px-4 xl:flex"
             type="button"
           >
             <svg
@@ -71,7 +76,15 @@ function AdminNav() {
               ></path>
             </svg>
             {user !== null && user.name}
-          </button>
+          </div>
+          {user !== null && user.expiresOn > 0 && (
+            <div
+              className="middle none font-sans font-bold center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 hidden items-center gap-1 px-4 xl:flex"
+              type="button"
+            >
+              {"expires on :" + formatExpiresOn(user.expiresOn)}
+            </div>
+          )}
           <button
             className="relative middle none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30  xl:hidden"
             type="button"

@@ -100,6 +100,7 @@ function Register() {
           email,
           role: "student",
           phone,
+          expiresOn: 0,
           activeSubscription: false,
           subscribedBefore: false,
           verified: false,

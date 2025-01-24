@@ -78,6 +78,7 @@ function Login() {
             name: snap.docs[0].data().name,
             role: snap.docs[0].data().role,
             verified: user.emailVerified,
+            expiresOn: snap.docs[0].data().expiresOn,
             phone: snap.docs[0].data().phone,
             activeSubscription: snap.docs[0].data().activeSubscription,
             subscribedBefore: snap.docs[0].data().subscribedBefore,

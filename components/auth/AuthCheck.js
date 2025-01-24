@@ -74,6 +74,7 @@ const AuthCheck = ({ children }) => {
                 _id: doc._id,
                 name: doc.name,
                 email: _user.email,
+                expiresOn: doc.expiresOn,
                 role: doc.role,
                 phone: doc.phone,
                 verified: _user.emailVerified,
