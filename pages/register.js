@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import Header from "@/components/Header";
 import { setRegister, unSetRegister } from "@/slices/registeringSlice";
 import { createNewSession } from "@/utils/sessions";
+import PhoneNumberInput from "@/components/PhoneNumberInput";
 
 function Register() {
   const [name, setName] = useState("");
@@ -22,13 +23,25 @@ function Register() {
   let router = useRouter();
   let dispatch = useDispatch();
 
+  const getFullNumber = () => {
+    return `+260${phone}`;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     dispatch(setRegister());
 
+    if (getFullNumber(phone).length !== 13) {
+      toast.error("invalid phone number");
+      setLoading(false);
+
+      return;
+    }
+
     if (!validator.validate(email)) {
       toast.error("invalid email");
+      setLoading(false);
       return;
     }
 
@@ -75,7 +88,7 @@ function Register() {
         name,
         email,
         city,
-        phone,
+        phone: getFullNumber(phone),
         role: "student",
         subscribedBefore: false,
         expiresOn: 0,
@@ -99,7 +112,7 @@ function Register() {
           name,
           email,
           role: "student",
-          phone,
+          phone: getFullNumber(phone),
           expiresOn: 0,
           activeSubscription: false,
           subscribedBefore: false,
@@ -257,7 +270,9 @@ function Register() {
                   name="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -284,14 +299,9 @@ function Register() {
               </div>
             </div>
             <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Phone
-              </label>
               <div className="mt-2">
-                <input
+                <PhoneNumberInput phone={phone} setPhone={setPhone} />
+                {/* <input
                   id="phone"
                   name="phone"
                   type="text"
@@ -299,7 +309,7 @@ function Register() {
                   onChange={(e) => setPhone(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                /> */}
               </div>
             </div>
 
