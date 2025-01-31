@@ -50,7 +50,7 @@ export default function Home() {
           href="https://wa.me/972507705"
           target="_blank"
         >
-          <img src="/whatsapp.svg" className=" h-14" alt="" />
+          <img src="/whatsapp.svg" className=" h-12" alt="" />
         </a>
       </div>
       <Footer />
