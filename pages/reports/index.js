@@ -1,17 +1,15 @@
 import AdminNav from "@/components/AdminNav";
-import AdminStats from "@/components/AdminStats";
 import Paginate from "@/components/Paginate";
 import Sidebar from "@/components/Sidebar";
 import AdminAuth from "@/components/auth/AdminPage";
 import { db } from "@/firebase";
-import { getTestInVerify } from "@/utils/test";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import firebase from "firebase";
 import { FadeLoader } from "react-spinners";
 import { format } from "date-fns";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import toast from "react-hot-toast";
 
 function ReportsPage() {
   const [transactions, setTransactions] = useState([]);
@@ -59,7 +57,7 @@ function ReportsPage() {
       return [
         dateString,
         transaction.user.name,
-        `ZMK ${transaction.amount.toFixed(2)}`,
+        `ZMK ${Number(transaction.amount).toFixed(2)}`,
         transaction.status,
       ];
     });
@@ -104,6 +102,7 @@ function ReportsPage() {
   };
 
   const fetchTransactions = () => {
+    let toastId = toast.loading("Processing...");
     if (startDate !== "" && endDate !== "" && searchCode !== "") {
       const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
       const end = firebase.firestore.Timestamp.fromDate(
@@ -199,10 +198,13 @@ function ReportsPage() {
           setLoader(false);
         });
     }
+    toast.dismiss(toastId);
+    toast.success("Done");
   };
 
   const next = () => {
     db.collection("Transactions")
+      .where("status", "==", "Paid")
       .orderBy("createdAt", "desc")
       .startAfter(last)
       .limit(25)
@@ -225,6 +227,7 @@ function ReportsPage() {
   const prev = () => {
     if (page > 1) {
       db.collection("Transactions")
+        .where("status", "==", "Paid")
         .orderBy("createdAt", "desc")
         .endBefore(last)
         .limit(25)

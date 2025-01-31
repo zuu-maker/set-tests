@@ -73,6 +73,8 @@ function Payment() {
     if (!data.firstName || !data.lastName || !data.email || !data.phone) {
       toast.dismiss(toastId);
       toast.error("Please fill in all information");
+      setLoading(false);
+
       return;
     }
 
@@ -137,9 +139,9 @@ function Payment() {
               userId: _id,
               status: "Pending",
               transactionToken,
-              discountAmount: discount,
-              originalAmount: amount + discount,
-              amount,
+              discountAmount: Number(discount),
+              originalAmount: Number(amount) + Number(discount),
+              amount: Number(amount),
               promoCodeUsed: promoCode,
               tokenCreatedAt: date.getTime(),
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),

@@ -8,7 +8,7 @@ function CourseCard({ item }) {
         <div className="aspect-w-1 aspect-h-1 w-full overflow-hidde bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
           <img
             src={item.image.url}
-            className=" w-full object-cover h-48 object-center group-hover:opacity-75"
+            className="w-full object-fit h-52  group-hover:opacity-75"
           />
         </div>
         <div className=" px-2 h-12">

@@ -36,15 +36,19 @@ function StudentAuth({ children }) {
         {loader ? (
           <p>Verifying..</p>
         ) : (
-          <p>
-            Unauthorised please login{" "}
-            <Link
-              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              href="/login"
-            >
-              here
-            </Link>{" "}
-          </p>
+          <>
+            <p>
+              Unauthorised please login{" "}
+              <Link
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                href="/login"
+              >
+                here
+              </Link>{" "}
+              . You can not be signed into multiple devices.
+            </p>
+            <p>Please log in again</p>
+          </>
         )}
       </div>
     );
