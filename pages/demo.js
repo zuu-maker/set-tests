@@ -13,9 +13,9 @@ function Demo() {
         </Link>
       </div>
       <iframe
-        src="/sample-test/index.html"
+        src="/sample-test-1/index.html"
         width="100%"
-        style={{ height: "100vh" }}
+        style={{ height: "95.6vh" }}
       ></iframe>
     </div>
   );
