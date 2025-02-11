@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Camera,
   Mic,
@@ -15,9 +15,27 @@ import {
 import ChatPanel from "@/components/classrooms/ChatPannel";
 import SettingsPanel from "@/components/classrooms/SettingsPanel";
 import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
+import { data } from "autoprefixer";
+
+// http://localhost:3000/classrooms?uid=test_4&isTeacher=true
+// http://localhost:3000/classrooms?uid=test_2&isTeacher=false
+
+const config = {
+  iceServers: [
+    {
+      urls: "stun:stun.l.google.com:19302",
+    },
+  ],
+};
 
 const ClassroomUI = () => {
   const [messages, setMessages] = useState([]);
+  const pubVideo = useRef();
+  const subVideo = useRef();
+  const [client, setClient] = useState(null);
+  const [signal, setSignal] = useState(null);
+  const [dc, setDc] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [settings, setSettings] = useState({
     audioInput: "",
@@ -44,6 +62,131 @@ const ClassroomUI = () => {
       ],
     ])
   );
+
+  useEffect(() => {
+    const initialiseSDK = async () => {
+      try {
+        const ionSDK = await import("ion-sdk-js");
+        const signalModule = await import(
+          "ion-sdk-js/lib/signal/json-rpc-impl"
+        );
+
+        const newSignal = new signalModule.IonSFUJSONRPCSignal(
+          "ws://localhost:7000/ws"
+        ); // connect to out signal server/mdeia server basically
+        const newClient = new ionSDK.Client(newSignal, config); // create  a new client
+        const uid = new URLSearchParams(window.location.search).get("uid");
+
+        newSignal.onopen = () => {
+          newClient.join("test room", uid);
+          setClient(newClient);
+        };
+
+        // add event listerners here maybe? // list to data channeel maybe?
+      } catch (error) {
+        console.log("failed to initlaise SDk", error);
+      }
+    };
+    initialiseSDK();
+  }, []);
+
+  useEffect(() => {
+    if (!client) return;
+    const isTeacher = new URLSearchParams(window.location.search).get(
+      "isTeacher"
+    );
+
+    if (!JSON.parse(isTeacher)) {
+      // this is the client accessig the remote streaam
+      client.ontrack = (track, stream) => {
+        console.log("got track: ", track.id, "for stream: ", stream.id);
+        track.onunmute = () => {
+          subVideo.current.srcObject = stream;
+          subVideo.current.autoplay = true;
+          subVideo.current.muted = false;
+
+          stream.onremovetrack = () => {
+            subVideo.current.srcObject = null;
+          };
+        };
+      };
+    } else {
+      start(true);
+    }
+  }, [client]);
+
+  const start = async (isCamera) => {
+    console.log("start 1");
+    if (!client) return;
+    console.log("start 2");
+
+    try {
+      const ionSDK = await import("ion-sdk-js");
+      const media = isCamera
+        ? await ionSDK.LocalStream.getUserMedia({
+            audio: true,
+            video: true,
+            simulcast: true,
+          })
+        : await ionSDK.LocalStream.getDisplayMedia({
+            resolution: "vga",
+            video: true,
+            audio: true,
+            codec: "vp8",
+          });
+
+      pubVideo.current.srcObject = media;
+      pubVideo.current.autoplay = true;
+      pubVideo.current.controls = true;
+      pubVideo.current.muted = true;
+      try {
+        client.publish(media);
+        let lastBytes = 0;
+        const statsInterval = setInterval(async () => {
+          try {
+            const stats = await client.getPubStats();
+            if (stats?.video) {
+              const currentBytes = stats.video.bytesSent || 0;
+              const bitrateMbps = (
+                ((currentBytes - lastBytes) * 8) /
+                (5 * 1000000)
+              ).toFixed(2);
+              console.log("Video Stats:", {
+                resolution: `${stats.video.width}x${stats.video.height}`,
+                fps: stats.video.frameRate,
+                bitrate: `${bitrateMbps} Mbps`,
+                cpu: stats.video.cpu || "N/A",
+              });
+              lastBytes = currentBytes;
+            }
+          } catch (error) {
+            console.log("Stats error:", error);
+          }
+        }, 5000);
+
+        return () => clearInterval(statsInterval);
+      } catch (error) {
+        console.log(error, "publishing");
+      }
+    } catch (error) {
+      console.error("Failed to start media:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!client) return;
+    console.log("here", dc);
+
+    const _dc = client.createDataChannel("messaging");
+
+    _dc.onopen = () => {
+      console.log("iss opene");
+      setDc(_dc);
+      _dc.onmessage = (messsage) => {
+        console.log(messsage);
+      };
+    };
+  }, [client]);
 
   const grantPermission = () => {};
 
@@ -126,7 +269,22 @@ const ClassroomUI = () => {
         {/* Primary Video Grid */}
         <div className="flex-1 p-4 grid ">
           {/* Teacher's Video (Larger) */}
-          <div className="col-span-2 row-span-2 bg-gray-900 rounded-lg relative">
+          <video ref={pubVideo} className="hidden" />
+
+          <video
+            id="subVideo"
+            className={`bg-blue-400 h-full `}
+            controls
+            ref={subVideo}
+          ></video>
+
+          {/* <div
+            className={`col-span-2 row-span-2 bg-gray-900 rounded-lg  ${
+              subVideo.current && subVideo.current.srcObject
+                ? "hidden bg-red-500"
+                : "relative"
+            }`}
+          >
             <div className="absolute bottom-4 left-4 text-white flex items-center">
               <div className="bg-gray-900/60 px-3 py-1 rounded-full flex items-center">
                 <span>Dr. Smith</span>
@@ -135,7 +293,7 @@ const ClassroomUI = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <ChatPanel
@@ -183,7 +341,13 @@ const ClassroomUI = () => {
           <button className="p-4 rounded-full bg-gray-100 hover:bg-gray-200">
             <Video className="w-6 h-6" />
           </button>
-          <button className="p-4 rounded-full bg-gray-100 hover:bg-gray-200">
+          <button
+            onClick={() => {
+              console.log(dc);
+              start(false);
+            }}
+            className="p-4 rounded-full bg-gray-100 hover:bg-gray-200"
+          >
             <Share className="w-6 h-6" />
           </button>
           <button
