@@ -1,236 +1,213 @@
-import { useEffect, useRef, useState } from "react";
-import { Socket, io } from "socket.io-client";
-import { Device } from "mediasoup-client";
+import React, { useState } from "react";
+import {
+  Camera,
+  Mic,
+  MicOff,
+  Video,
+  VideoOff,
+  Hand,
+  Users,
+  MessageSquare,
+  Share,
+  Settings,
+  Signal,
+} from "lucide-react";
+import ChatPanel from "@/components/classrooms/ChatPannel";
+import SettingsPanel from "@/components/classrooms/SettingsPanel";
+import toast from "react-hot-toast";
 
-function Classroom() {
-  const [socket, setSocket] = useState(null);
-  const [device, setDevice] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
-  const [producerTransport, setProducerTransport] = useState(null);
-  const [consumerTransport, setConsumerTransport] = useState(null);
-  const [consumers, setConsumers] = useState(new Map());
-  const [message, setMessage] = useState("N/a");
-  const localVideoRef = useRef(null);
-  const remoteVideosRef = useRef(null);
+const ClassroomUI = () => {
+  const [messages, setMessages] = useState([]);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [settings, setSettings] = useState({
+    audioInput: "",
+    audioOutput: "",
+    videoInput: "",
+    audioInputDevices: [],
+    audioOutputDevices: [],
+    videoInputDevices: [],
+    echoCancellation: true,
+    videoQuality: "medium",
+    darkMode: false,
+    notifications: true,
+    language: "en",
+  });
 
-  // make sure you dbouble check if you are destructering well
+  const [raisedhands, setRaisedHands] = useState(
+    new Map([
+      [
+        "342343243",
+        {
+          username: "john doe",
+          timestamp: Date.now(),
+        },
+      ],
+    ])
+  );
 
-  const roomId = "123";
+  const grantPermission = () => {};
 
-  useEffect(() => {
-    const newSocket = io("http://localhost:3001", {
-      transports: ["websocket"],
-      autoConnect: true,
-    });
-    setSocket(newSocket);
-    console.log(newSocket);
+  const denyPermission = () => {};
 
-    newSocket.on("connect", () => {
-      console.log("Connected to server with ID:", newSocket.id);
-      setIsConnected(true);
-      newSocket.emit("getRouterCapabilities");
-      // Test connection by creating a room
-    });
-
-    newSocket.on("disconnect", () => {
-      console.log("Disconnected from server");
-      setIsConnected(false);
-    });
-
-    newSocket.on("routerCapabilities", async (rtpCapabilities) => {
-      // double check this
-      console.log("In here");
-      try {
-        const newDevice = new Device();
-        await newDevice.load({ routerRtpCapabilities: rtpCapabilities });
-        setDevice(newDevice);
-      } catch (error) {
-        console.error("Error loading device:", error);
-      }
-    });
-
-    return () => {
-      if (newSocket) newSocket.disconnect();
-      cleanup();
-    };
-  }, []);
-
-  const cleanup = () => {
-    // Close all consumers
-    consumers.forEach((consumer) => {
-      consumer.close();
-    });
-    setConsumers(new Map());
-
-    // Close transports
-    if (producerTransport) {
-      producerTransport.close();
-    }
-    if (consumerTransport) {
-      consumerTransport.close();
-    }
-
-    // Clear video elements
-    if (remoteVideosRef.current) {
-      remoteVideosRef.current.innerHTML = "";
-    }
+  const handleMessae = (content) => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        content,
+        sender: "jj",
+        isMe: false,
+        timestamp: new Date().toISOString(),
+      },
+    ]);
   };
 
-  console.log(device);
-
-  const publish = async () => {
-    if (!device || !socket) {
-      alert("no device or socket");
-    }
-
-    let stream = await getUserMedia(true);
-
-    socket.emit("createProducerTransport", {
-      forceTcp: false,
-      rtpCapabilities: device.rtpCapabilities,
-    });
-
-    socket.on(
-      "producerTransportCreated",
-      async ({ id, iceParameters, iceCandidates, dtlsParameters }) => {
-        try {
-          // console.log("in here");
-          const transport = device.createSendTransport({
-            id,
-            iceParameters,
-            iceCandidates,
-            dtlsParameters,
-          }); // we are creating a pc between our server and client this is the transport
-
-          transport.on("connectionstatechange", async (state) => {
-            switch (state) {
-              case "connecting":
-                setMessage("publishing");
-                break;
-              case "connected":
-                localVideoRef.current.srcObject = stream;
-                setMessage("published");
-                break;
-              case "failed":
-                transport.close();
-                setMessage("Failed to publish");
-                break;
-
-              default:
-                break;
-            }
-          });
-
-          transport.on(
-            "connect",
-            async ({ dtlsParameters }, callback, errback) => {
-              console.log("dlts", dtlsParameters);
-              socket.emit("connectProducerTransport", dtlsParameters); // we do this after successfully connecting the client transport and server transport
-              socket.on("producerTransportConnected", (msg) => {
-                if (msg !== "connected") errback();
-                callback();
-              }); // double check here callback()
-            }
-          );
-          console.log(transport.id);
-
-          transport.on(
-            "produce",
-            async ({ kind, rtpParameters }, callback, errback) => {
-              console.log("kind etc", { kind, rtpParameters });
-              socket.emit("produce", {
-                transportId: transport.id,
-                kind,
-                rtpParameters,
-                appData: {},
-              });
-
-              socket.once("published", ({ id }) => {
-                console.log("Producer ID received:", id);
-                if (id) {
-                  callback({ id }); // Make sure to pass an object with id
-                } else {
-                  errback(new Error("Server failed to provide producer ID"));
-                }
-              });
-            }
-          );
-
-          // connection state begin
-
-          const track = stream.getVideoTracks()[0];
-
-          await transport.produce({ track });
-          // console.log("in here", transport);
-
-          setProducerTransport(transport); // we set the transport so that  we are now able to listen to events and changes on the transport
-        } catch (error) {
-          console.log(error);
-          alert("transport not created");
-        }
-
-        // this is to connect to the server
-      }
+  const testNotification = () => {
+    toast.custom(
+      (t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-medium text-gray-900">
+                  Emilia Gates🤚
+                </p>
+                <p className="mt-1 text-sm text-gray-500">Raised hand</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 8000 }
     );
   };
 
-  const getUserMedia = async (isWebcam) => {
-    if (!device.canProduce("video")) {
-      console.log("can not produce video");
-      throw new Error(" can not produce video");
-      return;
-    }
-
-    try {
-      const stream = isWebcam
-        ? await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          })
-        : await navigator.mediaDevices.getDisplayMedia({ video: true });
-      return stream;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-
-  // Call createConsumerTransport when device is loaded
-  // useEffect(() => {
-  //   if (device && socket) {
-  //     createConsumerTransport();
-  //   }
-  // }, [device, socket]);
-
   return (
-    <div className="p-4">
-      <div>Connection Status: {isConnected ? "Connected" : "Disconnected"}</div>
-      <div>Producer transport Status: {message}</div>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Local Video</h3>
-          <video
-            ref={localVideoRef}
-            autoPlay
-            playsInline
-            muted
-            className="w-full bg-black"
-          />
+    <div className="flex flex-col h-screen bg-gray-100">
+      {/* Top Control Bar */}
+      <div className="h-16 bg-white shadow-sm flex items-center justify-between px-4">
+        <div className="flex items-center space-x-4">
+          {/* Room Info */}
+          <div className="flex flex-col">
+            <h1 className="text-lg font-semibold">Mathematics 101</h1>
+            <p className="text-sm text-gray-500">Room: MATH-101-2024</p>
+          </div>
+
+          {/* Connection Quality Indicator */}
+          <div className="flex items-center space-x-2">
+            <Signal className="w-4 h-4 text-green-500" />
+            <span className="text-sm">Excellent</span>
+          </div>
         </div>
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Remote Videos</h3>
-          <div ref={remoteVideosRef} className="grid grid-cols-2 gap-2" />
+
+        {/* Time and Participants */}
+        <div className="flex items-center space-x-4">
+          <div className="text-lg">00:45:30</div>
+          <div className="flex items-center">
+            <Users className="w-5 h-5 mr-2" />
+            <span>32/40</span>
+          </div>
         </div>
       </div>
-      <button
-        onClick={publish}
-        // disabled={!isConnected || !device}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
-      >
-        Start Stream
-      </button>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex">
+        {/* Primary Video Grid */}
+        <div className="flex-1 p-4 grid ">
+          {/* Teacher's Video (Larger) */}
+          <div className="col-span-2 row-span-2 bg-gray-900 rounded-lg relative">
+            <div className="absolute bottom-4 left-4 text-white flex items-center">
+              <div className="bg-gray-900/60 px-3 py-1 rounded-full flex items-center">
+                <span>Dr. Smith</span>
+                <div className="ml-2 px-2 py-0.5 bg-blue-500 rounded text-xs">
+                  Teacher
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ChatPanel
+          denyPermission={denyPermission}
+          grantPermission={grantPermission}
+          raisedhands={raisedhands}
+          messages={messages}
+          onSendMessage={handleMessae}
+          participants={[
+            {
+              id: 1,
+              name: "John Doe",
+              isActive: true,
+              isMuted: false,
+              isVideoOff: false,
+            },
+            {
+              id: 2,
+              name: "Jane Smith",
+              isActive: true,
+              isMuted: true,
+              isVideoOff: true,
+            },
+          ]}
+        />
+      </div>
+
+      {/* Bottom Control Bar */}
+      <div className="h-20 bg-white border-t px-4 flex items-center justify-between">
+        {/* Left Controls */}
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+            className="p-3 rounded-full bg-gray-100 hover:bg-gray-200"
+          >
+            <Settings className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Center Controls */}
+        <div className="flex space-x-4">
+          <button className="p-4 rounded-full bg-gray-100 hover:bg-gray-200">
+            <Mic className="w-6 h-6" />
+          </button>
+          <button className="p-4 rounded-full bg-gray-100 hover:bg-gray-200">
+            <Video className="w-6 h-6" />
+          </button>
+          <button className="p-4 rounded-full bg-gray-100 hover:bg-gray-200">
+            <Share className="w-6 h-6" />
+          </button>
+          <button
+            onClick={testNotification}
+            className="p-4 rounded-full bg-gray-100 hover:bg-gray-200"
+          >
+            <Hand className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Right Controls */}
+        <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+          Leave
+        </button>
+      </div>
+
+      <SettingsPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        settings={settings}
+        onUpdateSettings={() => {}}
+      />
     </div>
   );
-}
+};
 
-export default Classroom;
+export default ClassroomUI;
