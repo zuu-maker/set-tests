@@ -27,7 +27,12 @@ const ChatPanel = ({
   participants,
   raisedhands,
   grantPermission,
+  revokeTextPermission,
+  grantTextPermission,
   denyPermission,
+  notAllowedTexter,
+  banStudent,
+  user,
 }) => {
   const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState("participants"); // 'chat' or 'participants'
@@ -103,7 +108,9 @@ const ChatPanel = ({
               <div
                 key={index}
                 className={`p-3 rounded-lg ${
-                  msg.isMe ? "bg-blue-100 ml-8" : "bg-gray-100 mr-8"
+                  msg.senderId === user._id
+                    ? "bg-blue-100 ml-8"
+                    : "bg-gray-300 mr-8"
                 }`}
               >
                 <div className="flex justify-between items-baseline mb-1">
@@ -135,13 +142,31 @@ const ChatPanel = ({
                 </div>
 
                 <div className="flex space-x-2">
-                  <MessageSquareOff className="w-4 h-4 text-gray-400" />
+                  {notAllowedTexter.includes(user._id) ? (
+                    <MessageSquareOff
+                      onClick={() => {
+                        grantTextPermission(participant.id);
+                      }}
+                      className="w-4 h-4 text-gray-400 cursor-pointer"
+                    />
+                  ) : (
+                    <MessageSquare
+                      onClick={() => {
+                        revokeTextPermission(participant.id);
+                      }}
+                      className="w-4 h-4 text-gray-400 cursor-pointer"
+                    />
+                  )}
+
                   {participant.isMuted ? (
                     <MicOff className="w-4 h-4 text-gray-400" />
                   ) : (
                     <Mic className="w-4 h-4 text-gray-400" />
                   )}
-                  <UserX className="w-4 h-4 text-gray-400" />
+                  <UserX
+                    onClick={() => banStudent(participant.id, participant.name)}
+                    className="w-4 h-4 text-gray-400"
+                  />
                 </div>
               </div>
             ))}
@@ -150,7 +175,7 @@ const ChatPanel = ({
 
         {activeTab === "raisedHands" && (
           <TeacherUI
-            raisedHands={raisedhands}
+            raisedhands={raisedhands}
             grantPermission={grantPermission}
             denyPermission={denyPermission}
           />
@@ -159,23 +184,29 @@ const ChatPanel = ({
 
       {/* Message Input */}
       {activeTab === "chat" && (
-        <form onSubmit={handleSend} className="p-4 border-t">
-          <div className="flex space-x-2">
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type a message..."
-              className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-            >
-              Send
-            </button>
-          </div>
-        </form>
+        <div>
+          {!notAllowedTexter.includes(user._id) ? (
+            <form onSubmit={handleSend} className="p-4 border-t">
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Type a message..."
+                  className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
+          ) : (
+            <p>Your text permissions have been revoked</p>
+          )}
+        </div>
       )}
     </div>
   );

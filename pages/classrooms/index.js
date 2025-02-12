@@ -17,6 +17,10 @@ import SettingsPanel from "@/components/classrooms/SettingsPanel";
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 import { data } from "autoprefixer";
+import { io } from "socket.io-client";
+import { userAgent } from "next/server";
+import { useSelector } from "react-redux";
+import BannedPage from "@/components/BannedPage";
 
 // http://localhost:3000/classrooms?uid=test_4&isTeacher=true
 // http://localhost:3000/classrooms?uid=test_2&isTeacher=false
@@ -30,10 +34,16 @@ const config = {
 };
 
 const ClassroomUI = () => {
+  const user = useSelector((state) => state.user);
+
   const [messages, setMessages] = useState([]);
-  const pubVideo = useRef();
-  const subVideo = useRef();
+  const [canAccess, setCanAccess] = useState(true);
+  const [participants, setParticipants] = useState([]);
+  const [notAllowedTexter, setNotAllowedTexter] = useState([]);
+  const pubVideo = useRef(null);
+  const subVideo = useRef(null);
   const [client, setClient] = useState(null);
+  const [socket, setSocket] = useState(null);
   const [signal, setSignal] = useState(null);
   const [dc, setDc] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -50,18 +60,9 @@ const ClassroomUI = () => {
     notifications: true,
     language: "en",
   });
+  const [raisedhands, setRaisedHands] = useState([]);
 
-  const [raisedhands, setRaisedHands] = useState(
-    new Map([
-      [
-        "342343243",
-        {
-          username: "john doe",
-          timestamp: Date.now(),
-        },
-      ],
-    ])
-  );
+  const notificationSound = new Audio("/notification-2-269292.mp3");
 
   useEffect(() => {
     const initialiseSDK = async () => {
@@ -114,6 +115,74 @@ const ClassroomUI = () => {
       start(true);
     }
   }, [client]);
+
+  console.log("data -->", participants);
+
+  useEffect(() => {
+    if (user && user._id.length > 0) {
+      console.log("user", user);
+      const newSocket = io("http://localhost:3001");
+      newSocket.on("connect", () => {
+        console.log(newSocket.id); // x8WIv7-mJelg7on_ALbx
+
+        newSocket.emit("join_room", "123", {
+          id: user._id,
+          name: user.name,
+          isActive: true,
+          isMuted: false,
+          isVideoOff: false,
+        });
+        setSocket(newSocket);
+      });
+
+      newSocket.on("updated_participants", (data) => {
+        console.log("hello", data);
+        setParticipants(data);
+      });
+      newSocket.on("updated_chat", (data) => {
+        console.log("hello", data);
+        setMessages(data);
+      });
+      newSocket.on("raised_hand", (data) => {
+        console.log("raised");
+        notify(data);
+      });
+
+      newSocket.on("updated_rasied_hands", (data) => {
+        console.log("hello from hand", data);
+        setRaisedHands(data);
+      });
+
+      newSocket.on("updated_revoked_text_permission", (data) => {
+        console.log("hello from text _>", data);
+        setNotAllowedTexter(data);
+      });
+
+      newSocket.on("remove_banned_user", (bannedId) => {
+        if (user._id === bannedId) {
+          // send a message
+          toast("You have been banned from the meeting by the teacher");
+          // set banned state
+          setCanAccess(false);
+          console.log("to be banned _>", data);
+        }
+      });
+      //   console.log("participant data", data);
+      //   if (data.userId !== user._id && !participants.includes(data)) {
+      //     setParticipants((prev) => [
+      //       ...prev,
+      //       {
+      //         id: data.userId,
+      //         name: data.username,
+      //         isActive: data.isActive,
+      //         isMuted: data.isMuted,
+      //         isVideoOff: data.isVideoOff,
+      //       },
+      //     ]);
+      //   }
+      // });
+    }
+  }, [user]);
 
   const start = async (isCamera) => {
     console.log("start 1");
@@ -189,22 +258,43 @@ const ClassroomUI = () => {
   }, [client]);
 
   const grantPermission = () => {};
-
   const denyPermission = () => {};
 
-  const handleMessae = (content) => {
-    setMessages((prev) => [
-      ...prev,
-      {
-        content,
-        sender: "jj",
-        isMe: false,
-        timestamp: new Date().toISOString(),
-      },
-    ]);
+  const revokeTextPermission = (userId) => {
+    if (!socket) return;
+    socket.emit("revoke_text_permission", "123", userId);
   };
 
-  const testNotification = () => {
+  const grantTextPermission = (userId) => {
+    if (!socket) return;
+    socket.emit("grant_text_permission", "123", userId);
+  };
+
+  const banStudent = (userId, username) => {
+    if (!socket) return;
+
+    if (!window.confirm("Are you sure you want to ban " + username)) return;
+
+    socket.emit("ban_user", "123", userId);
+  };
+
+  // const handleMessae = (content) => {
+  //   setMessages((prev) => [
+  //     ...prev,
+  //     {
+  //       content,
+  //       sender: "jj",
+  //       isMe: false,
+  //       timestamp: new Date().toISOString(),
+  //     },
+  //   ]);
+  // };
+
+  const notify = (data) => {
+    console.log("i am here ");
+    notificationSound
+      .play()
+      .catch((error) => console.log("failed to play because", error));
     toast.custom(
       (t) => (
         <div
@@ -216,7 +306,7 @@ const ClassroomUI = () => {
             <div className="flex items-start">
               <div className="ml-3 flex-1">
                 <p className="text-sm font-medium text-gray-900">
-                  Emilia Gates🤚
+                  {data.name}🤚
                 </p>
                 <p className="mt-1 text-sm text-gray-500">Raised hand</p>
               </div>
@@ -232,9 +322,35 @@ const ClassroomUI = () => {
           </div>
         </div>
       ),
-      { duration: 8000 }
+      { duration: 10000 }
     );
   };
+
+  const raiseHand = () => {
+    console.log("raising my hand");
+    if (!socket) return;
+
+    socket.emit("raise_hand", "123", {
+      id: user._id,
+      name: user.name,
+      targetUserId: user._id,
+      timestamp: Date.now(),
+    });
+  };
+
+  const handleMessae = (content) => {
+    if (!socket) return;
+    socket.emit("send_text", "123", {
+      content,
+      sender: user.name,
+      senderId: user._id,
+      timestamp: Date.now(),
+    });
+  };
+
+  if (!canAccess) {
+    return <BannedPage />;
+  }
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -297,27 +413,17 @@ const ClassroomUI = () => {
         </div>
 
         <ChatPanel
+          notAllowedTexter={notAllowedTexter}
+          banStudent={banStudent}
+          user={user}
           denyPermission={denyPermission}
           grantPermission={grantPermission}
           raisedhands={raisedhands}
           messages={messages}
+          revokeTextPermission={revokeTextPermission}
           onSendMessage={handleMessae}
-          participants={[
-            {
-              id: 1,
-              name: "John Doe",
-              isActive: true,
-              isMuted: false,
-              isVideoOff: false,
-            },
-            {
-              id: 2,
-              name: "Jane Smith",
-              isActive: true,
-              isMuted: true,
-              isVideoOff: true,
-            },
-          ]}
+          participants={participants}
+          grantTextPermission={grantTextPermission}
         />
       </div>
 
@@ -351,7 +457,7 @@ const ClassroomUI = () => {
             <Share className="w-6 h-6" />
           </button>
           <button
-            onClick={testNotification}
+            onClick={raiseHand}
             className="p-4 rounded-full bg-gray-100 hover:bg-gray-200"
           >
             <Hand className="w-6 h-6" />
@@ -374,4 +480,6 @@ const ClassroomUI = () => {
   );
 };
 
-export default ClassroomUI;
+export default dynamic(() => Promise.resolve(ClassroomUI), {
+  ssr: false,
+});
