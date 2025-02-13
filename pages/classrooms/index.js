@@ -11,6 +11,8 @@ import {
   Share,
   Settings,
   Signal,
+  ScreenShareOff,
+  ScreenShare,
 } from "lucide-react";
 import ChatPanel from "@/components/classrooms/ChatPannel";
 import SettingsPanel from "@/components/classrooms/SettingsPanel";
@@ -22,6 +24,7 @@ import { userAgent } from "next/server";
 import { useSelector } from "react-redux";
 import BannedPage from "@/components/BannedPage";
 import { FadeLoader } from "react-spinners";
+import { useRouter } from "next/router";
 
 // http://localhost:3000/classrooms?uid=test_4&isTeacher=true
 // http://localhost:3000/classrooms?uid=test_2&isTeacher=false
@@ -38,10 +41,15 @@ const ClassroomUI = () => {
   const user = useSelector((state) => state.user);
 
   const [messages, setMessages] = useState([]);
+  const [localstream, setLocalStream] = useState(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isCamera, setIscamera] = useState(false);
   const [isLoader, setIsLoader] = useState(true);
   const [canAccess, setCanAccess] = useState(true);
+  const [canSpeak, setCanSpeak] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [notAllowedTexter, setNotAllowedTexter] = useState([]);
+  const [allowedSpeakers, setAllowedSpeakers] = useState([]);
   const pubVideo = useRef(null);
   const subVideo = useRef(null);
   const [client, setClient] = useState(null);
@@ -63,6 +71,8 @@ const ClassroomUI = () => {
     language: "en",
   });
   const [raisedhands, setRaisedHands] = useState([]);
+
+  let router = useRouter();
 
   const notificationSound = new Audio("/notification-2-269292.mp3");
 
@@ -124,6 +134,11 @@ const ClassroomUI = () => {
     if (user && user._id.length > 0) {
       console.log("user", user);
       const newSocket = io("http://localhost:3001");
+      if (user.role !== "student") {
+        setCanSpeak(true);
+        setIsMuted(false);
+        setIscamera(true);
+      }
       newSocket.on("connect", () => {
         console.log(newSocket.id); // x8WIv7-mJelg7on_ALbx
 
@@ -140,9 +155,14 @@ const ClassroomUI = () => {
       newSocket.on("error", (data) => {
         console.log("error data", data);
         switch (data) {
-          case "joining":
+          case "banned":
             setCanAccess(false);
             setIsLoader(false);
+            break;
+          case "room":
+            toast.error(
+              "There is a problem with the room please contact support"
+            );
             break;
           default:
             break;
@@ -150,6 +170,7 @@ const ClassroomUI = () => {
         console.log("hello", data);
         setParticipants(data);
       });
+
       newSocket.on("updated_participants", (data) => {
         console.log("hello", data);
         setParticipants(data);
@@ -163,6 +184,7 @@ const ClassroomUI = () => {
         console.log("hello", data);
         setNotAllowedTexter(notAllowedTexters);
       });
+
       newSocket.on("raised_hand", (data) => {
         console.log("raised");
         notify(data);
@@ -180,6 +202,7 @@ const ClassroomUI = () => {
 
       newSocket.on("remove_banned_user", (bannedId) => {
         if (user._id === bannedId) {
+          // disconnect localstream
           // send a message
           toast("You have been banned from the meeting by the teacher");
           // set banned state
@@ -187,6 +210,33 @@ const ClassroomUI = () => {
           console.log("to be banned _>", data);
         }
       });
+
+      // probablly reset all states
+      newSocket.on("disconnet", () => {
+        // i reckon you gon have to remove the lcoal stream
+        console.log("disconnected");
+      });
+
+      //reset states
+      newSocket.on("left_meeting", () => {
+        router.push("/learn");
+      });
+
+      newSocket.on("meeting_ended", () => {
+        router.push("/class-ended");
+      });
+
+      return () => {
+        newSocket.off("remove_banned_user");
+        newSocket.off("updated_revoked_text_permission");
+        newSocket.off("updated_rasied_hands");
+        newSocket.off("raised_hand");
+        newSocket.off("history");
+        newSocket.off("updated_chat");
+        newSocket.off("updated_participants");
+        newSocket.off("error");
+        console.log("done unmounting");
+      };
     }
   }, [user]);
 
@@ -195,64 +245,6 @@ const ClassroomUI = () => {
       setIsLoader(false);
     }
   }, [socket, user]);
-
-  const start = async (isCamera) => {
-    console.log("start 1");
-    if (!client) return;
-    console.log("start 2");
-
-    try {
-      const ionSDK = await import("ion-sdk-js");
-      const media = isCamera
-        ? await ionSDK.LocalStream.getUserMedia({
-            audio: true,
-            video: true,
-            simulcast: true,
-          })
-        : await ionSDK.LocalStream.getDisplayMedia({
-            resolution: "vga",
-            video: true,
-            audio: true,
-            codec: "vp8",
-          });
-
-      pubVideo.current.srcObject = media;
-      pubVideo.current.autoplay = true;
-      pubVideo.current.controls = true;
-      pubVideo.current.muted = true;
-      try {
-        client.publish(media);
-        let lastBytes = 0;
-        const statsInterval = setInterval(async () => {
-          try {
-            const stats = await client.getPubStats();
-            if (stats?.video) {
-              const currentBytes = stats.video.bytesSent || 0;
-              const bitrateMbps = (
-                ((currentBytes - lastBytes) * 8) /
-                (5 * 1000000)
-              ).toFixed(2);
-              console.log("Video Stats:", {
-                resolution: `${stats.video.width}x${stats.video.height}`,
-                fps: stats.video.frameRate,
-                bitrate: `${bitrateMbps} Mbps`,
-                cpu: stats.video.cpu || "N/A",
-              });
-              lastBytes = currentBytes;
-            }
-          } catch (error) {
-            console.log("Stats error:", error);
-          }
-        }, 5000);
-
-        return () => clearInterval(statsInterval);
-      } catch (error) {
-        console.log(error, "publishing");
-      }
-    } catch (error) {
-      console.error("Failed to start media:", error);
-    }
-  };
 
   useEffect(() => {
     if (!client) return;
@@ -268,6 +260,8 @@ const ClassroomUI = () => {
       };
     };
   }, [client]);
+
+  useEffect(() => {}, [allowedSpeakers]);
 
   const grantPermission = () => {};
   const denyPermission = () => {};
@@ -348,6 +342,57 @@ const ClassroomUI = () => {
     });
   };
 
+  const leaveOrEndMeeting = () => {
+    if (user.role && socket) {
+      if (user.role === "student") {
+        socket.emit("leave_meeting");
+      } else {
+        socket.emit("end_meeting");
+      }
+    }
+  };
+
+  const handleAudio = () => {
+    if (!localstream) return;
+
+    localstream.mute("audio");
+  };
+
+  const start = async (isCamera) => {
+    console.log("start 1");
+    if (!client) return;
+    console.log("start 2");
+
+    try {
+      const ionSDK = await import("ion-sdk-js");
+      const media = isCamera
+        ? await ionSDK.LocalStream.getUserMedia({
+            audio: true,
+            video: true,
+            simulcast: true,
+          })
+        : await ionSDK.LocalStream.getDisplayMedia({
+            resolution: "vga",
+            video: true,
+            audio: true,
+            codec: "vp8",
+          });
+
+      pubVideo.current.srcObject = media;
+      pubVideo.current.autoplay = true;
+      pubVideo.current.controls = true;
+
+      setLocalStream(media);
+      try {
+        client.publish(media);
+      } catch (error) {
+        console.log(error, "error publishing");
+      }
+    } catch (error) {
+      console.error("Failed to start media:", error);
+    }
+  };
+
   if (isLoader) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -383,7 +428,9 @@ const ClassroomUI = () => {
           <div className="text-lg">00:45:30</div>
           <div className="flex items-center">
             <Users className="w-5 h-5 mr-2" />
-            <span>32/40</span>
+            <span>
+              {Array.isArray(participants) && participants.length + "/"}40
+            </span>
           </div>
         </div>
       </div>
@@ -446,39 +493,91 @@ const ClassroomUI = () => {
             <Settings className="w-6 h-6" />
           </button>
         </div>
-
         {/* Center Controls */}
         <div className="flex space-x-4">
-          <button className="p-4 rounded-full bg-gray-100 hover:bg-gray-200">
-            <Mic className="w-6 h-6" />
-          </button>
-          <button className="p-4 rounded-full bg-gray-100 hover:bg-gray-200">
-            <Video className="w-6 h-6" />
-          </button>
-          <button
-            onClick={() => {
-              console.log(dc);
-              start(false);
-            }}
-            className="p-4 rounded-full bg-gray-100 hover:bg-gray-200"
-          >
-            <Share className="w-6 h-6" />
-          </button>
-          <button
-            onClick={raiseHand}
-            className="p-4 rounded-full bg-gray-100 hover:bg-gray-200"
-          >
-            <Hand className="w-6 h-6" />
-          </button>
+          {isMuted ? (
+            <button
+              disabled={!!canSpeak} // fix this
+              onClick={() => setIsMuted(!isMuted)}
+              className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+            >
+              <MicOff className="w-6 h-6" />
+            </button>
+          ) : (
+            <button
+              onClick={handleAudio}
+              className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+            >
+              <Mic className="w-6 h-6" />
+            </button>
+          )}
+          {user.role !== "student" && (
+            <div>
+              {isCamera ? (
+                <button
+                  onClick={() => {
+                    start(true);
+                  }}
+                  className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+                >
+                  {" "}
+                  <Video className="w-6 h-6" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    start(true);
+                  }}
+                  className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+                >
+                  {" "}
+                  <VideoOff className="w-6 h-6" />
+                </button>
+              )}
+              {isCamera ? (
+                <button
+                  onClick={() => {
+                    start(false); // stream should have audio or not
+                  }}
+                  className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+                >
+                  <ScreenShareOff className="w-6 h-6" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    start(false); // stream should have audio or not
+                  }}
+                  className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+                >
+                  <ScreenShare className="w-6 h-6" />
+                </button>
+              )}
+            </div>
+          )}
+          {user.role === "student" && (
+            <button
+              onClick={raiseHand}
+              className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+            >
+              <Hand className="w-6 h-6" />
+            </button>
+          )}
         </div>
 
         {/* Right Controls */}
         {user.role !== "student" ? (
-          <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+          <button
+            onClick={leaveOrEndMeeting}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+          >
             End
           </button>
         ) : (
-          <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+          <button
+            onClick={leaveOrEndMeeting}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+          >
             Leave
           </button>
         )}
