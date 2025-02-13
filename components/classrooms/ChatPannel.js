@@ -38,6 +38,8 @@ const ChatPanel = ({
   const [activeTab, setActiveTab] = useState("participants"); // 'chat' or 'participants'
   const messagesEndRef = useRef(null);
 
+  console.log("paartsss ->", participants);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -57,7 +59,7 @@ const ChatPanel = ({
   // if (!isOpen) return null;
 
   return (
-    <div className="fixed right-0 top-0 h-screen w-80 bg-white shadow-lg flex flex-col">
+    <div className="w-80 bg-white shadow-lg flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex space-x-4">
@@ -125,53 +127,57 @@ const ChatPanel = ({
             <div ref={messagesEndRef} />
           </div>
         )}
-        {activeTab === "participants" && (
-          <div className="space-y-2">
-            {participants.map((participant) => (
-              <div
-                key={participant.id}
-                className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
-              >
-                <div className="flex items-center">
-                  <div
-                    className={`w-2 h-2 rounded-full ${
-                      participant.isActive ? "bg-green-500" : "bg-gray-300"
-                    }`}
-                  />
-                  <span className="ml-2">{participant.name}</span>
-                </div>
+        {activeTab === "participants" &&
+          participants.length > 0 &&
+          Array.isArray(participants) && (
+            <div className="space-y-2">
+              {participants?.map((participant) => (
+                <div
+                  key={participant.id}
+                  className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+                >
+                  <div className="flex items-center">
+                    <div
+                      className={`w-2 h-2 rounded-full ${
+                        participant.isActive ? "bg-green-500" : "bg-gray-300"
+                      }`}
+                    />
+                    <span className="ml-2">{participant.name}</span>
+                  </div>
 
-                <div className="flex space-x-2">
-                  {notAllowedTexter.includes(user._id) ? (
-                    <MessageSquareOff
-                      onClick={() => {
-                        grantTextPermission(participant.id);
-                      }}
+                  <div className="flex space-x-2">
+                    {notAllowedTexter.includes(user._id) ? (
+                      <MessageSquareOff
+                        onClick={() => {
+                          grantTextPermission(participant.id);
+                        }}
+                        className="w-4 h-4 text-gray-400 cursor-pointer"
+                      />
+                    ) : (
+                      <MessageSquare
+                        onClick={() => {
+                          revokeTextPermission(participant.id);
+                        }}
+                        className="w-4 h-4 text-gray-400 cursor-pointer"
+                      />
+                    )}
+
+                    {participant.isMuted ? (
+                      <MicOff className="w-4 h-4 text-gray-400" />
+                    ) : (
+                      <Mic className="w-4 h-4 text-gray-400" />
+                    )}
+                    <UserX
+                      onClick={() =>
+                        banStudent(participant.id, participant.name)
+                      }
                       className="w-4 h-4 text-gray-400 cursor-pointer"
                     />
-                  ) : (
-                    <MessageSquare
-                      onClick={() => {
-                        revokeTextPermission(participant.id);
-                      }}
-                      className="w-4 h-4 text-gray-400 cursor-pointer"
-                    />
-                  )}
-
-                  {participant.isMuted ? (
-                    <MicOff className="w-4 h-4 text-gray-400" />
-                  ) : (
-                    <Mic className="w-4 h-4 text-gray-400" />
-                  )}
-                  <UserX
-                    onClick={() => banStudent(participant.id, participant.name)}
-                    className="w-4 h-4 text-gray-400"
-                  />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
 
         {activeTab === "raisedHands" && (
           <TeacherUI

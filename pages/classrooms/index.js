@@ -21,6 +21,7 @@ import { io } from "socket.io-client";
 import { userAgent } from "next/server";
 import { useSelector } from "react-redux";
 import BannedPage from "@/components/BannedPage";
+import { FadeLoader } from "react-spinners";
 
 // http://localhost:3000/classrooms?uid=test_4&isTeacher=true
 // http://localhost:3000/classrooms?uid=test_2&isTeacher=false
@@ -37,6 +38,7 @@ const ClassroomUI = () => {
   const user = useSelector((state) => state.user);
 
   const [messages, setMessages] = useState([]);
+  const [isLoader, setIsLoader] = useState(true);
   const [canAccess, setCanAccess] = useState(true);
   const [participants, setParticipants] = useState([]);
   const [notAllowedTexter, setNotAllowedTexter] = useState([]);
@@ -135,6 +137,19 @@ const ClassroomUI = () => {
         setSocket(newSocket);
       });
 
+      newSocket.on("error", (data) => {
+        console.log("error data", data);
+        switch (data) {
+          case "joining":
+            setCanAccess(false);
+            setIsLoader(false);
+            break;
+          default:
+            break;
+        }
+        console.log("hello", data);
+        setParticipants(data);
+      });
       newSocket.on("updated_participants", (data) => {
         console.log("hello", data);
         setParticipants(data);
@@ -142,6 +157,11 @@ const ClassroomUI = () => {
       newSocket.on("updated_chat", (data) => {
         console.log("hello", data);
         setMessages(data);
+      });
+      newSocket.on("history", (data) => {
+        const { allowedSpeakers, notAllowedTexters } = data;
+        console.log("hello", data);
+        setNotAllowedTexter(notAllowedTexters);
       });
       newSocket.on("raised_hand", (data) => {
         console.log("raised");
@@ -167,22 +187,14 @@ const ClassroomUI = () => {
           console.log("to be banned _>", data);
         }
       });
-      //   console.log("participant data", data);
-      //   if (data.userId !== user._id && !participants.includes(data)) {
-      //     setParticipants((prev) => [
-      //       ...prev,
-      //       {
-      //         id: data.userId,
-      //         name: data.username,
-      //         isActive: data.isActive,
-      //         isMuted: data.isMuted,
-      //         isVideoOff: data.isVideoOff,
-      //       },
-      //     ]);
-      //   }
-      // });
     }
   }, [user]);
+
+  useEffect(() => {
+    if (socket && user && user._id.length > 0) {
+      setIsLoader(false);
+    }
+  }, [socket, user]);
 
   const start = async (isCamera) => {
     console.log("start 1");
@@ -278,18 +290,6 @@ const ClassroomUI = () => {
     socket.emit("ban_user", "123", userId);
   };
 
-  // const handleMessae = (content) => {
-  //   setMessages((prev) => [
-  //     ...prev,
-  //     {
-  //       content,
-  //       sender: "jj",
-  //       isMe: false,
-  //       timestamp: new Date().toISOString(),
-  //     },
-  //   ]);
-  // };
-
   const notify = (data) => {
     console.log("i am here ");
     notificationSound
@@ -347,6 +347,14 @@ const ClassroomUI = () => {
       timestamp: Date.now(),
     });
   };
+
+  if (isLoader) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <FadeLoader color="#00FFFF" />
+      </div>
+    );
+  }
 
   if (!canAccess) {
     return <BannedPage />;
@@ -465,9 +473,15 @@ const ClassroomUI = () => {
         </div>
 
         {/* Right Controls */}
-        <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
-          Leave
-        </button>
+        {user.role !== "student" ? (
+          <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+            End
+          </button>
+        ) : (
+          <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+            Leave
+          </button>
+        )}
       </div>
 
       <SettingsPanel
