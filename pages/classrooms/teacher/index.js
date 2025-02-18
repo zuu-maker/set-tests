@@ -32,6 +32,10 @@ import { useStopwatch } from "react-timer-hook";
 // http://localhost:3000/classrooms?uid=test_4&isTeacher=true
 // http://localhost:3000/classrooms?uid=test_2&isTeacher=false
 
+// new
+// http://localhost:3000/classrooms/teacher?uid=test_4
+//
+
 const config = {
   iceServers: [
     {
@@ -40,7 +44,7 @@ const config = {
   ],
 };
 
-const ClassroomUI = () => {
+const ClassroomTeacher = () => {
   const user = useSelector((state) => state.user);
 
   const {
@@ -130,28 +134,7 @@ const ClassroomUI = () => {
 
   useEffect(() => {
     if (!client) return;
-
-    if (!JSON.parse(isTeacher)) {
-      setCallStarted(true);
-      // this is the client accessig the remote streaam
-
-      console.log("in here 1121212");
-      client.ontrack = (track, stream) => {
-        console.log("got track: ", track.id, "for stream: ", stream.id);
-        track.onunmute = () => {
-          remoteVideoRef.current.srcObject = stream;
-          remoteVideoRef.current.playsInline = true;
-          remoteVideoRef.current.autoplay = true;
-
-          stream.onremovetrack = () => {
-            console.log("Track removed from stream");
-            setRemoteStream(null);
-          };
-        };
-      };
-    } else {
-      shareCamera();
-    }
+    shareCamera();
   }, [client]);
 
   useEffect(() => {
@@ -384,8 +367,14 @@ const ClassroomUI = () => {
       } else {
         localstream.mute("audio");
       }
+      socket.emit("mute_state", "123", {
+        kind: "audio",
+        muted: !isAudioMuted,
+      });
       setIsAudioMuted(!isAudioMuted);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const toggleScreen = () => {
@@ -400,7 +389,7 @@ const ClassroomUI = () => {
   };
 
   const toggleCamera = () => {
-    if (!localstream || !isSharingCamera) return;
+    if (!localstream || !isSharingCamera || !socket) return;
 
     try {
       if (isVideoMuted) {
@@ -408,6 +397,10 @@ const ClassroomUI = () => {
       } else {
         localstream.mute("video");
       }
+      socket.emit("mute_state", "123", {
+        kind: "video",
+        muted: !isVideoMuted,
+      });
       setIsVideoMuted(!isVideoMuted);
     } catch (error) {
       console.log(error);
@@ -546,8 +539,6 @@ const ClassroomUI = () => {
     return <BannedPage />;
   }
 
-  console.log(remoteVideoRef.current);
-
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Top Control Bar */}
@@ -587,28 +578,7 @@ const ClassroomUI = () => {
       <div className="flex-1 flex">
         {/* Primary Video Grid */}
         <div className="flex-1 p-4">
-          {/* add is teahcer conditionnal render here */}
-          {/* {isTeacher ? (
-          ) : ( */}
-          <video ref={remoteVideoRef} className="h-full" controls />
-          <video ref={localVideoRef} className="h-full hidden" controls />
-          {/* )} */}
-          {/* <div
-            className={`col-span-2 row-span-2 bg-gray-900 rounded-lg  ${
-              subVideo.current && subVideo.current.srcObject
-                ? "hidden bg-red-500"
-                : "relative"
-            }`}
-          >
-            <div className="absolute bottom-4 left-4 text-white flex items-center">
-              <div className="bg-gray-900/60 px-3 py-1 rounded-full flex items-center">
-                <span>Dr. Smith</span>
-                <div className="ml-2 px-2 py-0.5 bg-blue-500 rounded text-xs">
-                  Teacher
-                </div>
-              </div>
-            </div>
-          </div> */}
+          <video ref={localVideoRef} className="h-full " controls />
         </div>
 
         <ChatPanel
@@ -660,113 +630,101 @@ const ClassroomUI = () => {
               <Mic className="w-6 h-6" />
             </button>
           )}
-          {isTeacher && (
-            <div className="flex space-x-4">
-              {isVideoMuted ? (
-                <div>
-                  {isSharingCamera ? (
-                    <button
-                      onClick={toggleCamera}
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Show"
-                      className="p-4 rounded-full bg-red-100 hover:bg-red-300 disabled:hover:bg-gray-100"
-                    >
-                      {" "}
-                      <VideoOff className="w-6 h-6" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={shareCamera}
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Show"
-                      className="p-4 rounded-full bg-blue-100 hover:bg-blue-300 disabled:hover:bg-gray-100"
-                    >
-                      {" "}
-                      <VideoOff className="w-6 h-6" />
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <button
-                  data-tooltip-id="tooltip"
-                  data-tooltip-content="Hide"
-                  onClick={toggleCamera}
-                  className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-                >
-                  {" "}
-                  <Video className="w-6 h-6" />
-                </button>
-              )}
+          <div className="flex space-x-4">
+            {isVideoMuted ? (
+              <div>
+                {isSharingCamera ? (
+                  <button
+                    onClick={toggleCamera}
+                    data-tooltip-id="tooltip"
+                    data-tooltip-content="Show"
+                    className="p-4 rounded-full bg-red-100 hover:bg-red-300 disabled:hover:bg-gray-100"
+                  >
+                    {" "}
+                    <VideoOff className="w-6 h-6" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={shareCamera}
+                    data-tooltip-id="tooltip"
+                    data-tooltip-content="Show"
+                    className="p-4 rounded-full bg-blue-100 hover:bg-blue-300 disabled:hover:bg-gray-100"
+                  >
+                    {" "}
+                    <VideoOff className="w-6 h-6" />
+                  </button>
+                )}
+              </div>
+            ) : (
+              <button
+                data-tooltip-id="tooltip"
+                data-tooltip-content="Hide"
+                onClick={toggleCamera}
+                className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+              >
+                {" "}
+                <Video className="w-6 h-6" />
+              </button>
+            )}
 
-              {callStarted && (
-                <div>
-                  {isScreenMuted ? (
-                    <div>
-                      {isSharingCamera ? (
-                        <button
-                          data-tooltip-id="tooltip"
-                          data-tooltip-content="Share"
-                          onClick={shareScreen}
-                          className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-                        >
-                          <ScreenShareOff className="w-6 h-6" />
-                        </button>
-                      ) : (
-                        <button
-                          data-tooltip-id="tooltip"
-                          data-tooltip-content="Share"
-                          onClick={toggleScreen}
-                          className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-                        >
-                          <ScreenShareOff className="w-6 h-6" />
-                        </button>
-                      )}
-                    </div>
-                  ) : (
-                    <button
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Stop sharing"
-                      onClick={toggleScreen}
-                      className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-                    >
-                      <ScreenShare className="w-6 h-6" />
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-          {!isTeacher && (
-            <button
-              data-tooltip-id="tooltip"
-              data-tooltip-content="Raise hand"
-              onClick={raiseHand}
-              className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-            >
-              <Hand className="w-6 h-6" />
-            </button>
-          )}
+            {callStarted && (
+              <div>
+                {isScreenMuted ? (
+                  <div>
+                    {isSharingCamera ? (
+                      <button
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Share"
+                        onClick={shareScreen}
+                        className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+                      >
+                        <ScreenShareOff className="w-6 h-6" />
+                      </button>
+                    ) : (
+                      <button
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Share"
+                        onClick={toggleScreen}
+                        className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+                      >
+                        <ScreenShareOff className="w-6 h-6" />
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    data-tooltip-id="tooltip"
+                    data-tooltip-content="Stop sharing"
+                    onClick={toggleScreen}
+                    className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+                  >
+                    <ScreenShare className="w-6 h-6" />
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+
+          <button
+            data-tooltip-id="tooltip"
+            data-tooltip-content="Raise hand"
+            onClick={raiseHand}
+            className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+          >
+            <Hand className="w-6 h-6" />
+          </button>
         </div>
 
         {/* Right Controls */}
         <div>
           {callStarted ? (
             <div>
-              {isTeacher ? (
-                <button
-                  onClick={leaveOrEndMeeting}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                >
-                  End
-                </button>
-              ) : (
-                <button
-                  onClick={leaveOrEndMeeting}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                >
-                  Leave
-                </button>
-              )}
+              <button
+                onClick={leaveOrEndMeeting}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+              >
+                End
+              </button>
             </div>
           ) : (
             <div className="flex space-x-4">
@@ -793,6 +751,6 @@ const ClassroomUI = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(ClassroomUI), {
+export default dynamic(() => Promise.resolve(ClassroomTeacher), {
   ssr: false,
 });

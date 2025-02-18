@@ -40,7 +40,7 @@ const config = {
   ],
 };
 
-const ClassroomUI = () => {
+const ClassroomStudent = () => {
   const user = useSelector((state) => state.user);
 
   const {
@@ -57,8 +57,8 @@ const ClassroomUI = () => {
 
   const [messages, setMessages] = useState([]);
   const [localstream, setLocalStream] = useState(null);
-  const [isAudioMuted, setIsAudioMuted] = useState(true);
-  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(false);
   const [isScreenMuted, setIsScreenMuted] = useState(true);
   const [callStarted, setCallStarted] = useState(false);
   const [isSharingCamera, setIsSharingCamera] = useState(true);
@@ -131,27 +131,23 @@ const ClassroomUI = () => {
   useEffect(() => {
     if (!client) return;
 
-    if (!JSON.parse(isTeacher)) {
-      setCallStarted(true);
-      // this is the client accessig the remote streaam
+    setCallStarted(true);
+    // this is the client accessig the remote streaam
 
-      console.log("in here 1121212");
-      client.ontrack = (track, stream) => {
-        console.log("got track: ", track.id, "for stream: ", stream.id);
-        track.onunmute = () => {
-          remoteVideoRef.current.srcObject = stream;
-          remoteVideoRef.current.playsInline = true;
-          remoteVideoRef.current.autoplay = true;
+    console.log("in here 1121212");
+    client.ontrack = (track, stream) => {
+      console.log("got track: ", track.id, "for stream: ", stream.id);
+      track.onunmute = () => {
+        remoteVideoRef.current.srcObject = stream;
+        remoteVideoRef.current.playsInline = true;
+        remoteVideoRef.current.autoplay = true;
 
-          stream.onremovetrack = () => {
-            console.log("Track removed from stream");
-            setRemoteStream(null);
-          };
+        stream.onremovetrack = () => {
+          console.log("Track removed from stream");
+          setRemoteStream(null);
         };
       };
-    } else {
-      shareCamera();
-    }
+    };
   }, [client]);
 
   useEffect(() => {
@@ -198,14 +194,30 @@ const ClassroomUI = () => {
         console.log("hello", data);
         setParticipants(data);
       });
+
+      newSocket.on("updated_mute_state", (data) => {
+        if (data.kind === "video") {
+          setIsVideoMuted(data.muted);
+        }
+        if (data.kind === "audio") {
+          setIsAudioMuted(data.muted);
+        }
+      });
       newSocket.on("updated_chat", (data) => {
         console.log("hello", data);
         setMessages(data);
       });
       newSocket.on("history", (data) => {
-        const { allowedSpeakers, notAllowedTexters } = data;
+        const {
+          allowedSpeakers,
+          notAllowedTexters,
+          _isAudioMuted,
+          _isVideoMuted,
+        } = data;
         console.log("hello", data);
         setNotAllowedTexter(notAllowedTexters);
+        setIsAudioMuted(_isAudioMuted);
+        setIsVideoMuted(_isVideoMuted);
       });
 
       newSocket.on("raised_hand", (data) => {
@@ -376,7 +388,7 @@ const ClassroomUI = () => {
   };
 
   const handleAudio = () => {
-    if (!localstream) return;
+    if (!localstream || socket) return;
 
     try {
       if (isAudioMuted) {
@@ -385,154 +397,26 @@ const ClassroomUI = () => {
         localstream.mute("audio");
       }
       setIsAudioMuted(!isAudioMuted);
-    } catch (error) {}
-  };
-
-  const toggleScreen = () => {
-    if (!localstream || isSharingCamera) return;
-
-    try {
-      shareCamera();
-      setIsVideoMuted(!isVideoMuted);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const toggleCamera = () => {
-    if (!localstream || !isSharingCamera) return;
+  const VideoMutedOverlay = () => (
+    <div className="absolute inset-0 bg-gray-900/80 flex items-center justify-center">
+      <div className="text-center text-white">
+        <VideoOff className="w-16 h-16 mx-auto mb-4" />
+        <p className="text-xl font-medium">Video is turned off</p>
+      </div>
+    </div>
+  );
 
-    try {
-      if (isVideoMuted) {
-        localstream.unmute("video");
-      } else {
-        localstream.mute("video");
-      }
-      setIsVideoMuted(!isVideoMuted);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const shareScreen = async () => {
-    if (!client) {
-      toast.error(
-        "There is no client please restart the process if tthis persists conntact support"
-      );
-      return;
-    }
-
-    if (localstream) {
-      // maybe check if published
-
-      localstream.getTracks().forEach((track) => track.stop()); // what exactly is a track check this out
-    }
-
-    try {
-      const ionSDK = await import("ion-sdk-js");
-      const media = await ionSDK.LocalStream.getDisplayMedia({
-        resolution: "vga",
-        video: true,
-        audio: true,
-        codec: "vp8",
-      });
-
-      await media.unmute("audio");
-
-      // let a teacher view his local stream
-      await client.publish(media);
-      localVideoRef.current.srcObject = media;
-      localVideoRef.current.autoplay = true;
-      localVideoRef.current.controls = true;
-
-      setIsVideoMuted(true);
-      setIsAudioMuted(false);
-      setIsScreenMuted(false);
-
-      setLocalStream(media);
-      setIsSharingCamera(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to share screen");
-    }
-  };
-
-  const shareCamera = async () => {
-    // check hpw ispublisjed boolean will work
-    if (!client) {
-      toast.error(
-        "There is no client please restart the process if tthis persists conntact support"
-      );
-      return;
-    }
-
-    if (localstream) {
-      localstream.getTracks().forEach((track) => track.stop());
-    }
-
-    try {
-      const ionSDK = await import("ion-sdk-js");
-      const media = await ionSDK.LocalStream.getUserMedia(); // do contraints
-
-      if (callStarted) {
-        await client.publish(media);
-      }
-      localVideoRef.current.srcObject = media;
-      localVideoRef.current.autoplay = true;
-      localVideoRef.current.controls = true;
-
-      setLocalStream(media);
-
-      setIsVideoMuted(false);
-      setIsAudioMuted(false);
-      setIsSharingCamera(true);
-      setIsScreenMuted(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const startLesson = async () => {
-    console.log("start 1");
-    if (!client) {
-      toast.error("There is a client error please contact support");
-      return;
-    }
-
-    if (!localstream) {
-      toast.error(
-        "There is an error with the local stream, please contact support"
-      );
-      return;
-    }
-
-    try {
-      await client.publish(localstream);
-
-      client.ontrack = (track, stream) => {
-        console.log("got track: ", track.id, "for stream: ", stream.id);
-        track.onunmute = () => {
-          remoteVideoRef.current.srcObject = stream;
-          remoteVideoRef.current.playsInline = true;
-          remoteVideoRef.current.autoplay = true;
-
-          stream.onremovetrack = () => {
-            console.log("Track removed from stream");
-            setRemoteStream(null);
-          };
-        };
-      };
-
-      // probaly wanna activate class here, send to firebase
-
-      // start stop watch
-      setCallStarted(true);
-      toast.success("Lesson started pupils can now join");
-    } catch (error) {
-      console.log(first);
-      toast.error("Could not publish please contact support");
-    }
-  };
+  const AudioMutedOverlay = () => (
+    <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-gray-900/80 text-white px-4 py-2 rounded-full flex items-center space-x-2">
+      <MicOff className="w-5 h-5" />
+      <span>Audio is muted</span>
+    </div>
+  );
 
   if (isLoader) {
     return (
@@ -545,8 +429,6 @@ const ClassroomUI = () => {
   if (!canAccess) {
     return <BannedPage />;
   }
-
-  console.log(remoteVideoRef.current);
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -587,28 +469,17 @@ const ClassroomUI = () => {
       <div className="flex-1 flex">
         {/* Primary Video Grid */}
         <div className="flex-1 p-4">
-          {/* add is teahcer conditionnal render here */}
-          {/* {isTeacher ? (
-          ) : ( */}
-          <video ref={remoteVideoRef} className="h-full" controls />
-          <video ref={localVideoRef} className="h-full hidden" controls />
-          {/* )} */}
-          {/* <div
-            className={`col-span-2 row-span-2 bg-gray-900 rounded-lg  ${
-              subVideo.current && subVideo.current.srcObject
-                ? "hidden bg-red-500"
-                : "relative"
-            }`}
-          >
-            <div className="absolute bottom-4 left-4 text-white flex items-center">
-              <div className="bg-gray-900/60 px-3 py-1 rounded-full flex items-center">
-                <span>Dr. Smith</span>
-                <div className="ml-2 px-2 py-0.5 bg-blue-500 rounded text-xs">
-                  Teacher
-                </div>
-              </div>
-            </div>
-          </div> */}
+          <div className="relative w-full h-full">
+            <video
+              ref={remoteVideoRef}
+              controls
+              className="w-full h-full object-cover "
+              autoPlay
+              playsInline
+            />
+            {isVideoMuted && <VideoMutedOverlay />}
+            {isAudioMuted && <AudioMutedOverlay />}
+          </div>
         </div>
 
         <ChatPanel
@@ -660,82 +531,7 @@ const ClassroomUI = () => {
               <Mic className="w-6 h-6" />
             </button>
           )}
-          {isTeacher && (
-            <div className="flex space-x-4">
-              {isVideoMuted ? (
-                <div>
-                  {isSharingCamera ? (
-                    <button
-                      onClick={toggleCamera}
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Show"
-                      className="p-4 rounded-full bg-red-100 hover:bg-red-300 disabled:hover:bg-gray-100"
-                    >
-                      {" "}
-                      <VideoOff className="w-6 h-6" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={shareCamera}
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Show"
-                      className="p-4 rounded-full bg-blue-100 hover:bg-blue-300 disabled:hover:bg-gray-100"
-                    >
-                      {" "}
-                      <VideoOff className="w-6 h-6" />
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <button
-                  data-tooltip-id="tooltip"
-                  data-tooltip-content="Hide"
-                  onClick={toggleCamera}
-                  className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-                >
-                  {" "}
-                  <Video className="w-6 h-6" />
-                </button>
-              )}
 
-              {callStarted && (
-                <div>
-                  {isScreenMuted ? (
-                    <div>
-                      {isSharingCamera ? (
-                        <button
-                          data-tooltip-id="tooltip"
-                          data-tooltip-content="Share"
-                          onClick={shareScreen}
-                          className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-                        >
-                          <ScreenShareOff className="w-6 h-6" />
-                        </button>
-                      ) : (
-                        <button
-                          data-tooltip-id="tooltip"
-                          data-tooltip-content="Share"
-                          onClick={toggleScreen}
-                          className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-                        >
-                          <ScreenShareOff className="w-6 h-6" />
-                        </button>
-                      )}
-                    </div>
-                  ) : (
-                    <button
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Stop sharing"
-                      onClick={toggleScreen}
-                      className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-                    >
-                      <ScreenShare className="w-6 h-6" />
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
           {!isTeacher && (
             <button
               data-tooltip-id="tooltip"
@@ -750,34 +546,12 @@ const ClassroomUI = () => {
 
         {/* Right Controls */}
         <div>
-          {callStarted ? (
-            <div>
-              {isTeacher ? (
-                <button
-                  onClick={leaveOrEndMeeting}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                >
-                  End
-                </button>
-              ) : (
-                <button
-                  onClick={leaveOrEndMeeting}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                >
-                  Leave
-                </button>
-              )}
-            </div>
-          ) : (
-            <div className="flex space-x-4">
-              <button
-                onClick={startLesson}
-                className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600"
-              >
-                Start Lesson
-              </button>
-            </div>
-          )}
+          <button
+            onClick={leaveOrEndMeeting}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+          >
+            Leave
+          </button>
         </div>
       </div>
 
@@ -793,6 +567,6 @@ const ClassroomUI = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(ClassroomUI), {
+export default dynamic(() => Promise.resolve(ClassroomStudent), {
   ssr: false,
 });

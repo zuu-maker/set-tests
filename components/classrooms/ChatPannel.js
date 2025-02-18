@@ -38,8 +38,6 @@ const ChatPanel = ({
   const [activeTab, setActiveTab] = useState("participants"); // 'chat' or 'participants'
   const messagesEndRef = useRef(null);
 
-  console.log("paartsss ->", participants);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -64,6 +62,8 @@ const ChatPanel = ({
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex space-x-4">
           <button
+            data-tooltip-id="tooltip"
+            data-tooltip-content="participants"
             onClick={() => setActiveTab("participants")}
             className={`px-3 py-1 rounded-lg ${
               activeTab === "participants"
@@ -74,6 +74,8 @@ const ChatPanel = ({
             <Users className="w-5 h-5" />
           </button>
           <button
+            data-tooltip-id="tooltip"
+            data-tooltip-content="Chat"
             onClick={() => setActiveTab("chat")}
             className={`px-3 py-1 rounded-lg ${
               activeTab === "chat"
@@ -84,6 +86,8 @@ const ChatPanel = ({
             <MessageSquare className="w-5 h-5" />
           </button>
           <button
+            data-tooltip-id="tooltip"
+            data-tooltip-content="Raised hands"
             onClick={() => setActiveTab("raisedHands")}
             className={`px-3 py-1 rounded-lg ${
               activeTab === "raisedHands"
@@ -148,6 +152,8 @@ const ChatPanel = ({
                   <div className="flex space-x-2">
                     {notAllowedTexter.includes(user._id) ? (
                       <MessageSquareOff
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="grant chat permission"
                         onClick={() => {
                           grantTextPermission(participant.id);
                         }}
@@ -155,6 +161,8 @@ const ChatPanel = ({
                       />
                     ) : (
                       <MessageSquare
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="revoke chat permission"
                         onClick={() => {
                           revokeTextPermission(participant.id);
                         }}
@@ -163,11 +171,22 @@ const ChatPanel = ({
                     )}
 
                     {participant.isMuted ? (
-                      <MicOff className="w-4 h-4 text-gray-400" />
+                      // when orif muted the user has to riase hand to be allowed to speak
+                      <MicOff
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Unmute student"
+                        className="w-4 h-4 text-gray-400 cursor-pointer"
+                      />
                     ) : (
-                      <Mic className="w-4 h-4 text-gray-400" />
+                      <Mic
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Mute student"
+                        className="w-4 h-4 text-gray-400 cursor-pointer"
+                      />
                     )}
                     <UserX
+                      data-tooltip-id="tooltip"
+                      data-tooltip-content="Ban student"
                       onClick={() =>
                         banStudent(participant.id, participant.name)
                       }

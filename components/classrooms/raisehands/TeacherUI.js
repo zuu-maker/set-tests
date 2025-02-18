@@ -29,6 +29,8 @@ function TeacherUI({ raisedhands, grantPermission, denyPermission }) {
               </div>
               <div className="flex space-x-2">
                 <button
+                  data-tooltip-id="tooltip"
+                  data-tooltip-content="Grant permission"
                   onClick={() => grantPermission(data.id, data.name)}
                   className="p-1 bg-green-500 text-white rounded hover:bg-green-600"
                   title="Grant Permission"
@@ -36,6 +38,8 @@ function TeacherUI({ raisedhands, grantPermission, denyPermission }) {
                   <Mic className="w-4 h-4" />
                 </button>
                 <button
+                  data-tooltip-id="tooltip"
+                  data-tooltip-content="Reject permission"
                   onClick={() => denyPermission(data.id)}
                   className="p-1 bg-red-500 text-white rounded hover:bg-red-600"
                   title="Deny Permission"
