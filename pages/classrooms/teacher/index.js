@@ -134,6 +134,7 @@ const ClassroomTeacher = () => {
 
   useEffect(() => {
     if (!client) return;
+
     shareCamera();
   }, [client]);
 
@@ -503,16 +504,20 @@ const ClassroomTeacher = () => {
       await client.publish(localstream);
 
       client.ontrack = (track, stream) => {
-        console.log("got track: ", track.id, "for stream: ", stream.id);
+        console.log("listening for on a track");
         track.onunmute = () => {
-          remoteVideoRef.current.srcObject = stream;
-          remoteVideoRef.current.playsInline = true;
-          remoteVideoRef.current.autoplay = true;
+          console.log("track is being unmuted");
+          if (track.kind === "audio") {
+            console.log("audio stream is being received");
+            const audioConatiner = document.getElementById("audio-container");
+            const audioElem = document.createElement("audio");
+            audioElem.id = `audio=${stream.id}`;
+            audioElem.srcObject = stream;
+            audioElem.autoplay = true;
+            audioElem.controls = true;
 
-          stream.onremovetrack = () => {
-            console.log("Track removed from stream");
-            setRemoteStream(null);
-          };
+            audioConatiner.appendChild(audioElem);
+          }
         };
       };
 
@@ -579,6 +584,7 @@ const ClassroomTeacher = () => {
         {/* Primary Video Grid */}
         <div className="flex-1 p-4">
           <video ref={localVideoRef} className="h-full " controls />
+          <div id="audio-container" className="w-full"></div>
         </div>
 
         <ChatPanel

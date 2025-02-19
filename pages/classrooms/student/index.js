@@ -32,6 +32,10 @@ import { useStopwatch } from "react-timer-hook";
 // http://localhost:3000/classrooms?uid=test_4&isTeacher=true
 // http://localhost:3000/classrooms?uid=test_2&isTeacher=false
 
+//new
+// http://localhost:3000/classrooms/teacher?uid=test_4
+// http://localhost:3000/classrooms/student?uid=test_2
+
 const config = {
   iceServers: [
     {
@@ -57,8 +61,10 @@ const ClassroomStudent = () => {
 
   const [messages, setMessages] = useState([]);
   const [localstream, setLocalStream] = useState(null);
-  const [isAudioMuted, setIsAudioMuted] = useState(false);
-  const [isVideoMuted, setIsVideoMuted] = useState(false);
+  const [isAudioMuted, setIsAudioMuted] = useState(true);
+  const [isVideoMuted, setIsVideoMuted] = useState(false); // get rid of this
+  const [isAudioBroadcastMuted, setIsAudioBroadcastMuted] = useState(false);
+  const [isVideoBroadcastMuted, setIsVideoBroadcastMuted] = useState(false);
   const [isScreenMuted, setIsScreenMuted] = useState(true);
   const [callStarted, setCallStarted] = useState(false);
   const [isSharingCamera, setIsSharingCamera] = useState(true);
@@ -68,7 +74,7 @@ const ClassroomStudent = () => {
   const [participants, setParticipants] = useState([]);
   const [notAllowedTexter, setNotAllowedTexter] = useState([]);
   const [allowedSpeakers, setAllowedSpeakers] = useState([]);
-  const localVideoRef = useRef(null);
+  const localAudioRef = useRef(null);
   const remoteVideoRef = useRef(null);
   const [client, setClient] = useState(null);
   const [socket, setSocket] = useState(null);
@@ -137,15 +143,26 @@ const ClassroomStudent = () => {
     console.log("in here 1121212");
     client.ontrack = (track, stream) => {
       console.log("got track: ", track.id, "for stream: ", stream.id);
-      track.onunmute = () => {
-        remoteVideoRef.current.srcObject = stream;
-        remoteVideoRef.current.playsInline = true;
-        remoteVideoRef.current.autoplay = true;
 
-        stream.onremovetrack = () => {
-          console.log("Track removed from stream");
-          setRemoteStream(null);
-        };
+      track.onunmute = () => {
+        if (track.kind === "video") {
+          remoteVideoRef.current.srcObject = stream;
+          remoteVideoRef.current.playsInline = true;
+          remoteVideoRef.current.autoplay = true;
+          stream.onremovetrack = () => {
+            console.log("Track removed from stream");
+            setRemoteStream(null);
+          };
+        } else if (track.kind === "audio") {
+          const audioContainer = document.getElementById("audio-container");
+          const audioElem = document.createElement("audio");
+          audioElem.id = `audio-${stream.id}`;
+          audioElem.srcObject = stream;
+          audioElem.autoplay = true;
+          audioElem.controls = true;
+
+          audioContainer.appendChild(audioElem);
+        }
       };
     };
   }, [client]);
@@ -154,10 +171,10 @@ const ClassroomStudent = () => {
     if (user && user._id.length > 0) {
       console.log("user", user);
       const newSocket = io("http://localhost:3001");
-      if (user.role !== "student") {
-        setIsAudioMuted(false);
-        setIsVideoMuted(false);
-      }
+      // if (user.role !== "student") {
+      //   setIsAudioMuted(false);
+      //   setIsVideoMuted(false);
+      // }
       newSocket.on("connect", () => {
         console.log(newSocket.id); // x8WIv7-mJelg7on_ALbx
 
@@ -197,16 +214,18 @@ const ClassroomStudent = () => {
 
       newSocket.on("updated_mute_state", (data) => {
         if (data.kind === "video") {
-          setIsVideoMuted(data.muted);
+          setIsVideoBroadcastMuted(data.muted);
         }
         if (data.kind === "audio") {
-          setIsAudioMuted(data.muted);
+          setIsAudioBroadcastMuted(data.muted);
         }
       });
+
       newSocket.on("updated_chat", (data) => {
         console.log("hello", data);
         setMessages(data);
       });
+
       newSocket.on("history", (data) => {
         const {
           allowedSpeakers,
@@ -215,9 +234,10 @@ const ClassroomStudent = () => {
           _isVideoMuted,
         } = data;
         console.log("hello", data);
+        setAllowedSpeakers(allowedSpeakers);
         setNotAllowedTexter(notAllowedTexters);
-        setIsAudioMuted(_isAudioMuted);
-        setIsVideoMuted(_isVideoMuted);
+        setIsAudioBroadcastMuted(_isAudioMuted);
+        setIsVideoBroadcastMuted(_isVideoMuted);
       });
 
       newSocket.on("raised_hand", (data) => {
@@ -387,18 +407,48 @@ const ClassroomStudent = () => {
     }
   };
 
-  const handleAudio = () => {
-    if (!localstream || socket) return;
+  const handleAudio = async () => {
+    // put can speak here if cant error message and thell them to raise your hand first
+    if (!socket) {
+      toast.error("you are not connectd to realtime functions");
+      return;
+    }
 
-    try {
-      if (isAudioMuted) {
-        localstream.unmute("audio");
-      } else {
-        localstream.mute("audio");
+    if (!client) {
+      toast.error("you are not connectd to streaming functionalities");
+      return;
+    }
+
+    if (!localstream) {
+      try {
+        const ionSDK = await import("ion-sdk-js");
+        const media = await ionSDK.LocalStream.getUserMedia({
+          audio: true,
+          video: false,
+        });
+
+        await client.publish(media);
+
+        // localAudioRef.current.srcObject = media;
+        // localAudioRef.current.autoplay = true;
+
+        setLocalStream(media);
+        setIsAudioMuted(false);
+      } catch (error) {
+        console.log(error);
+        toast.error("Can not create suddio stream");
       }
-      setIsAudioMuted(!isAudioMuted);
-    } catch (error) {
-      console.log(error);
+    } else {
+      try {
+        if (isAudioMuted) {
+          localstream.unmute("audio");
+        } else {
+          localstream.mute("audio");
+        }
+        setIsAudioMuted(!isAudioMuted);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -477,9 +527,11 @@ const ClassroomStudent = () => {
               autoPlay
               playsInline
             />
-            {isVideoMuted && <VideoMutedOverlay />}
-            {isAudioMuted && <AudioMutedOverlay />}
+            {isVideoBroadcastMuted && <VideoMutedOverlay />}
+            {isAudioBroadcastMuted && <AudioMutedOverlay />}
           </div>
+          <div id="audio-container" className="hidden"></div>
+          <audio ref={localAudioRef} controls autoPlay />
         </div>
 
         <ChatPanel
@@ -515,7 +567,6 @@ const ClassroomStudent = () => {
             <button
               data-tooltip-id="tooltip"
               data-tooltip-content="Unmute"
-              disabled={!!canSpeak} // fix this
               onClick={handleAudio}
               className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
             >
@@ -532,16 +583,14 @@ const ClassroomStudent = () => {
             </button>
           )}
 
-          {!isTeacher && (
-            <button
-              data-tooltip-id="tooltip"
-              data-tooltip-content="Raise hand"
-              onClick={raiseHand}
-              className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
-            >
-              <Hand className="w-6 h-6" />
-            </button>
-          )}
+          <button
+            data-tooltip-id="tooltip"
+            data-tooltip-content="Raise hand"
+            onClick={raiseHand}
+            className="p-4 rounded-full bg-gray-100 hover:bg-gray-300 disabled:hover:bg-gray-100"
+          >
+            <Hand className="w-6 h-6" />
+          </button>
         </div>
 
         {/* Right Controls */}
