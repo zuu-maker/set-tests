@@ -182,8 +182,8 @@ const ClassroomStudent = () => {
           id: user._id,
           name: user.name,
           isActive: true,
-          isMuted: false,
-          isVideoOff: false,
+          isMuted: true,
+          isVideoOff: true,
         });
         setSocket(newSocket);
       });
@@ -266,7 +266,6 @@ const ClassroomStudent = () => {
         }
       });
 
-      // probablly reset all states
       newSocket.on("disconnet", () => {
         // i reckon you gon have to remove the lcoal stream
         console.log("disconnected");
@@ -294,6 +293,38 @@ const ClassroomStudent = () => {
       };
     }
   }, [user]);
+
+  useEffect(() => {
+    if (!socket && !localstream) return;
+
+    if (user && user._id.length > 0) {
+      socket.on("muted_student", ({ participants, allowedSpeakers, id }) => {
+        if (user._id === id) {
+          console.log("found id");
+          if (localstream) {
+            console.log("found localstream");
+            localstream.mute("audio");
+          }
+        }
+
+        setAllowedSpeakers(allowedSpeakers);
+        setParticipants(participants);
+        console.log("disconnected");
+      });
+
+      socket.on("muted_all", ({ participants, allowedSpeakers }) => {
+        console.log("found id");
+        if (localstream) {
+          console.log("found localstream");
+          localstream.mute("audio");
+        }
+
+        setAllowedSpeakers(allowedSpeakers);
+        setParticipants(participants);
+        console.log("muted all");
+      });
+    }
+  }, [socket, localstream, user]);
 
   useEffect(() => {
     if (socket && user && user._id.length > 0) {
@@ -434,6 +465,11 @@ const ClassroomStudent = () => {
 
         setLocalStream(media);
         setIsAudioMuted(false);
+        socket.emit("student_mute_state", "123", {
+          id: user._id,
+          kind: "audio",
+          muted: false,
+        });
       } catch (error) {
         console.log(error);
         toast.error("Can not create suddio stream");
@@ -445,6 +481,11 @@ const ClassroomStudent = () => {
         } else {
           localstream.mute("audio");
         }
+        socket.emit("student_mute_state", "123", {
+          id: user._id,
+          kind: "audio",
+          muted: !isAudioMuted,
+        });
         setIsAudioMuted(!isAudioMuted);
       } catch (error) {
         console.log(error);

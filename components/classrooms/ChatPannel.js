@@ -32,6 +32,8 @@ const ChatPanel = ({
   denyPermission,
   notAllowedTexter,
   banStudent,
+  muteStudent,
+  muteAll,
   user,
 }) => {
   const [message, setMessage] = useState("");
@@ -99,6 +101,7 @@ const ChatPanel = ({
           </button>
           <button
             type="submit"
+            onClick={muteAll}
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
           >
             Mute all
@@ -174,13 +177,14 @@ const ChatPanel = ({
                       // when orif muted the user has to riase hand to be allowed to speak
                       <MicOff
                         data-tooltip-id="tooltip"
-                        data-tooltip-content="Unmute student"
+                        data-tooltip-content="Student muted"
                         className="w-4 h-4 text-gray-400 cursor-pointer"
                       />
                     ) : (
                       <Mic
-                        data-tooltip-id="tooltip"
                         data-tooltip-content="Mute student"
+                        data-tooltip-id="tooltip"
+                        onClick={() => muteStudent(participant.id)}
                         className="w-4 h-4 text-gray-400 cursor-pointer"
                       />
                     )}

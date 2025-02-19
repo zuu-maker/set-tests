@@ -218,6 +218,20 @@ const ClassroomTeacher = () => {
         }
       });
 
+      // teacher to mute partipant
+
+      newSocket.on("muted_student", ({ participants, allowedSpeakers }) => {
+        setAllowedSpeakers(allowedSpeakers);
+        setParticipants(participants);
+        console.log("disconnected");
+      });
+
+      newSocket.on("muted_all", ({ participants, allowedSpeakers }) => {
+        setAllowedSpeakers(allowedSpeakers);
+        setParticipants(participants);
+        console.log("muted all");
+      });
+
       // probablly reset all states
       newSocket.on("disconnet", () => {
         // i reckon you gon have to remove the lcoal stream
@@ -532,6 +546,24 @@ const ClassroomTeacher = () => {
     }
   };
 
+  const muteStudent = (userId) => {
+    if (!socket) {
+      toast.error("You are not connectde");
+      return;
+    }
+
+    socket.emit("mute_student", "123", userId);
+  };
+
+  const muteAll = () => {
+    if (!socket) {
+      toast.error("You are not connected");
+      return;
+    }
+
+    socket.emit("mute_student", "123", "");
+  };
+
   if (isLoader) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -588,6 +620,8 @@ const ClassroomTeacher = () => {
         </div>
 
         <ChatPanel
+          muteAll={muteAll}
+          muteStudent={muteStudent}
           notAllowedTexter={notAllowedTexter}
           banStudent={banStudent}
           user={user}
