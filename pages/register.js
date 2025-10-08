@@ -213,7 +213,7 @@ function Register() {
           </h2>
         </div>
 
-        <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm bg-white p-8 rounded-lg shadow-lg">
           <form className="space-y-6" action="#" method="POST">
             <div>
               <label

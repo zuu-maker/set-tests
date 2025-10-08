@@ -1,12 +1,19 @@
-import Hero from "@/components/Hero";
-import AboutUs from "@/components/AboutUs";
-import Offer from "@/components/Offer";
 import Head from "next/head";
-import WhyUs from "@/components/WhyUs";
-import Faq from "@/components/Faq";
+
 import Banner from "../components/Banner";
-import Footer from "../components/Footer";
+
+import { motion, useInView } from "framer-motion";
+
 import AuthCheck from "@/components/auth/AuthCheck";
+import { useEffect, useRef, useState } from "react";
+
+import Navbar from "@/components/new-landing/Navbar";
+import Footer from "@/components/new-landing/Footer";
+import Hero from "@/components/new-landing/Hero";
+import About from "@/components/new-landing/About";
+import Values from "@/components/new-landing/Values";
+import WhyUs from "@/components/new-landing/WhyUs";
+import Faq from "@/components/new-landing/Faq";
 
 export default function Home() {
   return (
@@ -15,8 +22,8 @@ export default function Home() {
         <title>Sirius Educational Trust</title>
         <meta>
           Providing quality education and exam preparation services. Access
-          affordable online courses and exam practice materials for Grade 12 &
-          GCE students.
+          affordable online courses and exam practice materials for Grade 12
+          &amp; GCE students.
         </meta>
         <link rel="icon" href="/favicon.ico" />
 
@@ -26,34 +33,33 @@ export default function Home() {
         ></script>
         <script
           dangerouslySetInnerHTML={{
-            _html: `
+            __html: `
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${process.env.NEXT_PUBLIC_ANALYTICS}, {
-            page_path:window.location.pathname,
+          gtag('config', '${process.env.NEXT_PUBLIC_ANALYTICS}', {
+            page_path: window.location.pathname,
           });`,
           }}
         />
       </Head>
 
-      <Banner show={true} />
+      <Banner show={false} />
 
-      <div className="container mx-auto">
+      <div className="">
+        <div className="bg-pattern">
+          <div className="floating-shape"></div>
+          <div className="floating-shape"></div>
+          <div className="floating-shape"></div>
+        </div>
+        <Navbar />
         <Hero />
-        <AboutUs />
-        <Offer />
+        <About />
+        <Values />
         <WhyUs />
         <Faq />
-        <a
-          className="z-100 fixed bottom-20 right-14"
-          href="https://wa.me/972507705"
-          target="_blank"
-        >
-          <img src="/whatsapp.svg" className=" h-12" alt="" />
-        </a>
+        <Footer />
       </div>
-      <Footer />
     </AuthCheck>
   );
 }

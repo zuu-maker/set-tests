@@ -2,7 +2,8 @@ import React from "react";
 import Banner from "@/components/Banner";
 import Header from "@/components/Header";
 import Head from "next/head";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/new-landing/Navbar";
+import Footer from "@/components/new-landing/Footer";
 
 const privacyPolicy = () => {
   return (
@@ -11,12 +12,12 @@ const privacyPolicy = () => {
         <title>Pricay Policy </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Banner show={true} />
+      <Banner show={false} />
 
-      <div className="container mx-auto">
+      <div className="">
         <div className="h-8"></div>
-        <Header />
-        <div className="py-5">
+        <Navbar />
+        <div className=" pt-32">
           <div className="flex flex-col items-center  justify-center w-full">
             <div className="w-5/6 sm:w-3/5">
               <h2 className="text-2xl font-semibold text-gray-500">
