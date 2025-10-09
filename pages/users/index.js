@@ -1,509 +1,391 @@
-import Hero from "@/components/Hero";
-import AboutUs from "@/components/AboutUs";
-import Offer from "@/components/Offer";
-import Head from "next/head";
-import WhyUs from "@/components/WhyUs";
-import Faq from "@/components/Faq";
-import Banner from "../components/Banner";
-import Footer from "../components/Footer";
-import AuthCheck from "@/components/auth/AuthCheck";
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import AdminNav from "@/components/AdminNav";
+import Sidebar from "@/components/Sidebar";
+import AdminAuth from "@/components/auth/AdminPage";
+import { auth, db } from "@/firebase";
+import { FadeLoader } from "react-spinners";
+import Paginate from "@/components/Paginate";
+import toast from "react-hot-toast";
+import firebase from "firebase";
+import { useRouter } from "next/navigation";
 
-const faqData = [
-  {
-    question:
-      "What makes Sirius Educational Trust different from other exam preparation platforms?",
-    answer:
-      "Sirius Educational Trust focuses on Zambian Grade 12 and GCE students, offering comprehensive tests and resources tailored to the local curriculum. We provide accessible, high-quality materials with real-time feedback to help students succeed in their exams.",
-  },
-  {
-    question: "How much does Sirius Educational Trust cost?",
-    answer:
-      "We offer affordable pricing plans starting from basic access. Contact us for details on subscriptions, with discounts available for students and institutions.",
-  },
-  {
-    question: "Is Sirius Educational Trust suitable for GCE preparation?",
-    answer:
-      "Yes! Our platform is specifically designed for Grade 12 and GCE exam preparation, with specialized resources for Zambian students.",
-  },
-  {
-    question: "What kind of support do you provide?",
-    answer:
-      "We offer customer support through email and phone during business hours, along with comprehensive guides and resources.",
-  },
-  {
-    question: "Can I access Sirius Educational Trust on mobile devices?",
-    answer:
-      "Yes! Our platform is mobile-friendly, allowing students to study and practice exams anytime, anywhere.",
-  },
-];
+function ListUsers() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filter, setFilter] = useState("");
+  const [loader, setLoader] = useState(true);
+  const [page, setPage] = useState(1);
+  const [last, setLast] = useState(null);
 
-export default function Home() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeFAQ, setActiveFAQ] = useState(null);
-  const sectionsRef = useRef([]);
+  let router = useRouter();
 
   useEffect(() => {
-    // Navbar scroll handler
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    // Intersection Observer for fade-in animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -100px 0px",
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("opacity-100", "translate-y-0");
-          entry.target.classList.remove("opacity-0", "translate-y-8");
-        }
-      });
-    }, observerOptions);
-
-    // Observe all sections after component mounts
-    const sections = document.querySelectorAll("section");
-    sections.forEach((section) => {
-      section.classList.add(
-        "transition-all",
-        "duration-700",
-        "ease-out",
-        "opacity-0",
-        "translate-y-8"
-      );
-      observer.observe(section);
-    });
-
-    // Cleanup function
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      sections.forEach((section) => {
-        observer.unobserve(section);
-      });
-    };
+    getusers();
+    // eslint-disable-next-line no-use-before-define
   }, []);
 
-  const handleFAQClick = (index) => {
-    setActiveFAQ(activeFAQ === index ? null : index);
+  const deleteUser = (id) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    let toastId = toast.loading("Processing...");
+    db.collection("Users")
+      .doc(id)
+      .delete()
+      .then(() => {
+        toast.dismiss(toastId);
+        toast.success("User deleted");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.dismiss(toastId);
+        toast.success("Failed to delete user");
+      });
   };
 
-  return (
-    <AuthCheck>
-      <Head>
-        <title>Sirius Educational Trust</title>
-        <meta>
-          Providing quality education and exam preparation services. Access
-          affordable online courses and exam practice materials for Grade 12
-          &amp; GCE students.
-        </meta>
-        <link rel="icon" href="/favicon.ico" />
+  const handleSelectChange = (e) => {
+    setFilter(e.target.value);
+  };
 
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_ANALYTICS}`}
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${process.env.NEXT_PUBLIC_ANALYTICS}', {
-            page_path: window.location.pathname,
-          });`,
-          }}
-        />
-      </Head>
+  const getusers = () => {
+    setLoading(true);
+    let toastId = toast.loading("Processing...");
 
-      <Banner show={true} />
+    let queryRef = null;
+    if (startDate !== "" && endDate !== "" && filter !== "") {
+      const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
+      const end = firebase.firestore.Timestamp.fromDate(
+        new Date(endDate + "T23:59:59")
+      );
 
-      <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-cyan-50">
-        {/* Animated Background Elements */}
-        <div className="fixed inset-0 opacity-30 pointer-events-none overflow-hidden">
-          <div className="absolute w-72 h-72 lg:w-96 lg:h-96 top-10 left-10 bg-gradient-to-br from-cyan-400 to-cyan-500 rounded-full opacity-10 animate-pulse"></div>
-          <div className="absolute w-48 h-48 lg:w-64 lg:h-64 top-3/4 right-10 bg-gradient-to-br from-cyan-400 to-cyan-500 rounded-full opacity-10 animate-pulse animation-delay-2000"></div>
-          <div className="absolute w-32 h-32 lg:w-48 lg:h-48 top-1/2 left-1/2 bg-gradient-to-br from-cyan-400 to-cyan-500 rounded-full opacity-10 animate-pulse animation-delay-4000"></div>
+      queryRef = db
+        .collection("Users")
+        .where("createdAt", ">=", start)
+        .where("createdAt", "<=", end)
+        .where(filter, "==", true)
+        .limit(25);
+    } else if (startDate !== "" && endDate !== "" && filter === "") {
+      const start = firebase.firestore.Timestamp.fromDate(new Date(startDate));
+      const end = firebase.firestore.Timestamp.fromDate(
+        new Date(endDate + "T23:59:59")
+      );
+      queryRef = db
+        .collection("Users")
+        .where("createdAt", ">=", start)
+        .where("createdAt", "<=", end)
+        .orderBy("createdAt")
+        .limit(25);
+    } else if (startDate === "" && endDate === "" && filter !== "") {
+      queryRef = db.collection("Users").where(filter, "==", true).limit(25);
+    } else {
+      queryRef = db.collection("Users").orderBy("createdAt", "desc").limit(25);
+    }
+
+    if (queryRef) {
+      queryRef
+        .get()
+        .then((querySnapshot) => {
+          let _users = [];
+          querySnapshot.forEach((doc) => {
+            _users.push(doc.data());
+          });
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          setUsers(_users);
+
+          toast.dismiss(toastId);
+          toast.success("Done");
+        })
+        .catch(() => {
+          toast.dismiss(toastId);
+          toast.error("Failed to get");
+        });
+    }
+    setLoader(false);
+
+    setLoading(false);
+  };
+
+  const makePartner = (id) => {
+    let toastId = toast.loading("processing...");
+    db.collection("Users")
+      .doc(id)
+      .update({
+        role: "partner",
+        promoCode: "",
+        discount: 0,
+      })
+      .then(() => {
+        toast.dismiss(toastId);
+        toast.success("Updated successfully");
+        getusers();
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.dismiss(toastId);
+        toast.error("Update failed");
+      });
+  };
+
+  const TableRow = (item) => (
+    <tr key={item._id} className="bg-white border-b hover:bg-gray-50">
+      <th
+        scope="row"
+        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+      >
+        {item.name}
+      </th>
+      <td className="px-6 py-4">{item.email}</td>
+      <td className="px-6 py-4">{item.city}</td>
+      <td className="px-6 py-4">{item.phone}</td>
+      <td className="px-6 py-4 capitalize">{item.role}</td>
+      <td className="flex items-center mt-2 space-x-2">
+        <div className="flex items-center h-full justify-center space-x-4">
+          <button
+            disabled={item.role === "partner" || item.role === "admin"}
+            className="text-white disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium rounded-md text-xs px-3 py-2 text-center"
+            fill="currentColor"
+            onClick={() => makePartner(item._id)}
+          >
+            Make Partner
+          </button>
         </div>
-
-        {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-12 pt-24 pb-20">
-          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-8 lg:gap-20 items-center">
-            {/* Hero Text */}
-            <div className="text-center lg:text-left animate-fade-in-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-gray-900 to-cyan-600 bg-clip-text text-transparent">
-                GET READY TO EXCEL.
-              </h1>
-              <p className="text-lg sm:text-xl text-gray-600 mb-8">
-                Grade 12 &amp; GCE exam practice
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
-                <Link
-                  href="/browse"
-                  className="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-8 py-4 rounded-full font-bold text-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-lg"
-                >
-                  View Courses
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
-                <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-2xl text-center hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-md">
-                  <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-cyan-500 to-cyan-400 bg-clip-text text-transparent mb-1">
-                    400+
-                  </div>
-                  <div className="text-sm text-gray-600">Learners</div>
-                </div>
-                <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-2xl text-center hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-md">
-                  <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-cyan-500 to-cyan-400 bg-clip-text text-transparent mb-1">
-                    10
-                  </div>
-                  <div className="text-sm text-gray-600">Tests</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Hero Visual */}
-            <div className="relative animate-fade-in-right mt-12 lg:mt-0">
-              <div className="relative w-72 h-72 sm:w-96 sm:h-96 lg:w-[500px] lg:h-[500px] mx-auto">
-                {/* Central Sphere */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 bg-gradient-to-br from-cyan-100/20 to-cyan-200/30 rounded-full animate-spin-slow shadow-2xl"></div>
-
-                {/* Orbits */}
-                <div className="absolute inset-0 sm:inset-8 lg:inset-12 border-2 border-cyan-200/30 rounded-full animate-spin-slow"></div>
-                <div className="absolute inset-0 sm:inset-4 lg:inset-6 border-2 border-cyan-200/30 rounded-full animate-spin-reverse"></div>
-
-                {/* Floating Icons */}
-                <div className="absolute top-8 left-8 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl flex items-center justify-center text-2xl shadow-xl animate-bounce animation-delay-0">
-                  📖
-                </div>
-                <div className="absolute top-8 right-8 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl flex items-center justify-center text-2xl shadow-xl animate-bounce animation-delay-1000">
-                  🎓
-                </div>
-                <div className="absolute bottom-8 left-8 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl flex items-center justify-center text-2xl shadow-xl animate-bounce animation-delay-2000">
-                  💡
-                </div>
-                <div className="absolute bottom-8 right-8 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl flex items-center justify-center text-2xl shadow-xl animate-bounce animation-delay-3000">
-                  🚀
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* About Section */}
-        <section
-          id="about"
-          className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="w-6 h-6 cursor-pointer text-green-500"
+          onClick={() => {
+            router.push(`users/${item._id}`);
+          }}
         >
-          <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl p-8 sm:p-12 lg:p-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-gray-900 to-cyan-600 bg-clip-text text-transparent">
-              About
-            </h2>
-            <p className="text-lg sm:text-xl text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-              Assisting students in Zambia with quality exam preparation
-            </p>
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-              <div className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                <p>
-                  Our mission is to assist candidates prepare and succeed in
-                  school exams while fostering a love for learning. Through
-                  accessible, high-quality educational resources and supportive
-                  mentorship, we help students overcome academic challenges,
-                  achieve their full potential, and build the foundation for
-                  future educational and career success.
-                </p>
-              </div>
-              <div className="space-y-4 sm:space-y-6">
-                {/* Feature Cards */}
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                  <div className="text-4xl sm:text-5xl mb-3">🎯</div>
-                  <div className="text-lg sm:text-xl font-semibold mb-2">
-                    Tailored Preparation
-                  </div>
-                  <div className="text-sm sm:text-base text-gray-600">
-                    Learning resources customized for Grade 12 and GCE students
-                    in Zambia
-                  </div>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                  <div className="text-4xl sm:text-5xl mb-3">🌍</div>
-                  <div className="text-lg sm:text-xl font-semibold mb-2">
-                    Local Focus
-                  </div>
-                  <div className="text-sm sm:text-base text-gray-600">
-                    Aligned with Zambian curriculum and exam standards
-                  </div>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                  <div className="text-4xl sm:text-5xl mb-3">📊</div>
-                  <div className="text-lg sm:text-xl font-semibold mb-2">
-                    Progress Tracking
-                  </div>
-                  <div className="text-sm sm:text-base text-gray-600">
-                    Tools to monitor and improve exam performance
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+          <path
+            fillRule="evenodd"
+            d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+            clipRule="evenodd"
+          />
+        </svg>
 
-        {/* Values Section */}
-        <section
-          id="values"
-          className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="w-6 h-6 cursor-pointer text-red-500"
+          onClick={() => deleteUser(item._id)}
         >
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-gray-900 to-cyan-600 bg-clip-text text-transparent">
-              Our Value to Society
-            </h2>
-            <p className="text-lg sm:text-xl text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-              Making a positive impact on education in Zambia
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {[
-                {
-                  icon: "🌱",
-                  title: "Accessibility",
-                  desc: "Providing affordable, high-quality learning resources to students across Zambia.",
-                },
-                {
-                  icon: "🚀",
-                  title: "Innovation",
-                  desc: "Developing new ways to enhance exam preparation and learning outcomes.",
-                },
-                {
-                  icon: "🤝",
-                  title: "Collaboration",
-                  desc: "Building a community of students and educators supporting each other.",
-                },
-                {
-                  icon: "♻️",
-                  title: "Sustainability",
-                  desc: "Promoting digital learning to reduce environmental impact.",
-                },
-                {
-                  icon: "💡",
-                  title: "Empowerment",
-                  desc: "Helping students gain skills for future success.",
-                },
-                {
-                  icon: "🎓",
-                  title: "Excellence",
-                  desc: "Delivering high standards in exam preparation materials.",
-                },
-              ].map((value, index) => (
-                <div
-                  key={index}
-                  className="relative bg-white border border-gray-200 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group overflow-hidden"
-                >
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-full flex items-center justify-center text-4xl">
-                    {value.icon}
-                  </div>
-                  <div className="text-xl font-semibold mb-3">
-                    {value.title}
-                  </div>
-                  <div className="text-gray-600">{value.desc}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+          <path
+            fillRule="evenodd"
+            d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </td>
+    </tr>
+  );
 
-        {/* Why Choose Us Section */}
-        <section
-          id="features"
-          className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12"
-        >
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-gray-900 to-cyan-600 bg-clip-text text-transparent">
-              Why Choose Sirius Educational Trust?
-            </h2>
-            <p className="text-lg sm:text-xl text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-              Features tailored for Zambian exam success
-            </p>
-            <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
-              {[
-                {
-                  icon: "🤖",
-                  title: "Comprehensive Tests",
-                  desc: "Practice with exams aligned to Grade 12 and GCE syllabi, providing essential preparation.",
-                },
-                {
-                  icon: "📱",
-                  title: "Mobile Accessibility",
-                  desc: "Study on any device, optimized for Zambian students on the go.",
-                },
-                {
-                  icon: "🎮",
-                  title: "Engaging Practice",
-                  desc: "Interactive elements to make exam preparation motivating and effective.",
-                },
-                {
-                  icon: "📈",
-                  title: "Performance Insights",
-                  desc: "Track your progress with reports to focus on areas needing improvement.",
-                },
-                {
-                  icon: "🔒",
-                  title: "Secure Platform",
-                  desc: "Protecting your data with strong security measures.",
-                },
-                {
-                  icon: "🌐",
-                  title: "Local Curriculum Support",
-                  desc: "Resources designed for Zambian education standards.",
-                },
-              ].map((feature, index) => (
-                <div
-                  key={index}
-                  className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 flex gap-4 shadow-lg hover:shadow-xl hover:translate-x-2 hover:border-cyan-400 transition-all duration-300 group"
-                >
-                  <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-cyan-500 to-cyan-400 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    {feature.icon}
+  const next = () => {
+    db.collection("Users")
+      .orderBy("createdAt", "desc")
+      .startAfter(last)
+      .limit(25)
+      .get()
+      .then((querySnapshot) => {
+        let _users = [];
+        querySnapshot.forEach((doc) => {
+          _users.push(doc.data());
+        });
+        if (_users.length > 0) {
+          var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          setLast(lastVisible);
+          setUsers(_users);
+          setPage((prev) => prev + 1);
+          setLoader(false);
+        }
+      });
+  };
+
+  const prev = () => {
+    if (page > 1) {
+      db.collection("Users")
+        .orderBy("createdAt", "desc")
+        .endBefore(last)
+        .limit(25)
+        .get()
+        .then((querySnapshot) => {
+          let _users = [];
+          querySnapshot.forEach((doc) => {
+            _users.push(doc.data());
+          });
+          if (_users.length > 0) {
+            var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+            setLast(lastVisible);
+            setUsers(_users);
+            setPage((prev) => prev - 1);
+            setLoader(false);
+          }
+        });
+    }
+  };
+
+  const generateCsv = () => {
+    if (users.length === 0) return;
+
+    // Get headers from first data object
+    const headers = ["name", "city", "email", "phone", "role"];
+
+    console.log(headers);
+    console.log(users[0]);
+    // Create CSV content
+    let csv = headers.join(",") + "\n";
+
+    // Add data rows
+    users.forEach((row) => {
+      const values = headers.map((header) => {
+        const value = row[header];
+        if (value === null || value === undefined) return "";
+        const stringValue = String(value);
+
+        if (!isNaN(Number(stringValue)) && stringValue.length > 1) {
+          // Add tab prefix to force text format
+          return `\t${stringValue}`;
+        }
+
+        // Handle objects
+        if (typeof value === "object") {
+          return JSON.stringify(value).replace(/"/g, '""');
+        }
+
+        // Return the value as is
+        return stringValue;
+      });
+      csv += values.join(",") + "\n";
+    });
+
+    let date = new Date();
+    const filename =
+      "Downloaded_users_on" + date.toISOString().split("T")[0] + ".csv";
+    // Create and trigger download
+    const BOM = "\uFEFF";
+    const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8;" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  console.log(filter);
+
+  return (
+    <AdminAuth className="min-h-screen bg-gray-50/50">
+      <Sidebar />
+      <div className="p-4 xl:ml-80">
+        <AdminNav />
+        <div className="mt-12">
+          {loader ? (
+            <div className="h-screen w-full flex items-center justify-center">
+              <FadeLoader color="#00FFFF" />
+            </div>
+          ) : (
+            <div className="relative overflow-x-auto">
+              <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                Users
+              </h6>
+              <div className="mb-6 flex justify-between items-center w-full">
+                <div>
+                  <div className="mb-6 flex gap-4 items-end">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Start Date
+                      </label>
+                      <input
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="p-2 border rounded"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        End Date
+                      </label>
+                      <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="p-2 border rounded"
+                      />
+                    </div>
+                    <button
+                      onClick={getusers}
+                      disabled={loading}
+                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300"
+                    >
+                      {loading ? "Loading..." : "Filter"}
+                    </button>
                   </div>
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-semibold mb-2">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {feature.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section
-          id="faq"
-          className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12"
-        >
-          <div className="max-w-4xl mx-auto bg-gradient-to-br from-cyan-50 to-white rounded-3xl p-8 sm:p-12 lg:p-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-gray-900 to-cyan-600 bg-clip-text text-transparent">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg sm:text-xl text-center text-gray-600 mb-12">
-              Everything you need to know about Sirius Educational Trust
-            </p>
-            <div className="space-y-4">
-              {faqData.map((faq, index) => (
-                <div
-                  key={index}
-                  className={`bg-white border rounded-2xl shadow-md transition-all duration-300 ${
-                    activeFAQ === index
-                      ? "border-cyan-400 shadow-xl"
-                      : "border-gray-200"
-                  }`}
-                >
-                  <button
-                    onClick={() => handleFAQClick(index)}
-                    className="w-full px-6 sm:px-8 py-5 sm:py-6 flex justify-between items-center text-left hover:bg-cyan-50 transition-colors duration-200 rounded-2xl"
-                  >
-                    <h3 className="text-base sm:text-lg font-medium pr-4">
-                      {faq.question}
-                    </h3>
-                    <div
-                      className={`w-8 h-8 bg-gradient-to-br from-cyan-500 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold transition-transform duration-300 ${
-                        activeFAQ === index ? "rotate-45" : ""
-                      }`}
-                    >
-                      +
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium mb-1">
+                        Filter
+                      </label>
+                      <select
+                        value={filter}
+                        onChange={handleSelectChange}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      >
+                        <option value="">None</option>
+                        <option value="activeSubscription">Subscribed</option>
+                        <option value="subscribedBefore">
+                          Subscribed before
+                        </option>
+                      </select>
                     </div>
-                  </button>
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ${
-                      activeFAQ === index ? "max-h-96" : "max-h-0"
-                    }`}
-                  >
-                    <p className="px-6 sm:px-8 pb-5 sm:pb-6 text-gray-600 leading-relaxed">
-                      {faq.answer}
-                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer
-          id="contact"
-          className="bg-gradient-to-br from-gray-900 to-gray-800 text-white pt-16 pb-8 mt-20"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-              <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-                <h3 className="text-xl font-semibold text-cyan-400 mb-4">
-                  About Sirius Educational Trust
-                </h3>
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  Assisting Zambian students with exam preparation and quality
-                  education resources.
-                </p>
-                <div className="flex gap-3">
-                  <a
-                    href="#"
-                    className="w-11 h-11 bg-white/10 border border-white/20 rounded-full flex items-center justify-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-cyan-400 hover:border-transparent hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
-                  >
-                    f
-                  </a>
-                  <a
-                    href="#"
-                    className="w-11 h-11 bg-white/10 border border-white/20 rounded-full flex items-center justify-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-cyan-400 hover:border-transparent hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
-                  >
-                    Tik
-                  </a>
-                </div>
+                <button
+                  onClick={generateCsv}
+                  disabled={loading}
+                  className="px-4 py-2 bg-cyan-500 text-white rounded hover:bg-cyan-600 disabled:bg-gray-300"
+                >
+                  {loading ? "Loading..." : "Generate csv"}
+                </button>
               </div>
-              <div className="col-span-1">
-                <h3 className="text-xl font-semibold text-cyan-400 mb-4">
-                  Policies
-                </h3>
-                <ul className="space-y-3">
-                  <li>
-                    <a
-                      href="#"
-                      className="text-gray-300 hover:text-cyan-400 transition-colors duration-200"
-                    >
-                      Refund Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-gray-300 hover:text-cyan-400 transition-colors duration-200"
-                    >
-                      Privacy Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-gray-300 hover:text-cyan-400 transition-colors duration-200"
-                    >
-                      Terms &amp; Conditions
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Email Address
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      City
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Phone
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Role
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>{users.map((item) => TableRow(item))}</tbody>
+              </table>
             </div>
-            <div className="text-center pt-8 border-t border-white/10 text-gray-400">
-              <p>
-                &copy; 2024 Sirius Educational Trust. All rights reserved. Made
-                with 💙 for Zambian students.
-              </p>
-            </div>
-          </div>
-        </footer>
+          )}
+          <Paginate page={page} prev={prev} next={next} />
+        </div>
       </div>
-    </AuthCheck>
+    </AdminAuth>
   );
 }
+
+export default ListUsers;
