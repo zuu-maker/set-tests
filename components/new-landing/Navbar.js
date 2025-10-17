@@ -57,43 +57,50 @@ function Navbar({ isHome = true }) {
     <nav id="navbar" className={isScrolled ? "scrolled" : ""}>
       <div className="nav-container">
         <Link href="/" className="logo">
-          <img className="h-14" src="/logo.png" alt="" />
+          <img className="h-16" src="/new_logo.jpg" alt="" />
         </Link>
 
         {/* <div className="logo-text">Sirius Educational Trust</div> */}
 
         <ul className="nav-links">
-          <li>
+          {/* <li>
             <a href="#about" onClick={(e) => handleSmoothScroll(e, "#about")}>
               About
             </a>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <a href="#values" onClick={(e) => handleSmoothScroll(e, "#values")}>
-              Our Values
+              For Students
             </a>
+          </li> */}
+          <li>
+            <Link href="/browse">Tests</Link>
           </li>
           <li>
-            <a
-              href="#features"
-              onClick={(e) => handleSmoothScroll(e, "#features")}
-            >
-              Features
+            <Link href="/schools">For Schools</Link>
+          </li>
+          <li>
+            <Link href="/funders">For Funders</Link>
+          </li>
+
+          {/* <li>
+            <a href="#faq" onClick={(e) => handleSmoothScroll(e, "#faq")}>
+              Pricing
             </a>
           </li>
           <li>
             <a href="#faq" onClick={(e) => handleSmoothScroll(e, "#faq")}>
-              FAQ
+              FAQs
             </a>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <Link
               href="/browse"
               // onClick={(e) => handleSmoothScroll(e, "#contact")}
             >
               Courses
             </Link>
-          </li>
+          </li> */}
 
           {/* <li>
             {user && (user.role === "admin" || user.role === "partner") && (

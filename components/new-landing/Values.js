@@ -23,7 +23,7 @@ function Values() {
       transition={fadeInVariants.transition}
       viewport={viewportOptions}
     >
-      <h2 className="section-title">Our Value to Society</h2>
+      <h2 className="section-title">Our Promise</h2>
       <p className="section-subtitle">
         Making a positive impact on education in Zambia
       </p>
@@ -32,45 +32,52 @@ function Values() {
           <div className="value-icon">🌱</div>
           <div className="value-title">Accessibility</div>
           <div className="value-description">
-            Providing affordable, high-quality learning resources to students
-            across Zambia.
+            We believe that quality education should be within reach for every
+            learner, regardless of geography or income level Innovation:
+            Innovation is at the heart of everything we do.
           </div>
         </div>
         <div className="value-card">
           <div className="value-icon">🚀</div>
-          <div className="value-title">Innovation</div>
+          <div className="value-title">Collaboration</div>
           <div className="value-description">
-            Developing new ways to enhance exam preparation and learning
-            outcomes.
+            Our model thrives on partnerships. We work collaboratively with
+            schools, funders, government agencies, and technology partners to
+            co-create sustainable education ecosystems.
           </div>
         </div>
         <div className="value-card">
           <div className="value-icon">🤝</div>
-          <div className="value-title">Collaboration</div>
+          <div className="value-title">Sustainability</div>
           <div className="value-description">
-            Building a community of students and educators supporting each
-            other.
+            We operate as a social enterprise, reinvesting revenue from school
+            partnerships into training, platform development, and outreach.
           </div>
         </div>
         <div className="value-card">
           <div className="value-icon">♻️</div>
-          <div className="value-title">Sustainability</div>
+          <div className="value-title">Innovation</div>
           <div className="value-description">
-            Promoting digital learning to reduce environmental impact.
+            Through Smart Growth and Scaled Access, Sirius Educational Trust
+            bridges innovation and inclusion — creating a future where every
+            school, educator, and learner can reach their fullest potential.
           </div>
         </div>
         <div className="value-card">
           <div className="value-icon">💡</div>
           <div className="value-title">Empowerment</div>
           <div className="value-description">
-            Helping students gain skills for future success.
+            Our programs strengthen institutional capacity, enhance teaching
+            effectiveness, and promote student-centered learning — turning
+            schools into centres of innovation and community impact.
           </div>
         </div>
         <div className="value-card">
           <div className="value-icon">🎓</div>
           <div className="value-title">Excellence</div>
           <div className="value-description">
-            Delivering high standards in exam preparation materials.
+            We are guided by a commitment to excellence in delivery,
+            performance, and results.
           </div>
         </div>
       </div>

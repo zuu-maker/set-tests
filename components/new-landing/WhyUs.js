@@ -23,9 +23,9 @@ function WhyUs() {
       transition={fadeInVariants.transition}
       viewport={viewportOptions}
     >
-      <h2 className="section-title">Why Choose Sirius Educational Trust?</h2>
+      <h2 className="section-title">Why Choose Us</h2>
       <p className="section-subtitle">
-        Features tailored for Zambian exam success
+        Features Tailored for Zambian Exam Success
       </p>
       <div className="features-container">
         <div className="feature-box">
@@ -33,8 +33,8 @@ function WhyUs() {
           <div className="feature-content">
             <h3>Comprehensive Tests</h3>
             <p>
-              Practice with exams aligned to Grade 12 and GCE syllabi, providing
-              essential preparation.
+              Prepare with confidence using full-length exam-style questions
+              practice exams aligned to Grade 12 and GCE syllabi.
             </p>
           </div>
         </div>
@@ -43,7 +43,9 @@ function WhyUs() {
           <div className="feature-content">
             <h3>Mobile Accessibility</h3>
             <p>
-              Study on any device, optimized for Zambian students on the go.
+              Study anytime, anywhere. The platform is optimized for Zambian
+              students on mobile devices, making it easy to learn and revise on
+              the go. — even with limited data.
             </p>
           </div>
         </div>
@@ -52,8 +54,9 @@ function WhyUs() {
           <div className="feature-content">
             <h3>Engaging Practice</h3>
             <p>
-              Interactive elements to make exam preparation motivating and
-              effective.
+              Learning made enjoyable! Experience interactive quizzes, and
+              instant feedback to keep exam preparation motivating, effective,
+              and rewarding.
             </p>
           </div>
         </div>
@@ -62,8 +65,9 @@ function WhyUs() {
           <div className="feature-content">
             <h3>Performance Insights</h3>
             <p>
-              Track your progress with reports to focus on areas needing
-              improvement.
+              Track your progress in real time. Get personalized performance
+              reports that highlight your strengths and show where to improve,
+              so you can focus on what truly matters.
             </p>
           </div>
         </div>
@@ -71,14 +75,22 @@ function WhyUs() {
           <div className="feature-icon-wrapper">🔒</div>
           <div className="feature-content">
             <h3>Secure Platform</h3>
-            <p>Protecting your data with strong security measures.</p>
+            <p>
+              Your privacy and progress matter. Our secure learning environment
+              uses strong data protection standards to ensure that all your
+              study sessions and results remain safe.
+            </p>
           </div>
         </div>
         <div className="feature-box">
           <div className="feature-icon-wrapper">🌐</div>
           <div className="feature-content">
             <h3>Local Curriculum Support</h3>
-            <p>Resources designed for Zambian education standards.</p>
+            <p>
+              Access resources built for Zambian learners, fully aligned with
+              national education standards. Practice with relevant content that
+              reflects what you’ll face in the real exam room.
+            </p>
           </div>
         </div>
       </div>

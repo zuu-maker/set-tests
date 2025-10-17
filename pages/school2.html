@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For Schools - Pricing | EduFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary-cyan": "#00acc1",
+              "secondary-cyan": "#00e5ff",
+              "light-cyan": "#b2ebf2",
+              "pale-cyan": "#e0f7fa",
+              "dark-text": "#1a1a2e",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+      .float-animation {
+        animation: float 6s ease-in-out infinite;
+      }
+      .float-delay-1 {
+        animation-delay: 0s;
+      }
+      .float-delay-2 {
+        animation-delay: 2s;
+      }
+      .float-delay-3 {
+        animation-delay: 4s;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-cyan-50 via-white to-cyan-50 min-h-screen"
+  >
+    <!-- Navigation -->
+    <nav
+      class="fixed top-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200 z-50 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
+          <a href="#" class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 bg-gradient-to-br from-primary-cyan to-secondary-cyan rounded-xl flex items-center justify-center text-2xl shadow-lg"
+            >
+              📚
+            </div>
+            <span class="text-2xl font-bold text-dark-text">EduFlow</span>
+          </a>
+          <a
+            href="#"
+            class="bg-gradient-to-r from-primary-cyan to-secondary-cyan text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all"
+          >
+            Get Started
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 px-6">
+      <div class="max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <div class="mb-12">
+          <p class="text-red-500 font-semibold text-lg mb-6">
+            For Schools (sub domain) - 1
+          </p>
+
+          <div class="bg-gray-100 rounded-2xl px-6 py-3 inline-block mb-8">
+            <p class="text-gray-700 font-medium">
+              Smart Schools Growth Accelerator Program
+            </p>
+          </div>
+
+          <h1 class="text-5xl md:text-7xl font-bold text-slate-800 mb-6">
+            Grow Your School<br />
+            <span class="italic">with AI-Powered Learning</span>
+          </h1>
+
+          <p class="text-lg text-gray-600 max-w-4xl leading-relaxed mb-8">
+            As education evolves, private schools are uniquely positioned to
+            unlock new opportunities by embracing innovation, adapting to
+            digital tools, and meeting the changing demands of students and
+            parents. To support this transformation, Sirius Educational Trust
+            has merged AI-driven study tools, personalized revision and live
+            teaching features to create a powerful yet affordable AI- learning
+            platform customized for local needs.
+          </p>
+        </div>
+
+        <!-- Benefits Section -->
+        <div
+          class="bg-white rounded-3xl shadow-xl p-10 mb-12 hover:shadow-2xl transition-shadow duration-300"
+        >
+          <h2 class="text-2xl font-bold text-slate-800 mb-6">
+            Benefits to Your School:
+          </h2>
+
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3">
+              <span class="text-primary-cyan text-xl mt-1">•</span>
+              <span class="text-gray-700 text-lg">Attract new students</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-primary-cyan text-xl mt-1">•</span>
+              <span class="text-gray-700 text-lg"
+                >Generate additional income</span
+              >
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-primary-cyan text-xl mt-1">•</span>
+              <span class="text-gray-700 text-lg">Boost leaner outcome</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-primary-cyan text-xl mt-1">•</span>
+              <span class="text-gray-700 text-lg"
+                >Strengthen brand reputation</span
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center space-y-6">
+          <a
+            href="#"
+            class="inline-block bg-gradient-to-r from-slate-700 to-slate-800 text-white px-10 py-4 rounded-full font-semibold text-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+          >
+            Book a Free Demo
+          </a>
+
+          <p class="text-gray-600 text-lg">Chat with us on WhatsApp</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Decorative Background Elements -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+      <div
+        class="absolute top-20 left-10 w-64 h-64 bg-secondary-cyan/10 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-20 right-10 w-96 h-96 bg-primary-cyan/10 rounded-full blur-3xl"
+      ></div>
+    </div>
+  </body>
+</html>

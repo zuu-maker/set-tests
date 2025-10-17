@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For Schools - Pricing | EduFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary-cyan": "#00acc1",
+              "secondary-cyan": "#00e5ff",
+              "light-cyan": "#b2ebf2",
+              "pale-cyan": "#e0f7fa",
+              "dark-text": "#1a1a2e",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+      .float-animation {
+        animation: float 6s ease-in-out infinite;
+      }
+      .float-delay-1 {
+        animation-delay: 0s;
+      }
+      .float-delay-2 {
+        animation-delay: 2s;
+      }
+      .float-delay-3 {
+        animation-delay: 4s;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-cyan-50 via-white to-cyan-50 min-h-screen"
+  >
+    <!-- Navigation -->
+    <nav
+      class="fixed top-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200 z-50 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
+          <a href="#" class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 bg-gradient-to-br from-primary-cyan to-secondary-cyan rounded-xl flex items-center justify-center text-2xl shadow-lg"
+            >
+              📚
+            </div>
+            <span class="text-2xl font-bold text-dark-text">EduFlow</span>
+          </a>
+          <a
+            href="#"
+            class="bg-gradient-to-r from-primary-cyan to-secondary-cyan text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all"
+          >
+            Get Started
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 px-6">
+      <div class="max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <div class="text-center mb-4">
+          <p class="text-red-500 font-semibold text-lg mb-4">For Schools - 2</p>
+          <h1 class="text-5xl md:text-6xl font-bold text-dark-text mb-6">
+            Choose Your Growth
+            <span class="italic text-primary-cyan">Plan</span>
+          </h1>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Upgrade and grow with our scalable and affordable pricing plans.
+          </p>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid md:grid-cols-3 gap-8 mb-16 mt-12">
+          <!-- Exam Practice Card -->
+          <div
+            class="bg-gradient-to-br from-slate-700 to-slate-800 rounded-3xl p-8 text-white shadow-2xl hover:-translate-y-2 transition-all duration-300 float-animation float-delay-1"
+          >
+            <h2 class="text-3xl font-bold mb-6">EXAM<br />PRACTICE</h2>
+
+            <div class="space-y-4 mb-8">
+              <div class="flex items-start gap-3">
+                <span class="text-green-400 mt-1">✓</span>
+                <span>Interactive Test Practice</span>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎯</span>
+                <span>Schools introducing digital learning</span>
+              </div>
+            </div>
+
+            <div class="mb-8">
+              <p class="text-sm mb-1">→ Starting at</p>
+              <p class="text-2xl font-bold">K1000/month</p>
+            </div>
+
+            <button
+              class="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all"
+            >
+              Contact Sales
+            </button>
+          </div>
+
+          <!-- Revision Plus Card (Popular) -->
+          <div
+            class="bg-gradient-to-br from-slate-700 to-slate-800 rounded-3xl p-8 text-white shadow-2xl hover:-translate-y-2 transition-all duration-300 relative float-animation float-delay-2"
+          >
+            <div
+              class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary-cyan text-white px-6 py-1.5 rounded-full text-sm font-semibold shadow-lg"
+            >
+              Popular
+            </div>
+
+            <h2 class="text-3xl font-bold mb-6">REVISION PLUS</h2>
+
+            <div class="space-y-4 mb-8">
+              <div class="flex items-start gap-3">
+                <span class="text-green-400 mt-1">✓</span>
+                <span>Everything in Exam Practice</span>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🧠</span>
+                <span>Adds AI Flashcards</span>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🏫</span>
+                <span>Schools expanding into tuition centres</span>
+              </div>
+            </div>
+
+            <div class="mb-8">
+              <p class="text-sm mb-1">→ Starting at</p>
+              <p class="text-2xl font-bold">K2500/month</p>
+            </div>
+
+            <button
+              class="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all"
+            >
+              Contact Sales
+            </button>
+          </div>
+
+          <!-- Enterprise Card -->
+          <div
+            class="bg-gradient-to-br from-slate-700 to-slate-800 rounded-3xl p-8 text-white shadow-2xl hover:-translate-y-2 transition-all duration-300 float-animation float-delay-3"
+          >
+            <h2 class="text-3xl font-bold mb-6">ENTERPRISE</h2>
+
+            <div class="space-y-4 mb-8">
+              <div class="flex items-start gap-3">
+                <span class="text-green-400 mt-1">✓</span>
+                <span>Includes Live Classes + Tutor Dashboard</span>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎓</span>
+                <span>High-impact tuition for external exams</span>
+              </div>
+            </div>
+
+            <div class="mb-8">
+              <p class="text-sm mb-1">→ Custom pricing</p>
+            </div>
+
+            <button
+              class="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all"
+            >
+              Contact Us
+            </button>
+          </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-xl">
+          <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-dark-text mb-4">
+              FREQUENTLY ASKED QUESTIONS
+            </h2>
+            <p class="text-lg text-gray-600">
+              Have questions about set-up, training or integration? We are here
+              to help
+            </p>
+          </div>
+
+          <div class="max-w-3xl mx-auto text-center">
+            <a
+              href="#faqs"
+              class="inline-flex items-center gap-2 text-red-500 font-semibold text-lg hover:text-red-600 transition-colors mb-4"
+            >
+              Link to For Schools FAQs Page (below) →
+            </a>
+
+            <div class="mt-8">
+              <a
+                href="https://wa.me/"
+                target="_blank"
+                class="inline-flex items-center gap-2 bg-slate-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-slate-800 transition-all"
+              >
+                Talk to Us
+              </a>
+              <p class="text-sm text-gray-500 mt-2">Link to WhatsApp →</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Decorative Background Elements -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+      <div
+        class="absolute top-20 left-10 w-64 h-64 bg-secondary-cyan/10 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-20 right-10 w-96 h-96 bg-primary-cyan/10 rounded-full blur-3xl"
+      ></div>
+    </div>
+  </body>
+</html>

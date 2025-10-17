@@ -3,30 +3,34 @@ import { motion, useInView } from "framer-motion";
 
 const faqData = [
   {
-    question:
-      "What makes Sirius Educational Trust different from other exam preparation platforms?",
+    question: "How to get started with Sirius Online Exam Practice Platform?",
     answer:
-      "Sirius Educational Trust focuses on Zambian Grade 12 and GCE students, offering comprehensive tests and resources tailored to the local curriculum. We provide accessible, high-quality materials with real-time feedback to help students succeed in their exams.",
+      "Create an account, verify your email, subscribe, follow through the payment steps, approve payment, log in with registered account to access student dashboard",
   },
   {
-    question: "How much does Sirius Educational Trust cost?",
+    question: "Payment methods",
     answer:
-      "We offer affordable pricing plans starting from basic access. Contact us for details on subscriptions, with discounts available for students and institutions.",
+      "You can easily purchase subscription using VISA card, Airtel and MTN mobile money.",
   },
   {
-    question: "Is Sirius Educational Trust suitable for GCE preparation?",
+    question: "What is the Sirius Online Exam Practice Platform?",
     answer:
-      "Yes! Our platform is specifically designed for Grade 12 and GCE exam preparation, with specialized resources for Zambian students.",
+      "It’s an interactive digital platform designed for Grade 12 and GCE students in Zambia. It offers practice tests, quizzes, and study resources aligned to the Zambian curriculum — helping students prepare effectively for their national exams.",
   },
   {
-    question: "What kind of support do you provide?",
+    question: " How are the practice tests designed?",
     answer:
-      "We offer customer support through email and phone during business hours, along with comprehensive guides and resources.",
+      "The tests are developed by Zambian educators and examiners using the official Grade 12 and GCE syllabi. Each test mirrors real exam conditions and includes automatic feedback to help students understand their mistakes and improve.",
   },
   {
-    question: "Can I access Sirius Educational Trust on mobile devices?",
+    question: "Can I access the platform on my phone?",
     answer:
-      "Yes! Our platform is mobile-friendly, allowing students to study and practice exams anytime, anywhere.",
+      "Yes! The platform is mobile-friendly and optimized for low bandwidth, allowing you to study and take tests on your smartphone, tablet, or computer, anywhere and anytime.",
+  },
+  {
+    question: "Do I need to be online to study?",
+    answer:
+      "You’ll need an internet connection to take the tests and track progress.",
   },
 ];
 

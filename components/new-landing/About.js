@@ -31,12 +31,12 @@ function About() {
       <div className="about-content">
         <div className="about-text">
           <p>
-            Our mission is to assist candidates prepare and succeed in school
-            exams while fostering a love for learning. Through accessible,
-            high-quality educational resources and supportive mentorship, we
-            help students overcome academic challenges, achieve their full
-            potential, and build the foundation for future educational and
-            career success.
+            Sirius Educational Trust is a social enterprise committed to
+            expanding access to quality education in Zambia through local
+            innovation, sustainable partnerships, and digital transformation. We
+            work across both the private and public education ecosystems to
+            bridge opportunity gaps and accelerate learning outcomes for all
+            learners
           </p>
           <br />
         </div>

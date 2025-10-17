@@ -141,7 +141,7 @@ nav {
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 15px 20px;
+  padding: 10px 20px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-color);
@@ -151,7 +151,7 @@ nav {
 }
 
 nav.scrolled {
-  padding: 10px 20px;
+  padding: 5px 20px;
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 4px 30px var(--shadow-medium);
 }
@@ -167,7 +167,7 @@ nav.scrolled {
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   text-decoration: none;
 }
 
@@ -199,11 +199,11 @@ nav.scrolled {
 /* Show logo text on tablets and up */
 @media (min-width: 720px) {
   nav {
-    padding: 20px 40px;
+    padding: 10px 40px;
   }
 
   nav.scrolled {
-    padding: 15px 40px;
+    padding: 5px 40px;
   }
 
   .logo {
@@ -225,11 +225,11 @@ nav.scrolled {
 
 @media (min-width: 1024px) {
   nav {
-    padding: 20px 50px;
+    padding: 10px 50px;
   }
 
   nav.scrolled {
-    padding: 15px 50px;
+    padding: 5px 50px;
   }
 
   .logo-text {
@@ -432,7 +432,7 @@ nav.scrolled {
   }
 }
 
-.hero-subtitle {
+.hero-subtitle2 {
   font-size: 16px;
   color: var(--gray-text);
   margin-bottom: 30px;
@@ -440,17 +440,39 @@ nav.scrolled {
 }
 
 @media (min-width: 640px) {
-  .hero-subtitle {
+  .hero-subtitle2 {
     font-size: 18px;
     margin-bottom: 35px;
   }
 }
 
 @media (min-width: 1024px) {
-  .hero-subtitle {
+  .hero-subtitle2 {
     font-size: 20px;
     margin-bottom: 40px;
     line-height: 1.6;
+  }
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: var(--gray-text);
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+  .hero-subtitle {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-subtitle {
+    font-size: 20px;
+    margin-bottom: 5px;
+    /* line-height: 1.6; */
   }
 }
 
@@ -1746,4 +1768,28 @@ footer {
     padding-top: 30px;
     font-size: 15px;
   }
+}
+
+/* for schhols */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+.float-delay-1 {
+  animation-delay: 0s;
+}
+.float-delay-2 {
+  animation-delay: 2s;
+}
+.float-delay-3 {
+  animation-delay: 4s;
 }

@@ -8,18 +8,20 @@ function Hero() {
         <div className="hero-text">
           <h1 className="hero-title">GET READY TO EXCEL.</h1>
           <p className="hero-subtitle">Grade 12 &amp; GCE exam practice</p>
+          <p className="hero-subtitle2">K3 per day Billed @ K75 /month</p>
           <div className="hero-buttons">
             <Link href="/browse" className="primary-button">
-              View Courses
+              View Tests
             </Link>
           </div>
           <div className="stats">
             <div className="stat-card">
+              {/* <div className="stat-label">Trusted by</div> */}
               <div className="stat-number">400+</div>
               <div className="stat-label">Learners</div>
             </div>
             <div className="stat-card">
-              <div className="stat-number">10</div>
+              <div className="stat-number">100+</div>
               <div className="stat-label">Tests</div>
             </div>
             {/* <div className="stat-card">
