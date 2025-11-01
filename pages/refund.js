@@ -14,10 +14,10 @@ const refundPolicy = () => {
 
       <Banner show={false} />
 
-      <div className="">
+      <div className="pb-10">
         <div className="h-8"></div>
         <Navbar />
-        <div className="pt-32">
+        <div className="pt-24">
           <div className="flex flex-col items-center justify-center w-full">
             <div className="w-5/6 sm:w-3/5 h-126">
               <h2 className="text-2xl font-semibold text-gray-500">
@@ -52,9 +52,8 @@ const refundPolicy = () => {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 w-screen">
-        <Footer />
-      </div>
+
+      <Footer />
     </div>
   );
 };

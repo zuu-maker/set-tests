@@ -1,6 +1,9 @@
 import React from "react";
 
 function ForSchoolPricing() {
+  const handleEmail = () => {
+    window.location.href = "mailto:someone@example.com";
+  };
   return (
     <div className="">
       <div className="pt-32 pb-20 px-6">
@@ -40,10 +43,13 @@ function ForSchoolPricing() {
 
               <div className="mb-8">
                 <p className="text-sm mb-1">→ Starting at</p>
-                <p className="text-2xl font-bold">K1000/month</p>
+                <p className="text-2xl font-bold">K1,500/month</p>
               </div>
 
-              <button className="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all">
+              <button
+                onClick={handleEmail}
+                className="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all"
+              >
                 Contact Sales
               </button>
             </div>
@@ -74,10 +80,13 @@ function ForSchoolPricing() {
 
               <div className="mb-8">
                 <p className="text-sm mb-1">→ Starting at</p>
-                <p className="text-2xl font-bold">K2500/month</p>
+                <p className="text-2xl font-bold">K2,500/month</p>
               </div>
 
-              <button className="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all">
+              <button
+                onClick={handleEmail}
+                className="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all"
+              >
                 Contact Sales
               </button>
             </div>
@@ -88,12 +97,12 @@ function ForSchoolPricing() {
               <div className="space-y-4 mb-8">
                 <div className="flex items-start gap-3">
                   <span className="text-green-400 mt-1">✓</span>
-                  <span>Includes Live classNamees + Tutor Dashboard</span>
+                  <span>Includes live clases + tutor dashboard</span>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">🎓</span>
-                  <span>High-impact tuition for external exams</span>
+                  <span>Online and hybrid learning instructions</span>
                 </div>
               </div>
 
@@ -101,7 +110,10 @@ function ForSchoolPricing() {
                 <p className="text-sm mb-1">→ Custom pricing</p>
               </div>
 
-              <button className="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all">
+              <button
+                onClick={handleEmail}
+                className="w-full bg-white text-slate-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all"
+              >
                 Contact Us
               </button>
             </div>

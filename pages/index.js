@@ -59,6 +59,13 @@ export default function Home() {
         <WhyUs />
         <Faq />
         <Footer />
+        <a
+          className="z-50 fixed bottom-20 right-14"
+          href="https://wa.me/972507705"
+          target="_blank"
+        >
+          <img src="/whatsapp.svg" className=" h-12" alt="" />
+        </a>
       </div>
     </AuthCheck>
   );

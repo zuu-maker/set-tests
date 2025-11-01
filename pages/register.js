@@ -204,7 +204,7 @@ function Register() {
           <Link href="/">
             <img
               className="mx-auto h-12 w-auto"
-              src="logo.png"
+              src="new_logo.jpg"
               alt="Sirus Educational Trust"
             />
           </Link>

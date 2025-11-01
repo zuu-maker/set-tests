@@ -172,7 +172,7 @@ function Login() {
           <Link href="/">
             <img
               className="mx-auto h-20 w-auto transition-transform duration-300 hover:scale-105"
-              src="logo.png"
+              src="new_logo.jpg"
               alt="Sirus Educational Trust"
             />
           </Link>

@@ -7,27 +7,16 @@ function Funders() {
     <div>
       {/* <p>hello</p> */}
       <Navbar />
-      <div className="pt-32 pb-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 slide-in">
-            <h1 className="text-5xl md:text-7xl font-bold text-slate-800 mb-6">
-              EdTech
-              <span className="italic bg-gradient-to-r from-primary-cyan to-secondary-cyan bg-clip-text text-transparent">
-                Funders Page
-              </span>
-            </h1>
-          </div>
-        </div>
-      </div>
 
-      <div className="pb-16 px-6">
+      <div className="pb-16 px-6 pt-32">
         <div className="max-w-6xl mx-auto">
           <div className="bg-gradient-to-br from-white to-pale-cyan/30 rounded-3xl shadow-2xl p-10 md:p-16 border border-primary-cyan/20">
             <h2 className="text-4xl font-bold text-slate-800 mb-6">Overview</h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
               The
               <span className="font-semibold text-primary-cyan">
-                Scaling Access Project
+                {" "}
+                Scaling Access Project{" "}
               </span>
               by Sirius Educational Trust is an education innovation initiative
               dedicated to expanding access to quality, technology-enabled
@@ -399,16 +388,6 @@ function Funders() {
                     className="hover:underline font-medium"
                   >
                     partnerships@set.edu.zm
-                  </a>
-                </p>
-                <p className="flex items-center gap-3">
-                  <span className="text-2xl">🌐</span>
-                  <a
-                    href="http://www.set.edu.zm"
-                    target="_blank"
-                    className="hover:underline font-medium"
-                  >
-                    www.set.edu.zm
                   </a>
                 </p>
               </div>
