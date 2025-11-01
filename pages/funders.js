@@ -93,7 +93,9 @@ function Funders() {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
                 <div className="flex items-start gap-4">
-                  <span className="text-3xl flex-shrink-0">✅</span>
+                  <span className="hidden lg:flex lg:flex-shrink-0 text-3xl">
+                    ✅
+                  </span>
                   <div>
                     <h3 className="font-bold text-xl text-slate-800 mb-2">
                       AI-Driven Learning Platform
@@ -108,7 +110,9 @@ function Funders() {
 
               <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
                 <div className="flex items-start gap-4">
-                  <span className="text-3xl flex-shrink-0">✅</span>
+                  <span className="hidden lg:flex lg:flex-shrink-0 text-3xl">
+                    ✅
+                  </span>
                   <div>
                     <h3 className="font-bold text-xl text-slate-800 mb-2">
                       Teacher Empowerment
@@ -124,7 +128,9 @@ function Funders() {
 
               <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
                 <div className="flex items-start gap-4">
-                  <span className="text-3xl flex-shrink-0">✅</span>
+                  <span className="hidden lg:flex lg:flex-shrink-0 text-3xl">
+                    ✅
+                  </span>
                   <div>
                     <h3 className="font-bold text-xl text-slate-800 mb-2">
                       School Enablement
@@ -140,7 +146,9 @@ function Funders() {
 
               <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
                 <div className="flex items-start gap-4">
-                  <span className="text-3xl flex-shrink-0">✅</span>
+                  <span className="hidden lg:flex lg:flex-shrink-0 text-3xl">
+                    ✅
+                  </span>
                   <div>
                     <h3 className="font-bold text-xl text-slate-800 mb-2">
                       Equitable Access Model
@@ -238,7 +246,7 @@ function Funders() {
             <div className="space-y-6">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all">
                 <div className="flex items-start gap-4">
-                  <span className="text-4xl">💡</span>
+                  <span className="text-4xl hidden lg:block">💡</span>
                   <div>
                     <h4 className="text-xl font-bold mb-2">
                       Innovation Partner
@@ -253,7 +261,7 @@ function Funders() {
 
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all">
                 <div className="flex items-start gap-4">
-                  <span className="text-4xl">🏫</span>
+                  <span className="text-4xl hidden lg:block">🏫</span>
                   <div>
                     <h4 className="text-xl font-bold mb-2">Access Partner</h4>
                     <p>
@@ -266,7 +274,7 @@ function Funders() {
 
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all">
                 <div className="flex items-start gap-4">
-                  <span className="text-4xl">🌱</span>
+                  <span className="text-4xl hidden lg:block">🌱</span>
                   <div>
                     <h4 className="text-xl font-bold mb-2">Equity Partner</h4>
                     <p>
@@ -279,7 +287,7 @@ function Funders() {
 
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all">
                 <div className="flex items-start gap-4">
-                  <span className="text-4xl">🔗</span>
+                  <span className="text-4xl hidden lg:block">🔗</span>
                   <div>
                     <h4 className="text-xl font-bold mb-2">
                       Strategic Partner
