@@ -49,6 +49,20 @@ function CreateTestForm({
             placeholder="Number of Tests"
           />
 
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              name="free"
+              type="checkbox"
+              value=""
+              className="sr-only peer"
+              onChange={handleChange}
+            />
+            <div className="relative w-11 h-6  peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-800 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-cyan-600"></div>
+            <span className="ms-3 text-lg font-medium text-cyan-500">
+              Free test? {values.free ? "Yes" : "No"}
+            </span>
+          </label>
+
           <div className="flex space-x-3">
             <label className="text-white flex justify-center h-710 items-center w-full bg-gradient-to-r flex-grow from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               {buttonText}

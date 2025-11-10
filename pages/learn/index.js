@@ -112,24 +112,45 @@ function LearnPage() {
   }, []);
 
   useEffect(() => {
-    let unsubscribe = db
-      .collection("Courses")
-      .where("publish", "==", true)
-      .orderBy("title", "asc")
-      .onSnapshot((querySnapShot) => {
-        let _courses = [];
-        querySnapShot.forEach((snap) => {
-          _courses.push(snap.data());
+    let unsubscribe = null;
+
+    if (user && user._id && user.activeSubscription) {
+      unsubscribe = db
+        .collection("Courses")
+        .where("publish", "==", true)
+        .orderBy("title", "asc")
+        .onSnapshot((querySnapShot) => {
+          let _courses = [];
+          querySnapShot.forEach((snap) => {
+            _courses.push(snap.data());
+          });
+          setCourses(_courses);
+          if (user && user.verified) {
+            setHidden(false);
+          }
+          setLoader(false);
         });
-        setCourses(_courses);
-        if (user && user.verified) {
-          setHidden(false);
-        }
-        setLoader(false);
-      });
+    } else {
+      unsubscribe = db
+        .collection("Courses")
+        .where("publish", "==", true)
+        .where("free", "==", true)
+        .orderBy("title", "asc")
+        .onSnapshot((querySnapShot) => {
+          let _courses = [];
+          querySnapShot.forEach((snap) => {
+            _courses.push(snap.data());
+          });
+          setCourses(_courses);
+          if (user && user.verified) {
+            setHidden(false);
+          }
+          setLoader(false);
+        });
+    }
 
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   const handleRenew = (test) => {
     if (!test.id || !user._id) return;
@@ -207,9 +228,11 @@ function LearnPage() {
             </div>
           ) : (
             <div>
-              {user && user._id && user.activeSubscription ? (
-                <MyCourses courses={courses} />
-              ) : (
+              {/* // chnage this code back */}
+              {/* {user && user._id && user.activeSubscription ? ( */}
+              {/* {true ? ( */}
+              <MyCourses courses={courses} />
+              {/* ) : (
                 <PleaseSubscribe
                   validating={validating}
                   validatePromoCode={validatePromoCode}
@@ -221,7 +244,7 @@ function LearnPage() {
                   user={user}
                   loading={loading}
                 />
-              )}
+              )} */}
             </div>
           )}
         </div>

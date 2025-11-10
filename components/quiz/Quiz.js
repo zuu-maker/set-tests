@@ -119,7 +119,7 @@ const Quiz = ({ id }) => {
     );
   }
 
-  if (showResult) {
+  if (true) {
     return (
       <Result
         answers={answers}

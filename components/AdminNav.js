@@ -77,7 +77,7 @@ function AdminNav() {
             </svg>
             {user !== null && user.name}
           </div>
-          {user !== null && user.expiresOn > 0 && (
+          {user !== null && user.activeSubscription && user.expiresOn > 0 && (
             <div
               className="middle none font-sans font-bold center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 hidden items-center gap-1 px-4 xl:flex"
               type="button"

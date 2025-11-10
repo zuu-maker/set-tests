@@ -17,7 +17,8 @@ function QuizPage() {
       <div className="p-4 xl:ml-80">
         <AdminNav />
         <div className="mt-12">
-          {user && user._id && user.activeSubscription ? (
+          {/* {user && user._id && user.activeSubscription ? ( */}
+          {true ? (
             <Quiz id={id} />
           ) : (
             <div className="flex items-center justify-center">

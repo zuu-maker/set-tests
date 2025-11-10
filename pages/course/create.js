@@ -13,6 +13,7 @@ const initialValues = {
   description: "",
   numberOfQuestions: "",
   numberOfTests: "",
+  free: false,
 };
 
 function CreateTest() {
@@ -25,7 +26,14 @@ function CreateTest() {
   const [buttonText, setButtonText] = useState("Upload Image");
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    if (e.target.name === "free") {
+      setValues({ ...values, [e.target.name]: !values.free });
+    } else {
+      setValues({ ...values, [e.target.name]: e.target.value });
+    }
+
+    console.log(!values.free);
+    // setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {

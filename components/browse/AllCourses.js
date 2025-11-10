@@ -79,7 +79,8 @@ function AllCourses({ courses }) {
                 Grade 12 & GCE
               </h1>
               <p className="mt-2 text-lg text-gray-600 hidden lg:block">
-                Choose from our comprehensive course collection
+                Subscribe to unlock all exams, AI flashcards &amp; assesment
+                tracking for Grade 12 and GCE.
               </p>
             </div>
             <div className=" gap-2 hidden lg:flex">

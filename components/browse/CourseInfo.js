@@ -30,7 +30,10 @@ function CourseInfo({
         </p>
 
         <div className=" mt-5 sm:mt-5 ">
-          <p>Purchase subscription for all courses valid for 7 days.</p>
+          <p>
+            Purchase subscription for all exams, AI flashcards &amp; assesment
+            tracking valid for 30 days.
+          </p>
 
           <div className="mt-1">
             {user && user._id.length > 0 && (
