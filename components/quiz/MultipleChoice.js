@@ -1,4 +1,4 @@
-import { containsHtmlTags } from "@/utils";
+import { containsHtmlTags, capitalizeFirstChar } from "@/utils";
 import React from "react";
 
 function MultipleChoice({ questionId, options, onAnswerChange, answer }) {
@@ -10,7 +10,7 @@ function MultipleChoice({ questionId, options, onAnswerChange, answer }) {
   console.log("answer in -->", answer);
 
   return (
-    <div className="flex flex-col p-2">
+    <div className="flex flex-col pl-4 p-2">
       {options.map((option, index) => (
         <label className="flex items-center space-x-2" key={index}>
           <input
@@ -23,11 +23,11 @@ function MultipleChoice({ questionId, options, onAnswerChange, answer }) {
           {containsHtmlTags(option) ? (
             <span
               dangerouslySetInnerHTML={{
-                __html: option,
+                __html: capitalizeFirstChar(option),
               }}
             />
           ) : (
-            <span className="ml-2">{option}</span>
+            <span className="ml-2">{capitalizeFirstChar(option)}</span>
           )}
         </label>
       ))}

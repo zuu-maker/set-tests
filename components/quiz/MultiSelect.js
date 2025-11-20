@@ -1,4 +1,4 @@
-import { containsHtmlTags } from "@/utils";
+import { containsHtmlTags, capitalizeFirstChar } from "@/utils";
 import React from "react";
 
 function MultiSelect({
@@ -43,11 +43,11 @@ function MultiSelect({
           {containsHtmlTags(option) ? (
             <span
               dangerouslySetInnerHTML={{
-                __html: option,
+                __html: capitalizeFirstChar(option),
               }}
             />
           ) : (
-            <span className="ml-2">{option}</span>
+            <span className="ml-2">{capitalizeFirstChar(option)}</span>
           )}
         </label>
       ))}

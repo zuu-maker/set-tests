@@ -144,7 +144,7 @@ const Question = ({
   const renderQuestionText = () => {
     if (text[0] === "<") {
       return (
-        <div className="text-sm pl-2 -mt-4 prose">
+        <div className="text-sm pl-2 -mt-8 prose">
           <div
             className="ql-editor"
             dangerouslySetInnerHTML={{
@@ -154,7 +154,7 @@ const Question = ({
         </div>
       );
     }
-    return <p className="pl-2">{text}</p>;
+    return <p className="pl-2 -mt-2">{capitalizeFirstChar(text)}</p>;
   };
 
   return (

@@ -24,8 +24,16 @@ export function containsHtmlTags(str) {
 }
 
 export function capitalizeFirstChar(str) {
-  if (!str) return str;
-  return str;
+  let chars = [];
+  if (str[0] === "<") {
+    // console.log(str.split("")); // hpow to split into chars
+    chars = str.split("");
+    chars[3] = chars[3].toUpperCase();
+    return chars.join("");
+  }
+  chars = str.split("");
+  chars[0] = chars[0].toUpperCase();
+  return chars.join("");
 }
 
 export function checkStringInArray(array, searchString) {
