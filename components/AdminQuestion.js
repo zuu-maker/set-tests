@@ -76,8 +76,10 @@ function AdminQuestion({ question, index, removeQuestion, editQuestionModal }) {
       </p>
       <p>
         <strong className="mr-1">Question Text:</strong>
-        {stripHtmlTags(question.text)}
+        {stripHtmlTags(question.text) + "\n"}
       </p>
+      {/* <br />
+      <p>hello</p> */}
       <div>
         <div dangerouslySetInnerHTML={{ __html: question.explanation }} />
       </div>

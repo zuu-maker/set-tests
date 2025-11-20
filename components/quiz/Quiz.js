@@ -169,6 +169,7 @@ const Quiz = ({ id }) => {
     }));
   };
 
+  console.log("State------>>>>>", state);
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center">

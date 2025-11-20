@@ -22,7 +22,8 @@ function Result({
 }) {
   let user = useSelector((state) => state.user);
   const [showConfetti, setShowConfetti] = useState(false);
-  const percentage = Math.round((score / questions.length) * 100);
+  const autoMarckQuestions = questions.filter((q) => q.type !== "text");
+  const percentage = Math.round((score / autoMarckQuestions.length) * 100);
   const isPassing = percentage >= 75;
   // const isPassing = true;
 
@@ -237,7 +238,7 @@ function Result({
   // Stats for the summary
   const stats = {
     correct: score,
-    incorrect: questions.length - score,
+    incorrect: autoMarckQuestions.length - score,
     percentage: percentage,
     timeTaken: secondsToMinutes(calculateTotalTime()).toFixed(2), // Mock data - replace with actual
     avgTime: secondsToMinutes(calculateAverageTime()).toFixed(2), // Mock data - replace with actual
@@ -331,7 +332,7 @@ function Result({
               {percentage}%
             </div>
             <div className="text-lg text-white/80">
-              Score: {score} out of {questions.length}
+              Score: {score} out of {autoMarckQuestions.length}
             </div>
           </div>
 
