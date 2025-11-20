@@ -144,7 +144,7 @@ const Question = ({
   const renderQuestionText = () => {
     if (text[0] === "<") {
       return (
-        <div className="text-sm pl-2 -mt-8 prose">
+        <div className="text-sm pl-4 -mt-6 prose">
           <div
             className="ql-editor"
             dangerouslySetInnerHTML={{
