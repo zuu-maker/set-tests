@@ -5,30 +5,197 @@ import { db } from "@/firebase";
 import firebase from "firebase";
 import toast from "react-hot-toast";
 import Confetti from "@/components/Confetti";
+import { number } from "framer-motion";
 
-function Result({ answers, questions, score, quizId }) {
+function Result({
+  answers,
+  questions,
+  score,
+  quizId,
+  courseId,
+  calculateTotalTime,
+  calculateTimeDistribution,
+  calculateAverageTime,
+  state,
+  courseTitle,
+  courseNumTests,
+}) {
   let user = useSelector((state) => state.user);
   const [showConfetti, setShowConfetti] = useState(false);
   const percentage = Math.round((score / questions.length) * 100);
-  // const isPassing = percentage >= 75;
-  const isPassing = true;
+  const isPassing = percentage >= 75;
+  // const isPassing = true;
 
-  const saveQuizResult = async (userId, quizResult) => {
-    console.log("Result-->", quizResult);
-    // try {
-    //   await db.collection("Users").doc(userId).collection("quizResults").add({
-    //     quizId: quizResult.quizId,
-    //     score: quizResult.score,
-    //     dateTaken: firebase.firestore.FieldValue.serverTimestamp(),
-    //     totalQuestions: quizResult.totalQuestions,
-    //     correctAnswers: quizResult.correctAnswers,
-    //   });
-    //   toast.success("Quiz result saved successfully");
-    //   console.log("Quiz result saved successfully");
-    // } catch (error) {
-    //   toast.error("Error saving quiz result");
-    //   console.error("Error saving quiz result: ", error);
-    // }
+  // const saveQuizResult = async (userId, quizResult) => {
+  //   console.log("Result-->", quizResult);
+  //   try {
+  //     await db.collection("Users").doc(userId).collection("quizResults").add({
+  //       quizId: quizResult.quizId,
+  //       score: quizResult.score,
+  //       dateTaken: firebase.firestore.FieldValue.serverTimestamp(),
+  //       totalQuestions: quizResult.totalQuestions,
+  //       correctAnswers: quizResult.correctAnswers,
+  //     });
+  //     toast.success("Quiz result saved successfully");
+  //     console.log("Quiz result saved successfully");
+  //   } catch (error) {
+  //     toast.error("Error saving quiz result");
+  //     console.error("Error saving quiz result: ", error);
+  //   }
+  // };
+  const saveExamDetials = async (userId, quizResult) => {
+    // console.log("Result-->", quizResult);
+    // firebase imestamp can not be saved in an arrayt
+
+    // should check if this quiz result already exists for this user to avoid duplicates and instead update answers and score
+    // if done before update its scores
+
+    if (state.test && !state.test.id) {
+      toast.error("Can not work");
+      return;
+    }
+
+    const docRef = db
+      .collection("Users")
+      .doc(userId)
+      .collection("ExamDetails")
+      .doc(state.test.id);
+
+    try {
+      const docSnapShot = await docRef.get();
+
+      if (!docSnapShot.exists) {
+        await docRef.set({
+          id: state.test.id,
+          courseId,
+          title: state.test.title,
+          year: state.test.year,
+          lastDateTaken: firebase.firestore.FieldValue.serverTimestamp(),
+          timeDistributions: calculateTimeDistribution(),
+          totalQuestions: quizResult.totalQuestions,
+          correctAnswers: quizResult.correctAnswers,
+          timeSpent: calculateTotalTime(),
+          bestScore: percentage,
+          lastScore: percentage,
+          averageScore: percentage,
+          numberOfAttempts: 1,
+          userAnswers: answers,
+          questions: questions,
+          attempts: [
+            {
+              dateTaken: new Date().toISOString(),
+              score: percentage,
+              timeSpent: calculateTotalTime(),
+              totalQuestions: quizResult.totalQuestions,
+              correctAnswers: quizResult.correctAnswers,
+            },
+          ],
+        });
+      } else {
+        const attempts = docSnapShot.data().attempts;
+
+        attempts.push({
+          dateTaken: new Date().toISOString(),
+          score: percentage,
+          timeSpent: calculateTotalTime(),
+          totalQuestions: quizResult.totalQuestions,
+          correctAnswers: quizResult.correctAnswers,
+        });
+
+        const averageScore =
+          attempts.reduce((sum, attempt) => sum + attempt.score, 0) /
+          attempts.length;
+        const bestScore = attempts.reduce(
+          (max, attempt) => (attempt.score > max ? attempt.score : max),
+          0
+        );
+
+        await docRef.update({
+          bestScore,
+          averageScore,
+          attempts,
+          numberOfAttempts: attempts.length,
+          userAnswers: answers,
+          questions: questions,
+          correctAnswers: quizResult.correctAnswers,
+          totalQuestions: quizResult.totalQuestions,
+          timeSpent: calculateTotalTime(),
+          lastDateTaken: firebase.firestore.FieldValue.serverTimestamp(),
+          timeDistributions: calculateTimeDistribution(),
+        });
+      }
+
+      toast.success("Quiz result created and  successfuly");
+
+      // console.log("Quiz result saved successfully");
+    } catch (error) {
+      toast.error("Error saving exam result");
+      console.log("Error saving quiz result: ", error);
+    }
+  };
+
+  const saveExamsBySubject = async (userId, quizResult) => {
+    // console.log("Result-->", quizResult);
+
+    const docRef = db
+      .collection("Users")
+      .doc(userId)
+      .collection("Subjects")
+      .doc(courseId);
+
+    // Only subject with atte,pted exams should be added
+    // if done before kee increasing he time and if a new exam has been done add it
+
+    console.log("subject -->", {
+      id: courseId,
+      courseTitle,
+      totalExams: courseNumTests,
+      examsAttempted: [state.test.id],
+      numberOfExamubAttempted: 1,
+    });
+
+    try {
+      const docSnapShot = await docRef.get();
+
+      if (!docSnapShot.exists) {
+        await docRef.set(
+          {
+            id: courseId,
+            courseTitle,
+            totalExams: parseInt(courseNumTests),
+            examsAttempted: [state.test.id],
+            numberOfExamsAttempted: 1,
+          },
+          { merge: true }
+        );
+      } else {
+        const examsAttempted = docSnapShot.data().examsAttempted;
+
+        if (!examsAttempted.includes(state.test.id)) {
+          examsAttempted.push(state.test.id);
+          await docRef.update({
+            examsAttempted,
+            numberOfExamsAttempted: examsAttempted.length,
+          });
+        }
+      }
+      toast.success("Subject result created and saved successfully");
+
+      // toast.success("Quiz result saved successfully");
+      // console.log("Quiz result saved successfully");
+    } catch (error) {
+      toast.error("Error saving subject result");
+      console.log("Error saving subject result: ", error);
+    }
+  };
+
+  const saveExamData = async (_quizResult) => {
+    try {
+      await saveExamsBySubject(user._id, _quizResult);
+      await saveExamDetials(user._id, _quizResult);
+    } catch (error) {
+      console.log("failed", error);
+    }
   };
 
   useEffect(() => {
@@ -40,8 +207,10 @@ function Result({ answers, questions, score, quizId }) {
         totalQuestions: questions.length,
         correctAnswers: score,
       };
-      console.log("results -->", _quizResult);
-      saveQuizResult(user._id, _quizResult);
+      // console.log("results -->", _quizResult);
+      // console.log("time spent -->", calculateTotalTime());
+      // console.log("time dist -->", calculateTimeDistribution());
+      saveExamData(_quizResult);
     }
   }, []);
 
@@ -61,13 +230,17 @@ function Result({ answers, questions, score, quizId }) {
     });
   }, []);
 
+  const secondsToMinutes = (seconds) => {
+    return seconds / 60;
+  };
+
   // Stats for the summary
   const stats = {
     correct: score,
     incorrect: questions.length - score,
     percentage: percentage,
-    timeTaken: "12:35", // Mock data - replace with actual
-    avgTime: "31s", // Mock data - replace with actual
+    timeTaken: secondsToMinutes(calculateTotalTime()).toFixed(2), // Mock data - replace with actual
+    avgTime: secondsToMinutes(calculateAverageTime()).toFixed(2), // Mock data - replace with actual
   };
 
   return (
@@ -158,7 +331,7 @@ function Result({ answers, questions, score, quizId }) {
               {percentage}%
             </div>
             <div className="text-lg text-white/80">
-              Score: {score * 10} out of {questions.length * 10}
+              Score: {score} out of {questions.length}
             </div>
           </div>
 

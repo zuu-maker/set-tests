@@ -49,7 +49,7 @@ const ResultCard = ({ answers, question, index }) => {
             </div>
 
             {/* Question Text */}
-            <div className="flex-1 -mt-6">
+            <div className="flex-1 -mt-2">
               <div className="prose prose-gray max-w-none">
                 <p
                   className="text-gray-900 font-medium text-lg leading-relaxed"

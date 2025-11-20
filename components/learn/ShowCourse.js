@@ -166,6 +166,7 @@ function ShowCourse({ tests, course, visible, setCurrent, id }) {
                 <LessonListStudent
                   key={i}
                   courseId={id}
+                  course={course}
                   lesson={item}
                   index={i}
                   setCurrent={setCurrent}

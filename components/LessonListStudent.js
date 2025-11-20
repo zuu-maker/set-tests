@@ -2,7 +2,7 @@ import React from "react";
 import Avatar from "./utils/Avatar";
 import Link from "next/link";
 
-const LessonListStudent = ({ lesson, index, courseId }) => {
+const LessonListStudent = ({ lesson, index, courseId, course }) => {
   // Mock data for demonstration - replace with actual data
 
   const questions = lesson.questions.length || 25;
@@ -72,7 +72,7 @@ const LessonListStudent = ({ lesson, index, courseId }) => {
             {/* Action Button */}
             <div className="ml-4">
               <Link
-                href={`/learn/quizv2/${courseId}-${lesson.id}`}
+                href={`/learn/quizv2/${courseId}-${lesson.id}-${course.title}-${course.numberOfTests}`}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-cyan-700 text-white rounded-xl font-medium text-sm transition-all duration-300 hover:from-cyan-700 hover:to-cyan-800 hover:shadow-lg group"
               >
                 Start

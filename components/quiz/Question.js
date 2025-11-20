@@ -48,7 +48,7 @@ const Question = ({
   question,
   onAnswerChange,
   answer,
-  setScore,
+  increaseScore,
   showFeedback,
   currentQuestionIndex,
 }) => {
@@ -60,9 +60,9 @@ const Question = ({
 
   useEffect(() => {
     if (showFeedback && isCorrect) {
-      setScore((score) => score + 1);
+      increaseScore();
     }
-  }, [showFeedback, isCorrect, setScore]);
+  }, [showFeedback, isCorrect]);
 
   useEffect(() => {
     setUserAnswer(answer);
