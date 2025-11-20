@@ -183,6 +183,7 @@ const Quiz = ({ id }) => {
   if (showResult) {
     return (
       <Result
+        setUi={setUi}
         answers={answers}
         quizId={id.split("-")[1]}
         courseId={id.split("-")[0]}

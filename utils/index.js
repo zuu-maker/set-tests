@@ -26,13 +26,15 @@ export function containsHtmlTags(str) {
 export function capitalizeFirstChar(str) {
   let chars = [];
   if (str[0] === "<") {
-    // console.log(str.split("")); // hpow to split into chars
     chars = str.split("");
     chars[3] = chars[3].toUpperCase();
+    // console.log(chars.join(""));
     return chars.join("");
   }
-  chars = str.split("");
+  chars = str.trim().split("");
+  console.log("hereeeee -->", chars); // hpow to split into chars
   chars[0] = chars[0].toUpperCase();
+  console.log(chars.join(""));
   return chars.join("");
 }
 

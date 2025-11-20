@@ -194,7 +194,7 @@ const mockExamDetails = {
   },
 };
 
-const AssessmentSystem = () => {
+const AssessmentSystem = ({ setLoader }) => {
   const [currentView, setCurrentView] = useState("subjects"); // subjects, exams, exam-details
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedExam, setSelectedExam] = useState(null);
@@ -252,28 +252,35 @@ const AssessmentSystem = () => {
   }, []);
   // Navigation functions
   const navigateToExams = (subject) => {
+    setLoader(true);
+
     setSelectedSubject(subject);
     fetchExams(subject.id);
+
     // setExams(mockExamsBySubject[subject.id] || []);
     setCurrentView("exams");
+    setLoader(false);
   };
 
   const navigateToExamDetails = (exam) => {
+    setLoader(true);
     setSelectedExam(exam);
     // setExamDetails(mockExamDetails[exam.id] || null);
     setExamDetails(exam || null);
     setCurrentView("exam-details");
+    setLoader(false);
   };
 
   const navigateToReview = (exam) => {
     // setSelectedExam(exam);
     // setExamDetails(mockExamDetails[exam.id] || null);
     // setExamDetails(exam || null);
-
+    setLoader(true);
     console.log(exam);
     setQuestions(exam.questions || []);
     setAnswers(exam.userAnswers);
     setCurrentView("review");
+    setLoader(false);
   };
 
   const navigateBack = () => {

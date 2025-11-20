@@ -19,6 +19,7 @@ function Result({
   state,
   courseTitle,
   courseNumTests,
+  setUi,
 }) {
   let user = useSelector((state) => state.user);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -126,7 +127,7 @@ function Result({
         });
       }
 
-      toast.success("Quiz result created and  successfuly");
+      // toast.success("Quiz result created and  successfuly");
 
       // console.log("Quiz result saved successfully");
     } catch (error) {
@@ -180,7 +181,6 @@ function Result({
           });
         }
       }
-      toast.success("Subject result created and saved successfully");
 
       // toast.success("Quiz result saved successfully");
       // console.log("Quiz result saved successfully");
@@ -194,6 +194,8 @@ function Result({
     try {
       await saveExamsBySubject(user._id, _quizResult);
       await saveExamDetials(user._id, _quizResult);
+      toast.success("Results have been saved successfully");
+      setUi((prev) => ({ ...prev, isLoading: false }));
     } catch (error) {
       console.log("failed", error);
     }

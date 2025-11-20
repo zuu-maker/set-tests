@@ -228,7 +228,7 @@ function LearnPage() {
               <FadeLoader color="#00FFFF" />
             </div>
           ) : (
-            <AssessmentDashboard />
+            <AssessmentDashboard setLoader={setLoader} />
           )}
         </div>
       </div>

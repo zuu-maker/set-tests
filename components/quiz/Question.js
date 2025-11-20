@@ -154,7 +154,7 @@ const Question = ({
         </div>
       );
     }
-    return <p className="pl-2 -mt-2">{capitalizeFirstChar(text)}</p>;
+    return <p className="pl-2 -mt-8">{capitalizeFirstChar(text)}</p>;
   };
 
   return (
