@@ -337,7 +337,7 @@ const AssessmentSystem = ({ setLoader }) => {
 
   // SUBJECTS VIEW
   const SubjectsView = () => (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 pb-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Assessments</h1>
         {subjects.length > 0 && (

@@ -222,7 +222,7 @@ function LearnPage() {
       <Sidebar />
       <div className="p-4 xl:ml-80">
         <AdminNav />
-        <div className="mt-12">
+        <div className="mt-8">
           {loader ? (
             <div className="h-screen w-full flex items-center justify-center">
               <FadeLoader color="#00FFFF" />

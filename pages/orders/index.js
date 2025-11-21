@@ -192,7 +192,7 @@ function Orders() {
       <Sidebar />
       <div className="p-4 xl:ml-80">
         <AdminNav />
-        <div className="mt-12">
+        <div className="mt-8">
           {loader ? (
             <div className="h-screen w-full flex items-center justify-center">
               <FadeLoader color="#00FFFF" />
@@ -201,9 +201,13 @@ function Orders() {
             <div>
               <div>
                 <div className="relative overflow-x-auto">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-6">
+                    {" "}
+                    Orders
+                  </h1>
+                  {/* <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Transcations
-                  </h6>
+                  </h6> */}
                   <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
                       <tr>
