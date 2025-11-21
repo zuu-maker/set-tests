@@ -17,7 +17,9 @@ const INITIAL_STATE = {
   score: 0,
 };
 
-const Quiz = ({ id }) => {
+// if too many errors use the actual course instead
+
+const Quiz = ({ id, course }) => {
   const [state, setState] = useState(INITIAL_STATE);
   const [ui, setUi] = useState({
     isLoading: true,
@@ -40,7 +42,7 @@ const Quiz = ({ id }) => {
   }, [id]);
 
   useEffect(() => {
-    if (startTime === null && !isLoading) {
+    if (startTime === undefined && !isLoading) {
       // alert("Started");
       setStartTime(new Date()); // Start the timer when quiz starts
     }
@@ -187,8 +189,8 @@ const Quiz = ({ id }) => {
         answers={answers}
         quizId={id.split("-")[1]}
         courseId={id.split("-")[0]}
-        courseTitle={id.split("-")[2]}
-        courseNumTests={id.split("-")[3]}
+        courseTitle={course.title}
+        courseNumTests={course.numberOfTests}
         questions={questions}
         score={score}
         state={state}

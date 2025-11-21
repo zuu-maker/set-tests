@@ -48,6 +48,8 @@ function SubscriptionModal({ visible, setVisible, setCurrent }) {
       toast.success(
         "Apologies you already have a subscription please refresh the page"
       );
+      setLoading(true);
+
       return;
     }
 

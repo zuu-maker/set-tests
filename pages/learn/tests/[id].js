@@ -53,6 +53,32 @@ const MyCourse = () => {
     // }
   }, [id]);
 
+  // if (loader) {
+  //   return (
+  //     <div className="h-screen w-full flex items-center justify-center">
+  //       <FadeLoader color="#00FFFF" />
+  //     </div>
+  //   );
+  // }
+
+  // if (
+  //   !loader &&
+  //   course &&
+  //   !course.free &&
+  //   user &&
+  //   user._id &&
+  //   !user.activeSubscription
+  // ) {
+  //   return (
+  //     <div className="flex justify-center items-center h-full">
+  //       <p className="font-bold text-red-500">
+  //         You are not subscribed kindly go to your dashboard and subcribe thank
+  //         you
+  //       </p>
+  //     </div>
+  //   );
+  // }
+
   return (
     <StudentAuth>
       <Sidebar />
@@ -69,7 +95,19 @@ const MyCourse = () => {
             <div className="container mx-auto px-8">
               {/* user && user._id.length > 0 && user.activeSubscription  */}
               {/* {user && user._id.length > 0 && user.activeSubscription ? ( */}
-              {true ? (
+              {!loader &&
+              course &&
+              !course.free &&
+              user &&
+              user._id &&
+              !user.activeSubscription ? (
+                <div className="flex justify-center items-center h-full">
+                  <p className="font-bold text-red-500">
+                    You are not subscribed kindly go to your dashboard and
+                    subcribe thank you
+                  </p>
+                </div>
+              ) : (
                 <ShowCourse
                   tests={tests}
                   course={course}
@@ -77,13 +115,6 @@ const MyCourse = () => {
                   setCurrent={setCurrent}
                   id={id}
                 />
-              ) : (
-                <div className="flex justify-center items-center h-full">
-                  <p className="font-bold text-red-500">
-                    You are not subscribed kindly go to your dashboard and
-                    subcribe thank you
-                  </p>
-                </div>
               )}
             </div>
           )}

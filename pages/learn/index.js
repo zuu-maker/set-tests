@@ -204,7 +204,9 @@ function LearnPage() {
             alt="Sirus Educational Trust"
           />
         </Link>
-        <p className="text-lg font-sans">You have not verfied your email.</p>
+        <p className="text-lg font-sans">
+          You have not verfied your email, if you have please refresh this page.
+        </p>
         <button
           disabled={loading}
           className="flex w-1/6 justify-center rounded-md bg-sky-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"

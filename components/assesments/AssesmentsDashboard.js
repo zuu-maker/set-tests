@@ -340,14 +340,16 @@ const AssessmentSystem = ({ setLoader }) => {
     <div className="max-w-7xl mx-auto px-4 pb-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Assessments</h1>
-        {subjects.length > 0 && (
+        {subjects.length > 0 ? (
           <p className="text-gray-600">
             Choose a subject to view your exams and progress
           </p>
+        ) : (
+          <p className="text-gray-600">You have not taken any tests</p>
         )}
       </div>
 
-      {subjects.length > 0 ? (
+      {subjects.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {subjects.map((subject) => {
             const colors = getColorClasses(subject.color);
@@ -426,10 +428,6 @@ const AssessmentSystem = ({ setLoader }) => {
               </div>
             );
           })}
-        </div>
-      ) : (
-        <div>
-          <p>You have not taken any tests</p>
         </div>
       )}
     </div>
