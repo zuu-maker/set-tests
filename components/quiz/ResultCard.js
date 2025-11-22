@@ -52,7 +52,7 @@ const ResultCard = ({ answers, question, index }) => {
             <div className="flex-1 -mt-2">
               <div className="prose prose-gray max-w-none">
                 <p
-                  className="text-gray-900 font-medium text-lg leading-relaxed"
+                  className="text-gray-900 font-medium text-sm lg:text-lg leading-relaxed"
                   dangerouslySetInnerHTML={{
                     __html: capitalizeFirstChar(question.text),
                   }}
@@ -70,7 +70,7 @@ const ResultCard = ({ answers, question, index }) => {
           >
             {isCorrect ? (
               <svg
-                className="w-5 h-5 text-green-600"
+                className="w-3 h-3 lg:w-5 lg:h-5 text-green-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -84,7 +84,7 @@ const ResultCard = ({ answers, question, index }) => {
               </svg>
             ) : (
               <svg
-                className="w-5 h-5 text-red-600"
+                className="w-3 h-3 lg:w-5 lg:h-5 text-red-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -114,7 +114,7 @@ const ResultCard = ({ answers, question, index }) => {
           `}
           >
             <div className="flex items-start gap-2">
-              <span className="text-sm font-semibold text-gray-600">
+              <span className="text-xs lg:text-sm font-semibold text-gray-600">
                 Your Answer:
               </span>
               <span
@@ -133,7 +133,7 @@ const ResultCard = ({ answers, question, index }) => {
           {!isCorrect && question.type !== "text" && (
             <div className="p-4 rounded-xl bg-green-50 border border-green-200">
               <div className="flex items-start gap-2">
-                <span className="text-sm font-semibold text-gray-600">
+                <span className="text-xs lg:text-sm font-semibold text-gray-600">
                   Correct Answer:
                 </span>
                 <span
@@ -152,7 +152,7 @@ const ResultCard = ({ answers, question, index }) => {
           <div className="border-t border-gray-200 pt-4">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+              className="flex items-center gap-2 text-xs lg:text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
             >
               <svg
                 className={`w-4 h-4 transition-transform duration-200 ${

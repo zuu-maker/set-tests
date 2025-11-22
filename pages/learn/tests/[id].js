@@ -92,7 +92,7 @@ const MyCourse = () => {
               <FadeLoader color="#00FFFF" />
             </div>
           ) : (
-            <div className="container mx-auto px-8">
+            <div className="container mx-auto lg:px-8">
               {/* user && user._id.length > 0 && user.activeSubscription  */}
               {/* {user && user._id.length > 0 && user.activeSubscription ? ( */}
               {!loader &&

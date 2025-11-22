@@ -32,11 +32,11 @@ function ShowCourse({ tests, course, visible, setCurrent, id }) {
               <span>Currently Learning</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <h1 className="text-2xl sm:text-4xl font-bold text-white mb-4">
               {course?.title}
             </h1>
 
-            <p className="text-blue-100 text-lg max-w-3xl">
+            <p className="text-blue-100 text-sm lg:text-lg max-w-3xl text-justify">
               {course?.description}
             </p>
           </div>

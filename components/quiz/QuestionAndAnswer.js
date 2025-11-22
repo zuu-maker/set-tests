@@ -34,7 +34,7 @@ function QuestionAndAnswer({ questions, answers, navigateBack }) {
           Back to Exams
         </button>
       </div>
-      <div className="px-4 py-12 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+      <div className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Detailed Review

@@ -192,161 +192,155 @@ function Orders() {
       <Sidebar />
       <div className="p-4 xl:ml-80">
         <AdminNav />
-        <div className="mt-8">
+        <div className="mt-8 pb-12">
           {loader ? (
             <div className="h-screen w-full flex items-center justify-center">
               <FadeLoader color="#00FFFF" />
             </div>
           ) : (
-            <div>
-              <div>
-                <div className="relative overflow-x-auto">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                    {" "}
-                    Orders
-                  </h1>
-                  {transactions.length > 0 ? (
-                    <p className="text-gray-600 mb-6">
-                      Your transactions are displayed here
-                    </p>
-                  ) : (
-                    <p className="text-gray-600 mb-6">
-                      You have no transactions
-                    </p>
-                  )}
-                  {/* <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+            <div className="">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2"> Orders</h1>
+              {transactions.length > 0 ? (
+                <p className="text-gray-600 mb-6">
+                  Your transactions are displayed here
+                </p>
+              ) : (
+                <p className="text-gray-600 mb-6">You have no transactions</p>
+              )}
+
+              {/* <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Transcations
                   </h6> */}
-                  {transactions.length > 0 && (
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
-                      <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
-                        <tr>
-                          <th scope="col" className="px-6 py-3">
-                            Customer
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Email
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Phone
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Date
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Time
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Amount
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Status
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {transactions.map((item) => (
-                          <tr key={item.id} className="bg-white border-b">
-                            {/* <th
+              {transactions.length > 0 && (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
+                      <tr>
+                        <th scope="col" className="px-6 py-3">
+                          Customer
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Email
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Phone
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Date
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Time
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Amount
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Status
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {transactions.map((item) => (
+                        <tr key={item.id} className="bg-white border-b">
+                          {/* <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
                 {item.test.title}
               </th> */}
-                            <td className="px-6 py-2">{item.user.name}</td>
-                            <td className="px-6 py-2">{item.user.email}</td>
-                            <td className="px-6 py-2">{item.user.phone}</td>
-                            <td className="px-6 py-2">
-                              {
-                                item.createdAt
-                                  .toDate()
-                                  .toISOString()
-                                  .split("T")[0]
-                              }
-                            </td>
-                            <td className="px-6 py-2">
-                              {item.createdAt
+                          <td className="px-6 py-2">{item.user.name}</td>
+                          <td className="px-6 py-2">{item.user.email}</td>
+                          <td className="px-6 py-2">{item.user.phone}</td>
+                          <td className="px-6 py-2">
+                            {
+                              item.createdAt
+                                .toDate()
+                                .toISOString()
+                                .split("T")[0]
+                            }
+                          </td>
+                          <td className="px-6 py-2">
+                            {item.createdAt
+                              .toDate()
+                              .toISOString()
+                              .split("T")[1]
+                              .split(":")[0] +
+                              ":" +
+                              item.createdAt
                                 .toDate()
                                 .toISOString()
                                 .split("T")[1]
-                                .split(":")[0] +
-                                ":" +
-                                item.createdAt
-                                  .toDate()
-                                  .toISOString()
-                                  .split("T")[1]
-                                  .split(":")[1]}
-                            </td>
-                            <td className="px-6 py-2">
-                              {`ZMW ${new Intl.NumberFormat().format(
-                                item.amount
-                              )}`}
-                            </td>
-                            <td className="px-6 py-2">
-                              {item.status === "Cancelled" ? (
-                                <div className="bg-red-200 px-6 py-0 w-fit">
-                                  {item.status}
-                                </div>
-                              ) : (
-                                <div
-                                  className={`${
-                                    item.status === "Paid"
-                                      ? "bg-green-200"
-                                      : "bg-yellow-200"
-                                  } px-6 py-0 w-fit`}
-                                >
-                                  {item.status}
-                                </div>
-                              )}
-                            </td>
-                            <td className="px-6 py-2 flex flex-col">
-                              <button
-                                onClick={() =>
-                                  verifyPayment(
-                                    item.id,
-                                    item.transactionToken,
-                                    item.userId
-                                  )
-                                }
-                                disabled={
-                                  item.status === "Cancelled" ||
-                                  item.status === "Paid" ||
-                                  loading
-                                }
-                                className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
+                                .split(":")[1]}
+                          </td>
+                          <td className="px-6 py-2">
+                            {`ZMW ${new Intl.NumberFormat().format(
+                              item.amount
+                            )}`}
+                          </td>
+                          <td className="px-6 py-2">
+                            {item.status === "Cancelled" ? (
+                              <div className="bg-red-200 px-6 py-0 w-fit">
+                                {item.status}
+                              </div>
+                            ) : (
+                              <div
+                                className={`${
+                                  item.status === "Paid"
+                                    ? "bg-green-200"
+                                    : "bg-yellow-200"
+                                } px-6 py-0 w-fit`}
                               >
-                                Verify payment
+                                {item.status}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-6 py-2 flex flex-col min-w-48">
+                            <button
+                              onClick={() =>
+                                verifyPayment(
+                                  item.id,
+                                  item.transactionToken,
+                                  item.userId
+                                )
+                              }
+                              disabled={
+                                item.status === "Cancelled" ||
+                                item.status === "Paid" ||
+                                loading
+                              }
+                              className={` text-white  w-full disabled:opacity-60 bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
+                            >
+                              Verify payment
+                            </button>
+                            {item.status === "Cancelled" ? (
+                              <button
+                                disabled
+                                className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
+                              >
+                                Complete payment
                               </button>
-                              {item.status === "Cancelled" ? (
-                                <button
-                                  disabled
-                                  className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
-                                >
-                                  Complete payment
-                                </button>
-                              ) : (
-                                <a
-                                  target="_blank"
-                                  href={`https://secure.3gdirectpay.com/pay.asp?ID=${item.transactionToken}`}
-                                  className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
-                                >
-                                  Finish payment
-                                </a>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
+                            ) : (
+                              <a
+                                target="_blank"
+                                href={`https://secure.3gdirectpay.com/pay.asp?ID=${item.transactionToken}`}
+                                className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
+                              >
+                                Finish payment
+                              </a>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-                {transactions.length > 0 && (
-                  <Paginate page={page} prev={prev} next={next} />
-                )}
-              </div>
+              )}
+              {transactions.length > 0 && (
+                <Paginate page={page} prev={prev} next={next} />
+              )}
             </div>
           )}
         </div>

@@ -478,12 +478,12 @@ const AssessmentSystem = ({ setLoader }) => {
                     <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors">
                       {exam.title}
                     </h3>
-                    <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                    <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded hidden lg:block">
                       {exam.year}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-6 text-sm text-gray-600">
+                  <div className="items-center gap-6 text-sm text-gray-600 hidden lg:flex">
                     <div className="flex items-center gap-1">
                       <FileText className="w-4 h-4" />
                       {exam.totalQuestions} questions
@@ -783,7 +783,7 @@ const AssessmentSystem = ({ setLoader }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-8 flex gap-4">
+        <div className="mt-8 flex flex-col lg:flex-row gap-4">
           <Link
             href={`/learn/tests/${selectedSubject.id}`}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"

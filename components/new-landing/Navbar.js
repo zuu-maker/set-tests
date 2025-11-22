@@ -72,7 +72,7 @@ function Navbar({ isHome = true }) {
               <img className="h-14" src="/new_logo.jpg" alt="" />
             </Link>
 
-            <div className="flex lg:hidden">
+            <div className="flex md:hidden">
               <button
                 type="button"
                 className="sm:-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -149,11 +149,11 @@ function Navbar({ isHome = true }) {
           </li> */}
             </ul>
             {user && user._id.length > 0 ? (
-              <li>
+              <>
                 {user && (user.role === "admin" || user.role === "partner") && (
                   <Link
                     href="/admin"
-                    className="cta-button hidden lg:block cta-button"
+                    className="cta-button hidden md:block cta-button"
                   >
                     Dashboard
                   </Link>
@@ -161,23 +161,20 @@ function Navbar({ isHome = true }) {
                 {user && user.role === "student" && (
                   <Link
                     href="/learn"
-                    className="cta-button hidden lg:block cta-button"
+                    className="cta-button hidden md:block cta-button"
                   >
                     My Courses
                   </Link>
                 )}
-              </li>
+              </>
             ) : (
               <Link
-                className="hidden lg:block cta-button cta-button"
+                className="hidden md:block cta-button cta-button"
                 href="/login"
               >
                 Sign In
               </Link>
             )}
-            {/* <Link href="#" className="cta-button">
-          Login
-        </Link> */}
           </div>
         </nav>
       )}
