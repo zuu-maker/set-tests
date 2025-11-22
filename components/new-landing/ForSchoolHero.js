@@ -7,26 +7,20 @@ function ForSchoolHero() {
       <div className="pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
-            <div className="bg-gray-100 rounded-2xl px-6 py-3 inline-block mb-8">
-              <p className="text-gray-700 font-medium">
-                Smart Schools Growth Accelerator Program
-              </p>
-            </div>
-
             <h1 className="text-5xl md:text-7xl font-bold text-slate-800 mb-6">
               Grow Your School
               <br />
               <span className="italic">with AI-Powered Learning</span>
             </h1>
 
-            <p className="text-lg text-gray-600 max-w-4xl leading-relaxed mb-8">
+            <p className="text-lg text-gray-600 max-w-4xl leading-relaxed mb-8 text-justify">
               As education evolves, private schools are uniquely positioned to
               unlock new opportunities by embracing innovation, adapting to
               digital tools, and meeting the changing demands of students and
               parents. To support this transformation, Sirius Educational Trust
-              has merged AI-driven study tools, personalized revision and live
-              teaching features to create a powerful yet affordable AI- learning
-              platform customized for local needs.
+              has merged AI-driven study tools, personalized revision and
+              self-assessments to create a powerful yet affordable
+              digital-learning platform customized for local needs.
             </p>
           </div>
 
@@ -65,14 +59,14 @@ function ForSchoolHero() {
 
           <div className="text-center space-y-6">
             <a
-              href="https://wa.me/972507705"
+              href="mailto:info@set.edu.zm"
               target="_blank"
               className="inline-block bg-gradient-to-r from-slate-700 to-slate-800 text-white px-10 py-4 rounded-full font-semibold text-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               Book a Free Demo
             </a>
 
-            <p className="text-gray-600 text-lg">Chat with us on WhatsApp</p>
+            {/* <p className="text-gray-600 text-lg">Chat with us on WhatsApp</p> */}
           </div>
         </div>
       </div>

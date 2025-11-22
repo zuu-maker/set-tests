@@ -105,7 +105,7 @@ function AdminNav() {
                 {getInitials(user !== null ? user.name : "")}
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm font-semibold capitalize text-gray-900">
                   {user !== null && user.name}
                 </span>
                 <span className="text-xs text-gray-500 capitalize">

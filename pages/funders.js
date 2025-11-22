@@ -60,7 +60,7 @@ function Funders() {
               <div className="flex items-start gap-4 bg-red-50 p-4 rounded-xl">
                 <span className="text-red-500 text-2xl flex-shrink-0">⚠️</span>
                 <p className="text-gray-700">
-                  Overcrowded classNamerooms and limited individualized support
+                  Overcrowded classrooms and limited individualized support
                 </p>
               </div>
               <div className="flex items-start gap-4 bg-red-50 p-4 rounded-xl">
@@ -377,9 +377,9 @@ function Funders() {
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Join Us</h2>
             <p className="text-lg leading-relaxed mb-8">
               Help us make digital learning a public good for every child in
-              Zambia. Your support can unlock innovation in classNamerooms that
-              need it most — from faith-based schools in rural communities to
-              public schools in townships and peri-urban areas.
+              Zambia. Your support can unlock innovation in classrooms that need
+              it most — from faith-based schools in rural communities to public
+              schools in townships and peri-urban areas.
             </p>
             <p className="text-xl font-semibold mb-10">
               Partner with Sirius Educational Trust to transform education, one
@@ -395,7 +395,7 @@ function Funders() {
                     href="mailto:partnerships@set.edu.zm"
                     className="hover:underline font-medium"
                   >
-                    partnerships@set.edu.zm
+                    info@set.edu.zm
                   </a>
                 </p>
               </div>

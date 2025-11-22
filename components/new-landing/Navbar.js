@@ -185,10 +185,10 @@ function Navbar({ isHome = true }) {
         >
           <div className="flex h-9 items-center justify-between">
             <div className="flex">
-              <a href="#" className="-m-1.5 p-1.5">
+              <Link href="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Sirius Education Trust</span>
                 <img className="h-14" src="/new_logo.jpg" alt="" />
-              </a>
+              </Link>
             </div>
             <div className="flex">
               <button

@@ -5,7 +5,7 @@ const faqData = [
   {
     question: "How to get started with Sirius Online Exam Practice Platform?",
     answer:
-      "Create an account, verify your email, subscribe, follow through the payment steps, approve payment, log in with registered account to access student dashboard",
+      "Sign up, verify your email, subscribe, follow through the payment steps, approve payment, log in with registered account to access student dashboard",
   },
   {
     question: "Payment methods",

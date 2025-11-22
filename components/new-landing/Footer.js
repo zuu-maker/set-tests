@@ -7,9 +7,12 @@ function Footer() {
       <div className="footer-content">
         <div className="footer-section">
           <h3>About Sirius Educational Trust</h3>
-          <p>
-            Assisting Zambian students with exam preparation and quality
-            education resources.
+          <p className="text-justify">
+            Sirius Smart Schools is a digital learning platform developed by
+            Sirius Educational Trust. Whether preparing for the School
+            Certificate, GCE, or internal assessments, our platform empowers
+            learners, teachers and schools across Zambia with innovation that
+            drive better learning outcomes.
           </p>
           <div className="social-links">
             <a href="#" className="social-link">
