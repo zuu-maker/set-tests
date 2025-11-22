@@ -320,7 +320,7 @@ function Sidebar() {
                       />
                     </svg>
                   </span>
-                  <span className="text-sm">Manage Subscriptions</span>
+                  <span className="text-sm">Purchase Subscription</span>
                 </button>
               </>
             )}

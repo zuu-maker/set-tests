@@ -45,7 +45,7 @@ function WhyUs() {
             <p>
               Study anytime, anywhere. The platform is optimized for Zambian
               students on mobile devices, making it easy to learn and revise on
-              the go. — even with limited data.
+              the go.
             </p>
           </div>
         </div>
