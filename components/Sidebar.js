@@ -157,7 +157,7 @@ function Sidebar() {
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-72 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 transform transition-transform duration-300 ease-in-out xl:translate-x-0 ${
-          isSidebarOpen ? "translate-x-0 max-h-screen" : "-translate-x-full"
+          isSidebarOpen ? "translate-x-0 " : "-translate-x-full"
         }`}
       >
         {/* Logo Section */}
@@ -200,7 +200,7 @@ function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <div className="flex flex-col h-[calc(100vh-4rem)] overflow-y-auto px-4 py-6">
+        <div className="flex flex-col lg:h-[calc(100vh-4rem)] overflow-y-auto px-4 py-6">
           {/* Main Navigation */}
           <div className="flex-1 space-y-1">
             {user && user.role === "admin" && (
