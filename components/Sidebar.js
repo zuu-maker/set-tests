@@ -298,7 +298,7 @@ function Sidebar() {
                         />
                       </svg>
                     </span>
-                    <span className="text-sm">Orders</span>
+                    <span className="text-sm">My Orders</span>
                   </div>
                 </Link>
 
@@ -320,7 +320,7 @@ function Sidebar() {
                       />
                     </svg>
                   </span>
-                  <span className="text-sm">Purchase Subscription</span>
+                  <span className="text-sm">Manage Subscriptions</span>
                 </button>
               </>
             )}

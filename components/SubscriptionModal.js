@@ -3,6 +3,8 @@ import React, { useEffect, useState, useRef, Fragment } from "react";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { db } from "@/firebase";
+import firebase from "firebase";
+import { useRouter } from "next/router";
 
 function SubscriptionModal({ visible, setVisible, setCurrent }) {
   const cancelButtonRef = useRef(null);
@@ -15,6 +17,8 @@ function SubscriptionModal({ visible, setVisible, setCurrent }) {
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [hidden, setHidden] = useState(true);
+
+  let router = useRouter();
 
   const user = useSelector((state) => state.user);
 
@@ -168,11 +172,9 @@ function SubscriptionModal({ visible, setVisible, setCurrent }) {
                 </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-white">
-                  Purchase Subscription
-                </h3>
+                <h3 className="text-2xl font-bold text-white">Subscribe Now</h3>
                 <p className="text-cyan-100 text-sm mt-1">
-                  Get unlimited access to all courses
+                  Get Full Access to All Subjects
                 </p>
               </div>
             </div>
@@ -323,7 +325,7 @@ function PleaseSubscribe({
                   No Active Subscription
                 </h4>
                 <p className="text-cyan-700 mt-1">
-                  Purchase a subscription to unlock all courses and start your
+                  Purchase a subscription to unlock all subjects and start your
                   learning journey.
                 </p>
               </div>
@@ -395,7 +397,7 @@ const EnterPromoCode = ({
       {/* Price Display */}
       <div className="bg-white border-2 border-gray-200 rounded-xl p-6">
         <div className="flex items-center justify-between">
-          <span className="text-gray-600 font-medium">Subscription Price</span>
+          <span className="text-gray-600 font-medium">Weekly Pricing Plan</span>
           <div className="text-right">
             <span className="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
               {amount}

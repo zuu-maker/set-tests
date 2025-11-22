@@ -26,17 +26,16 @@ function About() {
     >
       <h2 className="section-title">About</h2>
       <p className="section-subtitle">
-        Assisting students in Zambia with quality exam preparation
+        We believe every learner can achieve greatness
       </p>
       <div className="about-content">
         <div className="about-text">
           <p>
-            Sirius Educational Trust is a social enterprise committed to
-            expanding access to quality education in Zambia through local
-            innovation, sustainable partnerships, and digital transformation. We
-            work across both the private and public education ecosystems to
-            bridge opportunity gaps and accelerate learning outcomes for all
-            learners
+            Sirius Smart Schools is a digital learning platform developed by
+            Sirius Educational Trust. Whether preparing for the School
+            Certificate, GCE, or internal assessments, our platform empowers
+            learners across Zambia with innovative tools and teacher-curated
+            resources that drive better learning outcomes.
           </p>
           <br />
         </div>

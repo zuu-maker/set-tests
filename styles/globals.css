@@ -145,7 +145,7 @@ nav {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-color);
-  z-index: 1000;
+  z-index: 20;
   transition: all 0.3s ease;
   box-shadow: 0 2px 20px var(--shadow-light);
 }

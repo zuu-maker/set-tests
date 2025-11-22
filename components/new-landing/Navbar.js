@@ -97,7 +97,7 @@ function Navbar({ isHome = true }) {
             </a>
           </li> */}
               <li>
-                <Link href="/browse">Exams</Link>
+                <Link href="/browse">Subjects</Link>
               </li>
               <li>
                 <Link href="/schools">For Schools</Link>
@@ -163,7 +163,7 @@ function Navbar({ isHome = true }) {
                     href="/learn"
                     className="cta-button hidden md:block cta-button"
                   >
-                    My Courses
+                    Study
                   </Link>
                 )}
               </>
@@ -221,7 +221,7 @@ function Navbar({ isHome = true }) {
                     href={user.role === "admin" ? "/admin" : "/learn"}
                     className="-mx-3 block rounded-lg px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10"
                   >
-                    {user.role === "admin" ? "Dashboard" : "My Courses"}
+                    {user.role === "admin" ? "Dashboard" : "Study"}
                   </Link>
                 )}
               </div>

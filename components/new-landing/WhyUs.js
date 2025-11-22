@@ -31,10 +31,10 @@ function WhyUs() {
         <div className="feature-box">
           <div className="feature-icon-wrapper">🤖</div>
           <div className="feature-content">
-            <h3>Comprehensive Tests</h3>
+            <h3>Interactive Exam Practice</h3>
             <p>
-              Prepare with confidence using full-length exam-style questions
-              practice exams aligned to Grade 12 and GCE syllabi.
+              Prepare with confidence using past exam papers complete with full
+              solutions and explanations.
             </p>
           </div>
         </div>
@@ -49,7 +49,7 @@ function WhyUs() {
             </p>
           </div>
         </div>
-        <div className="feature-box">
+        {/* <div className="feature-box">
           <div className="feature-icon-wrapper">🎮</div>
           <div className="feature-content">
             <h3>Engaging Practice</h3>
@@ -59,7 +59,7 @@ function WhyUs() {
               and rewarding.
             </p>
           </div>
-        </div>
+        </div> */}
         <div className="feature-box">
           <div className="feature-icon-wrapper">📈</div>
           <div className="feature-content">
@@ -71,7 +71,7 @@ function WhyUs() {
             </p>
           </div>
         </div>
-        <div className="feature-box">
+        {/* <div className="feature-box">
           <div className="feature-icon-wrapper">🔒</div>
           <div className="feature-content">
             <h3>Secure Platform</h3>
@@ -81,7 +81,7 @@ function WhyUs() {
               study sessions and results remain safe.
             </p>
           </div>
-        </div>
+        </div> */}
         <div className="feature-box">
           <div className="feature-icon-wrapper">🌐</div>
           <div className="feature-content">

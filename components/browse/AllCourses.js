@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import CTAButton from "../CTAButton";
+import SubscriptionModal from "../SubscriptionModal";
 
 // <div className="bg-white -mb-24 mt-4 lg:mt-0">
 //   <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -66,6 +68,8 @@ function getTag(title) {
 function AllCourses({ courses }) {
   console.log(courses);
 
+  const [visible, setVisible] = useState(false);
+
   // useEffect(() => {
   //   mySplit("GCE | Hello");
   // });
@@ -73,21 +77,22 @@ function AllCourses({ courses }) {
     <div className="p-8">
       <div className="bg-white">
         <div className="mx-auto max-w-7xl py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 items-center justify-between mb-12">
             <div>
               <h1 className="text-4xl font-bold text-gray-900">
                 Grade 12 & GCE
               </h1>
               <p className="mt-2 text-lg text-gray-600 hidden lg:block">
-                Subscribe to unlock all exams, AI flashcards &amp; assesment
-                tracking for Grade 12 and GCE.
+                Unlock All Subjects with One Subscription for Only ZMW 25/week
               </p>
             </div>
-            <div className=" gap-2 hidden lg:flex">
+
+            <CTAButton setVisible={setVisible} />
+            {/* <div className=" gap-2 hidden lg:flex">
               <span className="px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium">
                 {courses && courses.length} Subjects Available
               </span>
-            </div>
+            </div> */}
           </div>
 
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -157,6 +162,7 @@ function AllCourses({ courses }) {
           </div>
         </div>
       </div>
+      <SubscriptionModal visible={visible} setVisible={setVisible} />
     </div>
   );
 }

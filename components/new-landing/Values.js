@@ -37,7 +37,7 @@ function Values() {
             Innovation is at the heart of everything we do.
           </div>
         </div>
-        <div className="value-card">
+        {/* <div className="value-card">
           <div className="value-icon">🚀</div>
           <div className="value-title">Collaboration</div>
           <div className="value-description">
@@ -45,15 +45,15 @@ function Values() {
             schools, funders, government agencies, and technology partners to
             co-create sustainable education ecosystems.
           </div>
-        </div>
-        <div className="value-card">
+        </div> */}
+        {/* <div className="value-card">
           <div className="value-icon">🤝</div>
           <div className="value-title">Sustainability</div>
           <div className="value-description">
             We operate as a social enterprise, reinvesting revenue from school
             partnerships into training, platform development, and outreach.
           </div>
-        </div>
+        </div> */}
         <div className="value-card">
           <div className="value-icon">♻️</div>
           <div className="value-title">Innovation</div>
@@ -63,7 +63,7 @@ function Values() {
             school, educator, and learner can reach their fullest potential.
           </div>
         </div>
-        <div className="value-card">
+        {/* <div className="value-card">
           <div className="value-icon">💡</div>
           <div className="value-title">Empowerment</div>
           <div className="value-description">
@@ -71,7 +71,7 @@ function Values() {
             effectiveness, and promote student-centered learning — turning
             schools into centres of innovation and community impact.
           </div>
-        </div>
+        </div> */}
         <div className="value-card">
           <div className="value-icon">🎓</div>
           <div className="value-title">Excellence</div>
