@@ -382,7 +382,7 @@ const AssessmentSystem = ({ setLoader }) => {
                       </h2>
                       <p className="text-sm text-gray-500">
                         {subject.examsAttempted.length}/{subject.totalExams}{" "}
-                        exams completed
+                        tests completed
                       </p>
                     </div>
                   </div>
