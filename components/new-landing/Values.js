@@ -29,7 +29,7 @@ function Values() {
       </p>
       <div className="values-grid">
         <div className="value-card">
-          <div className="value-icon">🌱</div>
+          <div className="value-icon">💡</div>
           <div className="value-title">Accessibility</div>
           <div className="value-description">
             We believe that quality education should be within reach for every
@@ -55,7 +55,7 @@ function Values() {
           </div>
         </div> */}
         <div className="value-card">
-          <div className="value-icon">♻️</div>
+          <div className="value-icon">🚀</div>
           <div className="value-title">Innovation</div>
           <div className="value-description">
             Through Smart Growth and Scaled Access, Sirius Educational Trust
