@@ -32,13 +32,18 @@ function ForSchoolPricing() {
               <div className="space-y-4 mb-8">
                 <div className="flex items-start gap-3">
                   <span className="text-green-400 mt-1">✓</span>
-                  <span>Interactive Test Practice</span>
+                  <span>Interactive Tests</span>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <span className="text-green-400 mt-1">✓</span>
 
                   <span>Learner analytics and progress tracker</span>
+                </div>
+
+                <div className="flex font-bold items-start gap-3">
+                  <span className="text-2xl">🎯</span>
+                  <span>School introducing digital learning</span>
                 </div>
               </div>
 
@@ -73,8 +78,8 @@ function ForSchoolPricing() {
                   <span>Adds AI Flashcards</span>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">✓</span>
+                <div className="flex font-bold items-start gap-3">
+                  <span className="text-2xl">🏫</span>
                   <span>Schools expanding into after-school support</span>
                 </div>
               </div>
