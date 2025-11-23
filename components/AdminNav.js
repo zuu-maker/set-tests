@@ -35,6 +35,7 @@ function AdminNav() {
   const getCurrentPage = () => {
     const path = router.pathname.split("/")[1];
     if (path === "learn") return "My Subjects";
+    if (path === "assesments") return "My Progress";
     return path.charAt(0).toUpperCase() + path.slice(1);
   };
 

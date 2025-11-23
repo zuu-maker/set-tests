@@ -7,10 +7,11 @@ function Hero() {
       <div className="hero-content">
         <div className="hero-text">
           <h1 className="hero-title">GET READY TO EXCEL.</h1>
-          <p className="hero-subtitle">
-            Grade 12 & GCE Exam Prep with Progress Tracker.
+          <p className="hero-subtitle">Grade 12 & GCE Exam Prep</p>
+          <p className="hero-subtitle2">
+            {" "}
+            Includes Learner Analytics and Progress Tracking
           </p>
-          <p className="hero-subtitle2"> ZMW 5 per day billed @ ZMW 25/week</p>
           <div className="hero-buttons">
             <Link href="/browse" className="primary-button">
               View Subjects

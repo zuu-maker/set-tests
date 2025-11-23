@@ -350,7 +350,7 @@ const AssessmentSystem = ({ setLoader }) => {
   const SubjectsView = () => (
     <div className="max-w-7xl mx-auto px-4 pb-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Assessments</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Progress</h1>
         {subjects.length > 0 ? (
           <p className="text-gray-600">
             Choose a subject to view your tests and progress
@@ -446,7 +446,7 @@ const AssessmentSystem = ({ setLoader }) => {
 
   // EXAMS LIST VIEW
   const ExamsView = () => (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 pb-8">
       {/* Header with back button */}
       <div className="mb-8">
         <button
@@ -564,7 +564,7 @@ const AssessmentSystem = ({ setLoader }) => {
   const ExamDetailsView = () => {
     if (!examDetails) {
       return (
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 pb-8">
           <button
             onClick={navigateBack}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
@@ -605,7 +605,7 @@ const AssessmentSystem = ({ setLoader }) => {
     // const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"];
 
     return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 pb-8">
         {/* Header */}
         <div className="mb-8">
           <button
