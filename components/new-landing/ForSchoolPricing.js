@@ -37,7 +37,9 @@ function ForSchoolPricing() {
 
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">🎯</span>
-                  <span>Schools introducing digital learning</span>
+                  <span>
+                    Addition of learner analytics and progress tracker
+                  </span>
                 </div>
               </div>
 
@@ -74,7 +76,7 @@ function ForSchoolPricing() {
 
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">🏫</span>
-                  <span>Schools expanding into tuition centres</span>
+                  <span>Schools expanding into after-school support</span>
                 </div>
               </div>
 
