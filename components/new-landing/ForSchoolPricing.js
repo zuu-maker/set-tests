@@ -6,7 +6,7 @@ function ForSchoolPricing() {
   };
   return (
     <div className="">
-      <div className="pt-32 pb-20 px-6">
+      <div className="pt-32 pb-14 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-4">
             {/* <p className="text-red-500 font-semibold text-lg mb-4">
