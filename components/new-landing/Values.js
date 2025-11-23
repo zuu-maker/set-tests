@@ -25,7 +25,7 @@ function Values() {
     >
       <h2 className="section-title">Our Promise</h2>
       <p className="section-subtitle">
-        Making a positive impact on education in Zambia
+        We stand on three pillars that shape every learner’s journey
       </p>
       <div className="values-grid">
         <div className="value-card">
