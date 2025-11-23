@@ -269,9 +269,11 @@ function Result({
       {/* Header Section */}
       <div
         className={`relative overflow-hidden ${
-          isPassing
-            ? "bg-gradient-to-br from-green-600 to-emerald-700"
-            : "bg-gradient-to-br from-red-600 to-rose-700"
+          autoMarckQuestions.length > 0
+            ? isPassing
+              ? "bg-gradient-to-br from-green-600 to-emerald-700"
+              : "bg-gradient-to-br from-red-600 to-rose-700"
+            : "bg-gradient-to-br from-blue-600 to-blue-700"
         }`}
       >
         <div className="absolute inset-0 opacity-10">
@@ -284,26 +286,46 @@ function Result({
           <div className="mb-6">
             <div
               className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${
-                isPassing ? "bg-green-100" : "bg-red-100"
+                autoMarckQuestions.length > 0
+                  ? isPassing
+                    ? "bg-green-100"
+                    : "bg-red-100"
+                  : "bg-blue-100"
               } mb-4`}
             >
-              {isPassing ? (
-                <svg
-                  className="w-10 h-10 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+              {autoMarckQuestions.length > 0 ? (
+                isPassing ? (
+                  <svg
+                    className="w-10 h-10 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-10 h-10 text-red-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                )
               ) : (
                 <svg
-                  className="w-10 h-10 text-red-600"
+                  className="w-10 h-10 text-blue-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -311,32 +333,40 @@ function Result({
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
                   />
                 </svg>
               )}
             </div>
 
             <h1 className="text-4xl font-bold text-white mb-2">
-              {isPassing ? "Congratulations!" : "Keep Practicing!"}
+              {autoMarckQuestions.length > 0
+                ? isPassing
+                  ? "Congratulations!"
+                  : "Keep Practicing!"
+                : "Good Job!"}
             </h1>
             <p className="text-xl text-white/90">
-              {isPassing
-                ? "You passed the quiz!"
-                : "Don't worry, you can try again!"}
+              {autoMarckQuestions.length > 0
+                ? isPassing
+                  ? "You passed the quiz!"
+                  : "Don't worry, you can try again!"
+                : "You completed the quiz"}
             </p>
           </div>
 
           {/* Score Display */}
-          <div className="mb-8">
-            <div className="text-6xl font-bold text-white mb-2">
-              {percentage}%
+          {autoMarckQuestions.length > 0 && (
+            <div className="mb-8">
+              <div className="text-6xl font-bold text-white mb-2">
+                {isNaN(percentage) ? "-" : percentage}%
+              </div>
+              {}{" "}
+              <div className="text-lg text-white/80">
+                Score: {score} out of {autoMarckQuestions.length}
+              </div>
             </div>
-            <div className="text-lg text-white/80">
-              Score: {score} out of {autoMarckQuestions.length}
-            </div>
-          </div>
+          )}
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
@@ -352,6 +382,7 @@ function Result({
               </div>
               <div className="text-sm text-white/80">Incorrect</div>
             </div>
+
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
               <div className="text-2xl font-bold text-white">
                 {stats.timeTaken}
@@ -432,6 +463,7 @@ function Result({
               answers={answers}
               index={index}
               question={question}
+              autoMarckQuestions={autoMarckQuestions}
             />
           ))}
         </div>

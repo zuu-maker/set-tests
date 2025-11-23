@@ -1,7 +1,7 @@
 import { capitalizeFirstChar } from "@/utils";
 import React, { useState } from "react";
 
-const ResultCard = ({ answers, question, index }) => {
+const ResultCard = ({ answers, question, index, autoMarckQuestions }) => {
   const userAnswer = Array.isArray(answers[question.id])
     ? answers[question.id].join(", ")
     : answers[question.id];
@@ -24,9 +24,11 @@ const ResultCard = ({ answers, question, index }) => {
       className={`
       relative overflow-hidden rounded-2xl bg-white border-2 transition-all duration-300
       ${
-        isCorrect
-          ? "border-green-200 bg-gradient-to-r from-green-50 to-white"
-          : "border-red-200 bg-gradient-to-r from-red-50 to-white"
+        autoMarckQuestions.length > 0
+          ? isCorrect
+            ? "border-green-200 bg-gradient-to-r from-green-50 to-white"
+            : "border-red-200 bg-gradient-to-r from-red-50 to-white"
+          : "border-blue-200 bg-gradient-to-r from-blue-50 to-white"
       }
     `}
     >
@@ -39,9 +41,11 @@ const ResultCard = ({ answers, question, index }) => {
               className={`
               flex items-center justify-center w-10 h-10 rounded-xl font-bold
               ${
-                isCorrect
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
+                autoMarckQuestions.length > 0
+                  ? isCorrect
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                  : "bg-blue-100 text-blue-700"
               }
             `}
             >
@@ -65,26 +69,48 @@ const ResultCard = ({ answers, question, index }) => {
           <div
             className={`
             p-2 rounded-full
-            ${isCorrect ? "bg-green-100" : "bg-red-100"}
+            ${
+              autoMarckQuestions.length > 0
+                ? isCorrect
+                  ? "bg-green-100"
+                  : "bg-red-100"
+                : "bg-blue-100"
+            }
           `}
           >
-            {isCorrect ? (
-              <svg
-                className="w-3 h-3 lg:w-5 lg:h-5 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+            {autoMarckQuestions.length > 0 ? (
+              isCorrect ? (
+                <svg
+                  className="w-3 h-3 lg:w-5 lg:h-5 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-3 h-3 lg:w-5 lg:h-5 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              )
             ) : (
               <svg
-                className="w-3 h-3 lg:w-5 lg:h-5 text-red-600"
+                className="w-10 h-10 text-blue-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -92,8 +118,7 @@ const ResultCard = ({ answers, question, index }) => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
+                  d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
                 />
               </svg>
             )}
@@ -107,9 +132,11 @@ const ResultCard = ({ answers, question, index }) => {
             className={`
             p-4 rounded-xl
             ${
-              isCorrect
-                ? "bg-green-50 border border-green-200"
-                : "bg-red-50 border border-red-200"
+              autoMarckQuestions.length > 0
+                ? isCorrect
+                  ? "bg-green-50 border border-green-200"
+                  : "bg-red-50 border border-red-200"
+                : "bg-blue-50 border border-blue-200"
             }
           `}
           >
@@ -119,7 +146,11 @@ const ResultCard = ({ answers, question, index }) => {
               </span>
               <span
                 className={`text-sm ${
-                  isCorrect ? "text-green-700" : "text-red-700"
+                  autoMarckQuestions.length
+                    ? isCorrect
+                      ? "text-green-700"
+                      : "text-red-700"
+                    : "text-blue-700"
                 }`}
                 dangerouslySetInnerHTML={{
                   __html:

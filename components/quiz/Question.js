@@ -144,7 +144,7 @@ const Question = ({
   const renderQuestionText = () => {
     if (text[0] === "<") {
       return (
-        <div className="text-sm pl-4 -mt-6 prose">
+        <div className="text-sm pl-12 mt-4 prose">
           <div
             className="ql-editor"
             dangerouslySetInnerHTML={{
@@ -154,14 +154,14 @@ const Question = ({
         </div>
       );
     }
-    return <p className="pl-2 -mt-8">{capitalizeFirstChar(text)}</p>;
+    return <p className=" -mt-8">{capitalizeFirstChar(text)}</p>;
   };
 
   return (
     <div>
-      <div className="text-base">
-        <p>{currentQuestionIndex + 1}.</p>
-        {renderQuestionText()}
+      <div className="text-base ">
+        <p className="">{currentQuestionIndex + 1}.</p>
+        <div className="ml-8 mt-2">{renderQuestionText()}</div>
       </div>
 
       {image && (

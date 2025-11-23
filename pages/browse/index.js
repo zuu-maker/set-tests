@@ -8,6 +8,7 @@ import Banner from "@/components/Banner";
 import AllCourses from "@/components/browse/AllCourses";
 import toast from "react-hot-toast";
 import Navbar from "@/components/new-landing/Navbar";
+import Footer from "@/components/new-landing/Footer";
 
 function Browse() {
   const [courses, setCourses] = useState([]);
@@ -60,54 +61,7 @@ function Browse() {
         <div className="h-8 w-full "></div>
         <Navbar />
         <AllCourses courses={courses} />
-        <footer id="contact">
-          <div className="footer-content">
-            <div className="footer-section">
-              <h3>About Sirius Educational Trust</h3>
-              <p>
-                Assisting Zambian students with exam preparation and quality
-                education resources.
-              </p>
-              <div className="social-links">
-                <a href="#" className="social-link">
-                  f
-                </a>
-                <a href="#" className="social-link">
-                  Tik
-                </a>
-                {/* <a href="#" className="social-link">
-                  in
-                </a> */}
-                {/* <a href="#" className="social-link">
-                  ▶
-                </a> */}
-              </div>
-            </div>
-            <div className="footer-section">
-              <h3>Policies</h3>
-              <ul className="footer-links">
-                {/* <li>
-                  <a href="#">Help Center</a>
-                </li> */}
-                <li>
-                  <a href="#">Refund Policy</a>
-                </li>
-                <li>
-                  <a href="#">Privacy Policy</a>
-                </li>
-                <li>
-                  <a href="#">Terms &amp; Conditions</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>
-              &copy; 2024 Sirius Educational Trust. All rights reserved. Made
-              with 💙 for Zambian students.
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </div>
   );

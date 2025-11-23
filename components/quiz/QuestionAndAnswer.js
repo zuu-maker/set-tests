@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 
 function QuestionAndAnswer({ questions, answers, navigateBack }) {
+  const autoMarckQuestions = questions.filter((q) => q.type !== "text");
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8">
@@ -51,6 +52,7 @@ function QuestionAndAnswer({ questions, answers, navigateBack }) {
               answers={answers}
               index={index}
               question={question}
+              autoMarckQuestions={autoMarckQuestions}
             />
           ))}
         </div>

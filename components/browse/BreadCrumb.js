@@ -14,7 +14,7 @@ function BreadCrumb({ title }) {
               href="/all"
               className="mr-2 text-sm font-medium text-gray-900"
             >
-              Courses
+              Subjects
             </Link>
             <svg
               width={16}

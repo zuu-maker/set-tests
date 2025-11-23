@@ -41,12 +41,12 @@ const Quiz = ({ id, course }) => {
     fetchQuizData();
   }, [id]);
 
-  useEffect(() => {
-    if (startTime === undefined && !isLoading) {
-      // alert("Started");
-      setStartTime(new Date()); // Start the timer when quiz starts
-    }
-  }, [startTime, isLoading]);
+  // useEffect(() => {
+  //   if (startTime === null && !isLoading) {
+  //     // alert("Started");
+  //     setStartTime(new Date()); // Start the timer when quiz starts
+  //   }
+  // }, [startTime, isLoading]);
 
   const calculateTotalTime = () => {
     // Sum the time spent on all questions
@@ -95,6 +95,7 @@ const Quiz = ({ id, course }) => {
         test: testData,
         questions: testData.questions || [],
       }));
+      setStartTime(new Date());
     } catch (error) {
       console.error("Error fetching quiz data:", error);
       toast.error("Failed to load quiz");
@@ -135,7 +136,8 @@ const Quiz = ({ id, course }) => {
     const currentAnswer = answers[currentQuestion.id];
 
     const now = new Date();
-    const timeSpent = (now - startTime) / 1000; // time spent in seconds
+    const timeSpent = startTime ? (now - startTime) / 1000 : 0;
+    // const timeSpent = (now - startTime) / 1000; // time spent in seconds
 
     setQuestionTimes((prev) => [
       ...prev,
@@ -207,7 +209,7 @@ const Quiz = ({ id, course }) => {
 
   return (
     <div className="w-full h-full">
-      <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+      <div className="min-h-screen bg-gray-100 flex justify-center items-center pb-14">
         <div className="bg-white relative min-h-[32rem] flex flex-col justify-between w-[42rem] rounded-lg shadow-lg p-5">
           <QuizTop
             title={test?.title}

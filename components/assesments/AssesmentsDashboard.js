@@ -215,8 +215,14 @@ const AssessmentSystem = ({ setLoader }) => {
         .collection("ExamDetails")
         .where("courseId", "==", subjectId)
         .get();
-      const _exams = examDocs.docs.map((doc) => doc.data());
-      console.log(_exams);
+      const _exams = examDocs.docs.map((doc) => {
+        let data = doc.data();
+        data.timeDistributions.forEach((dist) => {
+          dist.time = secondsToMinutes(dist.time).toFixed(2);
+        });
+        return data;
+      });
+      console.log("exams->>", _exams);
       setExams(_exams || []);
       setExams(_exams || []);
     } catch (error) {
@@ -264,6 +270,10 @@ const AssessmentSystem = ({ setLoader }) => {
 
   const navigateToExamDetails = (exam) => {
     setLoader(true);
+
+    // exam.timeDistributions.forEach(dist => {
+
+    // })
     setSelectedExam(exam);
     // setExamDetails(mockExamDetails[exam.id] || null);
     setExamDetails(exam || null);
@@ -332,6 +342,7 @@ const AssessmentSystem = ({ setLoader }) => {
   };
 
   const secondsToMinutes = (seconds) => {
+    console.log(new Date(seconds));
     return seconds / 60;
   };
 
@@ -342,7 +353,7 @@ const AssessmentSystem = ({ setLoader }) => {
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Assessments</h1>
         {subjects.length > 0 ? (
           <p className="text-gray-600">
-            Choose a subject to view your exams and progress
+            Choose a subject to view your tests and progress
           </p>
         ) : (
           <p className="text-gray-600">You have not taken any tests</p>
@@ -449,7 +460,7 @@ const AssessmentSystem = ({ setLoader }) => {
           {/* <div className="text-3xl">{selectedSubject.icon}</div> */}
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              {selectedSubject.courseTitle} Exams
+              {selectedSubject.courseTitle} Tests
             </h1>
             <p className="text-gray-600">
               {selectedSubject.examsAttempted.length} of{" "}
@@ -497,6 +508,7 @@ const AssessmentSystem = ({ setLoader }) => {
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
                         {secondsToMinutes(exam.timeSpent).toFixed(2)} total
+                        {/* {secondsToMinutes(exam.timeSpent).toFixed(2)} total */}
                       </div>
                     )}
                   </div>
@@ -512,12 +524,12 @@ const AssessmentSystem = ({ setLoader }) => {
                           exam.lastScore
                         )}`}
                       >
-                        {exam.lastScore}%
+                        {isNaN(exam.lastScore) ? "-" : exam.lastScore + "%"}
                       </p>
                       {exam.bestScore !== null &&
                         exam.bestScore !== exam.lastScore && (
                           <p className="text-xs text-gray-500">
-                            Best: {exam.bestScore}%
+                            Best: {isNaN(exam.bestScore) ? "-" : exam.bestScore}
                           </p>
                         )}
                     </div>
@@ -534,8 +546,11 @@ const AssessmentSystem = ({ setLoader }) => {
                   Last attempted:{" "}
                   {exam.lastDateTaken.toDate().toLocaleDateString()}
                 </span>
-                {exam.averageScore && (
-                  <span>Average score: {exam.averageScore.toFixed(1)}%</span>
+                {exam.averageScore !== null && (
+                  <span>
+                    Average score:{" "}
+                    {isNaN(exam.averageScore) ? "-" : exam.averageScore + "%"}
+                  </span>
                 )}
               </div>
             </div>
@@ -607,7 +622,8 @@ const AssessmentSystem = ({ setLoader }) => {
             <p className="text-gray-600">
               {selectedExam.totalQuestions} questions •{" "}
               {selectedExam.attempts.length} attempts • Average score:{" "}
-              {selectedExam.averageScore?.toFixed(1)}%
+              {!isNaN(selectedExam.averageScore) &&
+                selectedExam.averageScore?.toFixed(1) + "%"}
             </p>
           </div>
         </div>
@@ -622,7 +638,9 @@ const AssessmentSystem = ({ setLoader }) => {
               <p className="text-sm text-gray-600">Best Score</p>
             </div>
             <p className="text-2xl font-bold text-gray-900">
-              {selectedExam.bestScore}%
+              {isNaN(selectedExam.bestScore)
+                ? "-"
+                : selectedExam.bestScore + "%"}
             </p>
           </div>
 
@@ -634,7 +652,9 @@ const AssessmentSystem = ({ setLoader }) => {
               <p className="text-sm text-gray-600">Average Score</p>
             </div>
             <p className="text-2xl font-bold text-gray-900">
-              {selectedExam.averageScore?.toFixed(1)}%
+              {isNaN(selectedExam.averageScore)
+                ? "-"
+                : selectedExam.averageScore?.toFixed(1) + "%"}
             </p>
           </div>
 
@@ -664,59 +684,64 @@ const AssessmentSystem = ({ setLoader }) => {
         </div>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+
+        {!scoreData.some((value) => isNaN(value.score)) && (
+          <div className="grid grid-cols-1 gap-6 mb-8">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Score Progression
+              </h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <AreaChart data={scoreData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="attempt" tick={{ fontSize: 12 }} />
+                  <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "8px",
+                      border: "1px solid #e5e7eb",
+                    }}
+                    formatter={(value, name) => {
+                      if (name === "score") return [`${value}%`, "Score"];
+                      return [value, name];
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="score"
+                    stroke="#3B82F6"
+                    fill="#DBEAFE"
+                    strokeWidth={2}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
+
+        {/* Time Distribution */}
+        {scoreData && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Score Progression
+              Time Distribution per Section
             </h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={scoreData}>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={examDetails.timeDistributions}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="attempt" tick={{ fontSize: 12 }} />
-                <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
+                <XAxis dataKey="range" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip
                   contentStyle={{
                     borderRadius: "8px",
                     border: "1px solid #e5e7eb",
                   }}
-                  formatter={(value, name) => {
-                    if (name === "score") return [`${value}%`, "Score"];
-                    return [value, name];
-                  }}
+                  formatter={(value) => [`${value}mins`, "Time"]} // change this
                 />
-                <Area
-                  type="monotone"
-                  dataKey="score"
-                  stroke="#3B82F6"
-                  fill="#DBEAFE"
-                  strokeWidth={2}
-                />
-              </AreaChart>
+                <Bar dataKey="time" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
-
-        {/* Time Distribution */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Time Distribution per Section
-          </h3>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={examDetails.timeDistributions}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="range" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: "8px",
-                  border: "1px solid #e5e7eb",
-                }}
-                formatter={(value) => [`${value}s`, "Time"]}
-              />
-              <Bar dataKey="time" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        )}
 
         {/* Attempts History Table */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -761,7 +786,7 @@ const AssessmentSystem = ({ setLoader }) => {
                           attempt.score
                         )}`}
                       >
-                        {attempt.score}%
+                        {isNaN(attempt.score) ? "-" : attempt.score + "%"}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
