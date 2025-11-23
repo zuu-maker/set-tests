@@ -31,7 +31,7 @@ function CourseInfo({
 
         <div className=" mt-5 sm:mt-5 ">
           <p>
-            Purchase subscription for all exams &amp; progress tracking valid
+            Purchase subscription for all subjects &amp; progress tracking valid
             for 7 days.
           </p>
 
