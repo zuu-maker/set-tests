@@ -32,9 +32,7 @@ function Values() {
           <div className="value-icon">💡</div>
           <div className="value-title">Accessibility</div>
           <div className="value-description">
-            We believe that quality education should be within reach for every
-            learner, regardless of geography or income level Innovation:
-            Innovation is at the heart of everything we do.
+            Every child, regardless of background, deserves quality education.
           </div>
         </div>
         {/* <div className="value-card">
@@ -58,9 +56,7 @@ function Values() {
           <div className="value-icon">🚀</div>
           <div className="value-title">Innovation</div>
           <div className="value-description">
-            Through Smart Growth and Scaled Access, Sirius Educational Trust
-            bridges innovation and inclusion — creating a future where every
-            school, educator, and learner can reach their fullest potential.
+            Innovation is at the heart of everything we do.
           </div>
         </div>
         {/* <div className="value-card">
@@ -76,8 +72,7 @@ function Values() {
           <div className="value-icon">🎓</div>
           <div className="value-title">Excellence</div>
           <div className="value-description">
-            We are guided by a commitment to excellence in delivery,
-            performance, and results.
+            We deliver with precision, purpose and pride.
           </div>
         </div>
       </div>
