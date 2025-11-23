@@ -36,10 +36,9 @@ function ForSchoolPricing() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">🎯</span>
-                  <span>
-                    Addition of learner analytics and progress tracker
-                  </span>
+                  <span className="text-green-400 mt-1">✓</span>
+
+                  <span>Learner analytics and progress tracker</span>
                 </div>
               </div>
 
@@ -70,12 +69,12 @@ function ForSchoolPricing() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">🧠</span>
+                  <span className="text-green-400 mt-1">✓</span>
                   <span>Adds AI Flashcards</span>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">🏫</span>
+                  <span className="text-green-400 mt-1">✓</span>
                   <span>Schools expanding into after-school support</span>
                 </div>
               </div>
@@ -103,7 +102,7 @@ function ForSchoolPricing() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">🎓</span>
+                  <span className="text-green-400 mt-1">✓</span>
                   <span>Online and hybrid learning instructions</span>
                 </div>
               </div>
