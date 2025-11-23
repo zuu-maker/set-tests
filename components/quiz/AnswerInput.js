@@ -19,7 +19,7 @@ function AnswerInput({ questionId, onAnswerChange, answer }) {
   }, [questionId]);
 
   return (
-    <div className="p-2">
+    <div className="pl-4 p-2">
       {/* <input
         className="w-full"
         type="text"

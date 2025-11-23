@@ -204,7 +204,7 @@ function Register() {
           <Link href="/">
             <img
               className="mx-auto h-12 w-auto"
-              src="logo.png"
+              src="new_logo.jpg"
               alt="Sirus Educational Trust"
             />
           </Link>
@@ -213,7 +213,7 @@ function Register() {
           </h2>
         </div>
 
-        <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm bg-white p-8 rounded-lg shadow-lg">
           <form className="space-y-6" action="#" method="POST">
             <div>
               <label

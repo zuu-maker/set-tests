@@ -17,7 +17,9 @@ const INITIAL_STATE = {
   score: 0,
 };
 
-const Quiz = ({ id }) => {
+// if too many errors use the actual course instead
+
+const Quiz = ({ id, course }) => {
   const [state, setState] = useState(INITIAL_STATE);
   const [ui, setUi] = useState({
     isLoading: true,
@@ -30,10 +32,51 @@ const Quiz = ({ id }) => {
   const { test, questions, currentQuestionIndex, answers, score } = state;
   const { isLoading, showResult, showFeedback, isSubmitted, isOverlayVisible } =
     ui;
+  const [startTime, setStartTime] = useState(null);
+  const [questionTimes, setQuestionTimes] = useState([]);
+
+  // console.log("times -->", questionTimes);
 
   useEffect(() => {
     fetchQuizData();
   }, [id]);
+
+  // useEffect(() => {
+  //   if (startTime === null && !isLoading) {
+  //     // alert("Started");
+  //     setStartTime(new Date()); // Start the timer when quiz starts
+  //   }
+  // }, [startTime, isLoading]);
+
+  const calculateTotalTime = () => {
+    // Sum the time spent on all questions
+    const totalTime = questionTimes.reduce((sum, data) => sum + data.time, 0);
+    return totalTime;
+  };
+
+  const calculateAverageTime = () => {
+    if (questionTimes.length === 0) {
+      return 0; // Prevent division by zero if no questions have been answered yet
+    }
+    const totalTime = calculateTotalTime(); // Reuse the total time calculation
+    return totalTime / questionTimes.length; // Average time per question
+  };
+
+  const calculateTimeDistribution = () => {
+    const distribution = [];
+    for (let i = 1; i <= questionTimes.length; i += 5) {
+      const segment = questionTimes.slice(i - 1, i + 4);
+      const totalSegmentTime = segment.reduce(
+        (sum, data) => sum + data.time,
+        0
+      );
+      distribution.push({
+        range: `${i}-${Math.min(i + 4, questionTimes.length)}`,
+        time: totalSegmentTime,
+      });
+    }
+    return distribution;
+  };
 
   const fetchQuizData = async () => {
     try {
@@ -52,6 +95,7 @@ const Quiz = ({ id }) => {
         test: testData,
         questions: testData.questions || [],
       }));
+      setStartTime(new Date());
     } catch (error) {
       console.error("Error fetching quiz data:", error);
       toast.error("Failed to load quiz");
@@ -68,6 +112,8 @@ const Quiz = ({ id }) => {
   };
 
   const handleNext = () => {
+    const now = new Date();
+    setStartTime(now);
     const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
     if (isLastQuestion) {
@@ -89,6 +135,18 @@ const Quiz = ({ id }) => {
     const currentQuestion = questions[currentQuestionIndex];
     const currentAnswer = answers[currentQuestion.id];
 
+    const now = new Date();
+    const timeSpent = startTime ? (now - startTime) / 1000 : 0;
+    // const timeSpent = (now - startTime) / 1000; // time spent in seconds
+
+    setQuestionTimes((prev) => [
+      ...prev,
+      { question: currentQuestionIndex, time: timeSpent },
+    ]);
+
+    // console.log("Question", currentQuestionIndex);
+    // console.log("time spent", timeSpent);
+
     if (!currentAnswer) {
       toast.error("Please answer the question");
       return;
@@ -101,6 +159,10 @@ const Quiz = ({ id }) => {
     }));
   };
 
+  const increaseScore = () => {
+    setState((prev) => ({ ...prev, score: prev.score + 1 }));
+  };
+
   const handleQuestionNavigation = (index) => {
     setState((prev) => ({ ...prev, currentQuestionIndex: index }));
     setUi((prev) => ({
@@ -111,6 +173,7 @@ const Quiz = ({ id }) => {
     }));
   };
 
+  console.log("State------>>>>>", state);
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -119,22 +182,34 @@ const Quiz = ({ id }) => {
     );
   }
 
+  // console.log("State-->", state);
+
   if (showResult) {
     return (
       <Result
+        setUi={setUi}
         answers={answers}
         quizId={id.split("-")[1]}
+        courseId={id.split("-")[0]}
+        courseTitle={course.title}
+        courseNumTests={course.numberOfTests}
         questions={questions}
         score={score}
+        state={state}
+        calculateTotalTime={calculateTotalTime}
+        calculateTimeDistribution={calculateTimeDistribution}
+        calculateAverageTime={calculateAverageTime}
       />
     );
   }
+
+  // console.log("title", id.split("-")[2]);
 
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
     <div className="w-full h-full">
-      <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+      <div className="min-h-screen bg-gray-100 flex justify-center items-center pb-14">
         <div className="bg-white relative min-h-[32rem] flex flex-col justify-between w-[42rem] rounded-lg shadow-lg p-5">
           <QuizTop
             title={test?.title}
@@ -148,9 +223,10 @@ const Quiz = ({ id }) => {
           <div className="border basis-5 flex-1 border-gray-100 p-6">
             {questions.length > 0 && (
               <Question
-                setScore={(newScore) =>
-                  setState((prev) => ({ ...prev, score: newScore }))
-                }
+                // setScore={(newScore) =>
+                //   setState((prev) => ({ ...prev, score: newScore }))
+                // }
+                increaseScore={increaseScore}
                 submitted={isSubmitted}
                 showFeedback={showFeedback}
                 setShowFeedback={(value) =>

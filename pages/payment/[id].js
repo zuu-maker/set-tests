@@ -10,6 +10,7 @@ import { FadeLoader } from "react-spinners";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { original } from "@reduxjs/toolkit";
+import Navbar from "@/components/new-landing/Navbar";
 
 function Payment() {
   const [data, setData] = useState({
@@ -201,18 +202,19 @@ function Payment() {
         <title>Secure Payment </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Navbar />
 
-      <div className="container mx-auto w-full bg-gray-50 ">
+      {/* <div className="container mx-auto w-full bg-gray-50 ">
         <div className="h-8 bg-transparent w-full"></div>
         <Header />
-      </div>
+      </div> */}
 
       {loader ? (
         <div className="h-screen w-full flex items-center justify-center">
           <FadeLoader color="#00FFFF" />
         </div>
       ) : (
-        <div className="min-w-screen mt-6 flex  bg-gray-50  items-center justify-center px-5 pt-16">
+        <div className="min-w-screen mt-28 flex  bg-gray-50  items-center justify-center px-5 pt-16">
           <div
             className="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700"
             style={{ maxWidth: 600 }}

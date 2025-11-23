@@ -3,7 +3,7 @@ import React from "react";
 
 function BreadCrumb({ title }) {
   return (
-    <nav aria-label="Breadcrumb">
+    <div aria-label="Breadcrumb">
       <ol
         role="list"
         className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
@@ -14,7 +14,7 @@ function BreadCrumb({ title }) {
               href="/all"
               className="mr-2 text-sm font-medium text-gray-900"
             >
-              Courses
+              Subjects
             </Link>
             <svg
               width={16}
@@ -39,7 +39,7 @@ function BreadCrumb({ title }) {
           </span>
         </li>
       </ol>
-    </nav>
+    </div>
   );
 }
 

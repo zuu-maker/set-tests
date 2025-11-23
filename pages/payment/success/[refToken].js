@@ -73,7 +73,7 @@ const VerifyToken = () => {
                     })
                     .then(() => {
                       let expiresOn = new Date();
-                      expiresOn.setDate(expiresOn.getDate() + 7);
+                      expiresOn.setDate(expiresOn.getDate() + 30);
                       console.log(expiresOn);
 
                       db.collection("Users")

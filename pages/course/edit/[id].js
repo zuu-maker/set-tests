@@ -16,6 +16,7 @@ const initialValues = {
   description: "",
   numberOfQuestions: "",
   numberOfTests: "",
+  free: false,
 };
 
 function EditCourse() {
@@ -49,7 +50,7 @@ function EditCourse() {
             querySnapshot.forEach((snap) => {
               _tests.push(snap.data());
             });
-            console.log(_tests);
+            console.log(doc.data());
             setValues(doc.data());
             setPreview(doc.data().image.url);
             setButtonText(doc.data().image.ref);
@@ -64,7 +65,11 @@ function EditCourse() {
   }, [id]);
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    if (e.target.name === "free") {
+      setValues({ ...values, [e.target.name]: !values.free });
+    } else {
+      setValues({ ...values, [e.target.name]: e.target.value });
+    }
   };
 
   const handleImage = (e) => {
@@ -146,7 +151,7 @@ function EditCourse() {
       .catch((error) => {
         console.error("Error adding document: ", error);
         toast.dismiss(toastId);
-        toast.error("Failed to create job");
+        toast.error("Failed to edit course");
         setIsLoading(false);
       });
   };

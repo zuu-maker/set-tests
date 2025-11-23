@@ -49,7 +49,7 @@ function Paginate({ page, next, prev }) {
           </p>
         </div>
         <div>
-          <nav
+          <div
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
             aria-label="Pagination"
           >
@@ -75,7 +75,7 @@ function Paginate({ page, next, prev }) {
               <span className="sr-only">Next</span>
               <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
             </button>
-          </nav>
+          </div>
         </div>
       </div>
     </div>

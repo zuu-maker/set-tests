@@ -192,18 +192,27 @@ function Orders() {
       <Sidebar />
       <div className="p-4 xl:ml-80">
         <AdminNav />
-        <div className="mt-12">
+        <div className="mt-8 pb-12">
           {loader ? (
             <div className="h-screen w-full flex items-center justify-center">
               <FadeLoader color="#00FFFF" />
             </div>
           ) : (
-            <div>
-              <div>
-                <div className="relative overflow-x-auto">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+            <div className="">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2"> Orders</h1>
+              {transactions.length > 0 ? (
+                <p className="text-gray-600 mb-6">
+                  Your transactions are displayed here
+                </p>
+              ) : (
+                <p className="text-gray-600 mb-6">You have no transactions</p>
+              )}
+
+              {/* <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Transcations
-                  </h6>
+                  </h6> */}
+              {transactions.length > 0 && (
+                <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
                       <tr>
@@ -288,7 +297,7 @@ function Orders() {
                               </div>
                             )}
                           </td>
-                          <td className="px-6 py-2 flex flex-col">
+                          <td className="px-6 py-2 flex flex-col min-w-48">
                             <button
                               onClick={() =>
                                 verifyPayment(
@@ -302,7 +311,7 @@ function Orders() {
                                 item.status === "Paid" ||
                                 loading
                               }
-                              className={` text-white w-full disabled:opacity-60 bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
+                              className={` text-white  w-full disabled:opacity-60 bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emeralds-300  font-medium text-sm px-4 py-1 text-center mt-2 mr-2 mb-2`}
                             >
                               Verify payment
                             </button>
@@ -328,8 +337,10 @@ function Orders() {
                     </tbody>
                   </table>
                 </div>
+              )}
+              {transactions.length > 0 && (
                 <Paginate page={page} prev={prev} next={next} />
-              </div>
+              )}
             </div>
           )}
         </div>

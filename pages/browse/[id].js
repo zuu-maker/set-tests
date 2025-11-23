@@ -13,6 +13,8 @@ import Banner from "@/components/Banner";
 import CourseTests from "@/components/browse/CourseTests";
 import BreadCrumb from "@/components/browse/BreadCrumb";
 import CourseInfo from "@/components/browse/CourseInfo";
+import Navbar from "@/components/new-landing/Navbar";
+import Footer from "@/components/new-landing/Footer";
 
 const INITIAL_STATE = {
   date: null,
@@ -169,11 +171,11 @@ function BrowseItem() {
 
       <Banner show={true} />
 
+      <Navbar />
       <div className="container mx-auto">
         <div className="h-8" />
-        <Header />
 
-        <div className="bg-white">
+        <div>
           <div className="pt-6">
             <BreadCrumb title={state.course?.title} />
 
@@ -199,6 +201,7 @@ function BrowseItem() {
         <hr />
         {state.tests.length > 0 && <CourseTests tests={state.tests} />}
       </div>
+      <Footer />
     </div>
   );
 }

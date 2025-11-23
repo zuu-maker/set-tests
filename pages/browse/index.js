@@ -7,6 +7,8 @@ import { FadeLoader } from "react-spinners";
 import Banner from "@/components/Banner";
 import AllCourses from "@/components/browse/AllCourses";
 import toast from "react-hot-toast";
+import Navbar from "@/components/new-landing/Navbar";
+import Footer from "@/components/new-landing/Footer";
 
 function Browse() {
   const [courses, setCourses] = useState([]);
@@ -48,12 +50,18 @@ function Browse() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Banner show={true} />
+      <Banner show={false} />
 
-      <div className="container mx-auto">
+      <div className="">
+        <div className="bg-pattern">
+          <div className="floating-shape"></div>
+          <div className="floating-shape"></div>
+          <div className="floating-shape"></div>
+        </div>
         <div className="h-8 w-full "></div>
-        <Header />
+        <Navbar />
         <AllCourses courses={courses} />
+        <Footer />
       </div>
     </div>
   );

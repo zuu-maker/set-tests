@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { auth } from "@/firebase";
 import { logOutUser } from "@/slices/userSlice";
 import { useRouter } from "next/router";
+import SubscriptionModal from "./SubscriptionModal";
 
 const navigation = [
   { name: "Courses", href: "/browse" },
@@ -126,6 +127,7 @@ const Header = ({ isHome = true }) => {
           )}
         </div>
       </nav>
+
       <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <Dialog.Panel
           focus="true"

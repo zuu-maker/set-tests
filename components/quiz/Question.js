@@ -48,7 +48,7 @@ const Question = ({
   question,
   onAnswerChange,
   answer,
-  setScore,
+  increaseScore,
   showFeedback,
   currentQuestionIndex,
 }) => {
@@ -60,9 +60,9 @@ const Question = ({
 
   useEffect(() => {
     if (showFeedback && isCorrect) {
-      setScore((score) => score + 1);
+      increaseScore();
     }
-  }, [showFeedback, isCorrect, setScore]);
+  }, [showFeedback, isCorrect]);
 
   useEffect(() => {
     setUserAnswer(answer);
@@ -144,7 +144,7 @@ const Question = ({
   const renderQuestionText = () => {
     if (text[0] === "<") {
       return (
-        <div className="text-sm pl-2 -mt-4 prose">
+        <div className="text-sm pl-12 mt-4 prose">
           <div
             className="ql-editor"
             dangerouslySetInnerHTML={{
@@ -154,14 +154,14 @@ const Question = ({
         </div>
       );
     }
-    return <p className="pl-2">{text}</p>;
+    return <p className=" -mt-8">{capitalizeFirstChar(text)}</p>;
   };
 
   return (
     <div>
-      <div className="text-base">
-        <p>{currentQuestionIndex + 1}.</p>
-        {renderQuestionText()}
+      <div className="text-base ">
+        <p className="">{currentQuestionIndex + 1}.</p>
+        <div className="ml-8 mt-2">{renderQuestionText()}</div>
       </div>
 
       {image && (
