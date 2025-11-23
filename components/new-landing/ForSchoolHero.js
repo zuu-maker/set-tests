@@ -7,10 +7,10 @@ function ForSchoolHero() {
       <div className="pt-32 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
-            <h1 className="text-5xl md:text-7xl font-bold text-slate-800 mb-6">
+            <h1 className="text-3xl md:text-5xl font-bold text-slate-800 mb-6">
               Grow Your School
-              <br />
-              <span className="italic">with AI-Powered Learning</span>
+              {/* <br /> */}
+              {/* <span className="italic">with AI-Powered Learning</span> */}
             </h1>
 
             <p className="text-lg text-gray-600 max-w-4xl leading-relaxed mb-8 text-justify">
@@ -45,7 +45,7 @@ function ForSchoolHero() {
               <li className="flex items-start gap-3">
                 <span className="text-primary-cyan text-xl mt-1">•</span>
                 <span className="text-gray-700 text-lg">
-                  Boost leaner outcome
+                  Boost leaners outcome
                 </span>
               </li>
               <li className="flex items-start gap-3">

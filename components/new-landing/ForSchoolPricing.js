@@ -43,7 +43,7 @@ function ForSchoolPricing() {
 
                 <div className="flex font-bold items-start gap-3">
                   <span className="text-2xl">🎯</span>
-                  <span>School introducing digital learning</span>
+                  <span>Schools introducing digital learning</span>
                 </div>
               </div>
 

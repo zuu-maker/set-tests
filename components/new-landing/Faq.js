@@ -65,7 +65,7 @@ function Faq() {
     >
       <h2 className="section-title">Frequently Asked Questions</h2>
       <p className="section-subtitle">
-        Everything you need to know about Sirius Educational Trust
+        Quick Guide to the Sirius Smart Schools Platform
       </p>
       <div className="faq-container">
         {faqData.map((faq, index) => (

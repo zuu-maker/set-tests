@@ -25,7 +25,7 @@ function Funders() {
             <p className="text-lg text-gray-700 leading-relaxed">
               <span className="font-semibold">Our mission is clear:</span> To
               bridge the digital divide and ensure every learner, regardless of
-              school type or location, can access world-className learning
+              school type or location, can access world-class learning
               opportunities.
             </p>
           </div>
