@@ -69,7 +69,7 @@ function Navbar({ isHome = true }) {
         <nav id="navbar" className={isScrolled ? "scrolled" : ""}>
           <div className="nav-container">
             <Link href="/" className="logo">
-              <img className="h-14" src="/new_logo.jpg" alt="" />
+              <img className="h-8 md:h-12" src="/new_logo.jpg" alt="" />
             </Link>
 
             <div className="flex md:hidden">
