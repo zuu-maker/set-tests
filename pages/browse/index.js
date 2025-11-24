@@ -58,7 +58,7 @@ function Browse() {
           <div className="floating-shape"></div>
           <div className="floating-shape"></div>
         </div>
-        <div className="h-8 w-full "></div>
+        <div className="h-8 hidden md:block w-full "></div>
         <Navbar />
         <AllCourses courses={courses} />
         <Footer />

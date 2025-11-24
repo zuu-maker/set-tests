@@ -79,7 +79,7 @@ function AllCourses({ courses }) {
         <div className="mx-auto max-w-7xl py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 items-center justify-between mb-12">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900">
+              <h1 className="text-2xl md:text-4xl font-bold text-gray-900">
                 Grade 12 & GCE
               </h1>
               <p className="mt-2 text-lg text-gray-600 hidden lg:block">

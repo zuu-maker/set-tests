@@ -12,7 +12,7 @@ function CTAButton({ setVisible }) {
             setVisible(true);
           }}
           // disabled={disabled || loading}
-          className="group relative inline-flex items-center justify-center text-sm px-6 py-3 overflow-hidden font-bold text-white rounded-xl bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg transform hover:scale-105 disabled:hover:scale-100"
+          className="group relative inline-flex items-center justify-center text-sm px-3 py-2 md:px-6 md:py-3 overflow-hidden font-bold text-white rounded-xl bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg transform hover:scale-105 disabled:hover:scale-100"
         >
           {/* Animated background effect */}
           <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-400 to-cyan-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
@@ -58,7 +58,7 @@ function CTAButton({ setVisible }) {
         <Link
           href="/login"
           // disabled={disabled || loading}
-          className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-bold text-white rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-600 hover:from-cyan-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg transform hover:scale-105 disabled:hover:scale-100"
+          className="group relative inline-flex items-center justify-center px-3 py-2 md:px-6 md:py-3 overflow-hidden font-bold text-white rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-600 hover:from-cyan-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg transform hover:scale-105 disabled:hover:scale-100"
         >
           {/* Animated background effect */}
           <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-400 to-cyan-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
